@@ -21,6 +21,19 @@
   box-sizing: border-box;
 }
 
+/* reset default button styles */
+button {
+  background-color: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  line-height: normal;
+  margin: 0;
+  padding: 0;
+  text-align: inherit;
+  text-decoration: none;
+}
+
 i {
   text-decoration: none;
 }
@@ -85,6 +98,7 @@ h1 {
 
 textarea {
   font-family: 'Delius', sans-serif;
+  resize: none;
 }
 
 #modal-container,
@@ -148,7 +162,8 @@ canvas {
   place-items: center;
 }
 
-#save-btn,
+.btn-container,
+/* #save-btn, */
 #clear-btn,
 #update-btn,
 #cancel-btn,
@@ -159,7 +174,8 @@ canvas {
   color: var(--blue);
 }
 
-#save-btn:hover,
+/* #save-btn:hover, */
+.btn-container:hover,
 #clear-btn:hover,
 #update-btn:hover,
 #cancel-btn:hover,

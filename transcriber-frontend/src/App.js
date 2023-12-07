@@ -22,12 +22,12 @@ function Header({ title }) {
 function TextArea() {
   return (
     <div id="main-container">
-        <section id="text-container">
-          <textarea id="text-area"></textarea>
-          {/* <div id="canvas-container">
+      <section id="text-container">
+        <textarea id="text-area"></textarea>
+        {/* <div id="canvas-container">
             <canvas id="audio-visualizer"></canvas>
           </div> */}
-        </section>
+      </section>
     </div>
   );
 }
@@ -40,23 +40,26 @@ function MicrophoneIcon() {
   );
 }
 
-function Toolbar() {
+function Button({ name, icon, onClick }) {
   return (
-    <div className="toolbar">
+    <button className="btn-container" onClick={onClick}>
+      <FontAwesomeIcon icon={icon} />
+      <div className="btn-text">{name}</div>
+    </button>
+  );
+}
+
+function Toolbar({ onSave, onClear }) {
+  return (
+    <section className="toolbar">
       <div className="footer-left">
-        <div id="save-btn">
-          <FontAwesomeIcon icon={faArrowUpFromBracket} />
-          <div className="btn-text">Save</div>
-        </div>
+        <Button name="Save" icon={faArrowUpFromBracket} onClick={onSave}/>
       </div>
 
       <div className="footer-right">
-        <div id="clear-btn">
-          <FontAwesomeIcon icon={faTrashCan} />
-          <div className="btn-text">Clear</div>
-        </div>
+        <Button name="Clear" icon={faTrashCan} onClick={onClear}/>
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -66,7 +69,7 @@ export default function Transcriber() {
       <Header title="transcriber" />
       <TextArea />
       <MicrophoneIcon />
-      <Toolbar />
+      <Toolbar onSave={() => alert("Saved")} onClear={() => alert("Clear")}/>
     </>
   );
 }
