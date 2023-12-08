@@ -7,19 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
-const notes = [];
-
-function NotesList(props) {
-  const notesArray = props.notes;
-
-  return (
-    <div>
-      {notesArray.map((note, index) => (
-        <div key={index}>{note}</div>
-      ))}
-    </div>
-  );
-}
+// const notes = [];
 
 function Button({ name, icon, onClick }) {
   return (
@@ -41,25 +29,49 @@ function Header({ title, onListClick }) {
   );
 }
 
-function TextArea(props) {
+function NotesList({ notes }) {
+  return (
+    <main className="list-page-main">
+      {/* <ul>
+        {notes.map((note, index) => (
+          <li key={index}>{note}</li>
+        ))}
+      </ul> */}
+
+      {notes.map((note, index) => (
+        <div key={index} className="list-page-item">
+          <div className="item-text">
+            <p>{note}</p>
+          </div>
+          <div className="item-tools">
+            <i className="fa-solid fa-expand"></i>
+          </div>
+        </div>
+      ))}
+    </main>
+  );
+}
+
+function TextArea({ sendTextToDefaultFunction, clearTextarea }) {
   const [textInput, setTextInput] = useState("");
 
   function handleTextareaChange(event) {
     setTextInput(event.target.value);
+    sendTextToDefaultFunction(textInput);
     // console.log(textInput);
   }
 
-  function handleSaveBtnClick() {
-    // props.createNote(textInput);
-    notes.push(textInput);
-    console.log({notes});
-    console.log({textInput});
-  }
+  // function handleSaveBtnClick() {
+  //   // props.createNote(textInput);
+  //   notes.push(textInput);
+  //   console.log({notes});
+  //   console.log({textInput});
+  // }
 
-  function handleClearBtnClick() {
-    setTextInput("");
-    console.log({textInput});
-  }
+  // function handleClearBtnClick() {
+  //   setTextInput("");
+  //   console.log({textInput});
+  // }
 
   return (
     <>
@@ -76,7 +88,7 @@ function TextArea(props) {
         </section>
       </div>
 
-      <section className="toolbar">
+      {/* <section className="toolbar">
         <div className="footer-left">
           <Button
             name="Save"
@@ -88,7 +100,7 @@ function TextArea(props) {
         <div className="footer-right">
           <Button name="Clear" icon={faTrashCan} onClick={handleClearBtnClick} />
         </div>
-      </section>
+      </section> */}
     </>
   );
 }
@@ -101,39 +113,65 @@ function MicrophoneIcon({ onMicrophoneClick }) {
   );
 }
 
-// function Toolbar({ onSave, onClear }) {
-//   return (
-//     <section className="toolbar">
-//       <div className="footer-left">
-//         <Button name="Save" icon={faArrowUpFromBracket} onClick={onSave} />
-//       </div>
+function Toolbar({ saveNote, onClear }) {
+  return (
+    <section className="toolbar">
+      <div className="footer-left">
+        <Button name="Save" icon={faArrowUpFromBracket} onClick={saveNote} />
+      </div>
 
-//       <div className="footer-right">
-//         <Button name="Clear" icon={faTrashCan} onClick={onClear} />
-//       </div>
-//     </section>
-//   );
-// }
+      <div className="footer-right">
+        <Button name="Clear" icon={faTrashCan} onClick={onClear} />
+      </div>
+    </section>
+  );
+}
 
 // -- APP --
-let showList = false;
 
 export default function Transcriber() {
-  function createNote(note) {
-    console.log(note);
-  }
+  const [displayList, setDisplayList] = useState("hide");
+  const [textForNote, setTextForNote] = useState("");
+  const handleTextFromUserInput = (text) => {
+    setTextForNote(text);
+  };
 
-  if (!showList) {
+  const [notes, setNotes] = useState([]);
+
+  const saveNote = () => {
+    setNotes([...notes, textForNote]);
+    console.log({ notes });
+    console.log({ textForNote });
+    // setTextForNote("");
+  };
+
+  const clearTextArea = () => {
+    setTextForNote("");
+  };
+
+  if (displayList == "hide") {
     return (
       <>
-        <Header title="transcriber" onListClick={() => alert("1")} />
-        <TextArea createNote={createNote} />
+        <Header
+          title="transcriber"
+          onListClick={() => setDisplayList("show")}
+        />
+        <TextArea sendTextToDefaultFunction={handleTextFromUserInput} />
         <MicrophoneIcon onMicrophoneClick={() => alert("Mic")} />
-        {/* <Toolbar onSave={() => alert("Save")} onClear={() => alert("Clear")} /> */}
-        <NotesList notes={notes} />
+        <Toolbar saveNote={saveNote} clearTextArea={clearTextArea} />
+        <ul>
+          {notes.map((note, index) => (
+            <li key={index}>{note}</li>
+          ))}
+        </ul>
       </>
     );
   } else {
-    return <Header title="list" />;
+    return (
+      <>
+        <Header title="notes" onListClick={() => setDisplayList("hide")} />
+        <NotesList notes={notes} />
+      </>
+    );
   }
 }
