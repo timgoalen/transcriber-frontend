@@ -36,16 +36,22 @@ function generateTimestamp() {
   return Date.now().toString();
 }
 
-function NotesList({ notes, selectNote, selectedNote }) {
+// -- NOTES LIST --
+
+function NotesList({ notes, selectNote, selectedNote, deleteNote }) {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
   function toggleDetailModal() {
-    console.log("toggle");
     setIsDetailModalOpen(!isDetailModalOpen);
   }
 
   function handleItemClick(timestamp, body) {
     selectNote(timestamp, body);
+    toggleDetailModal();
+  }
+
+  function handleDeleteBtnClick(timestamp) {
+    deleteNote(timestamp);
     toggleDetailModal();
   }
 
@@ -57,7 +63,6 @@ function NotesList({ notes, selectNote, selectedNote }) {
           id={timestamp}
           className="list-page-item"
           onClick={() => handleItemClick(timestamp, body)}
-          // onClick={() => selectNote(timestamp, body)}
         >
           <div className="item-text">
             <p>{body}</p>
@@ -80,12 +85,12 @@ function NotesList({ notes, selectNote, selectedNote }) {
               <FontAwesomeIcon icon={faArrowLeft} />
               <div>Back</div>
             </div>
-            <div id="edit-btn-modal" data-id="${id}">
+            <div id="edit-btn-modal">
               <FontAwesomeIcon icon={faPen} />
               <div>Edit</div>
             </div>
-            <div id="delete-btn-modal" data-id="${id}">
-              <FontAwesomeIcon icon={faTrashCan} />
+            <div id="delete-btn-modal">
+              <FontAwesomeIcon icon={faTrashCan} onClick={() => handleDeleteBtnClick(selectedNote.timestamp)}/>
               <div>Delete</div>
             </div>
           </div>
@@ -175,6 +180,10 @@ export default function TranscriberApp() {
     showNotesList();
   }
 
+  function deleteNote(timestamp) {
+    setNotes(notes.filter(note => note.timestamp !== timestamp));
+  }
+
   const [selectedNote, setSelectedNote] = useState([]);
   function selectNote(timestamp, body) {
     setSelectedNote({ timestamp, body });
@@ -206,7 +215,12 @@ export default function TranscriberApp() {
     return (
       <>
         <Header title="notes" onListClick={() => setDisplayList("hide")} />
-        <NotesList notes={notes} selectNote={selectNote} selectedNote={selectedNote} />
+        <NotesList
+          notes={notes}
+          selectNote={selectNote}
+          selectedNote={selectedNote}
+          deleteNote={deleteNote}
+        />
       </>
     );
   }
