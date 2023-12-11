@@ -106,12 +106,13 @@ function NotesList({ notes, selectNote, selectedNote, deleteNote }) {
 
 // -- TEXT AREA --
 
-function TextArea({ sendTextToDefaultFunction, clearTextarea }) {
-  const [textInput, setTextInput] = useState("");
+function TextArea({ handleUserInputText, textInput, clearTextarea }) {
+  // const [textInput, setTextInput] = useState("");
 
   function handleTextareaChange(event) {
-    setTextInput(event.target.value);
-    sendTextToDefaultFunction(textInput);
+    handleUserInputText(event.target.value);
+    // setTextInput(event.target.value);
+    // sendTextToDefaultFunction(textInput);
   }
 
   return (
@@ -140,7 +141,7 @@ function MainTool({ icon, onMainToolClick }) {
   );
 }
 
-function Toolbar({ handleSaveBtnClick, onClear }) {
+function Toolbar({ handleSaveBtnClick, clearTextArea }) {
   return (
     <section className="toolbar">
       <div className="footer-left">
@@ -152,7 +153,7 @@ function Toolbar({ handleSaveBtnClick, onClear }) {
       </div>
 
       <div className="footer-right">
-        <Button name="Clear" icon={faTrashCan} onClick={onClear} />
+        <Button name="Clear" icon={faTrashCan} onClick={clearTextArea} />
       </div>
     </section>
   );
@@ -161,20 +162,23 @@ function Toolbar({ handleSaveBtnClick, onClear }) {
 // -- APP --
 
 export default function TranscriberApp() {
+  const [textInput, setTextInput] = useState("");
+  const [selectedNote, setSelectedNote] = useState([]);
+  // Save an array of notes to state
+  const [notes, setNotes] = useState([]);
   // Control list page display
   const [displayList, setDisplayList] = useState("hide");
 
   // Retrieve data from Textarea and save to state
-  const [textForNote, setTextForNote] = useState("");
-  const handleTextFromUserInput = (text) => {
-    setTextForNote(text);
+  // const [textForNote, setTextForNote] = useState("");
+  const handleUserInputText = (text) => {
+    // setTextForNote(text);
+    setTextInput(text);
   };
 
-  // Save an array of notes to state
-  const [notes, setNotes] = useState([]);
-
   function saveNote() {
-    setNotes([...notes, { timestamp: generateTimestamp(), body: textForNote }]);
+    // setNotes([...notes, { timestamp: generateTimestamp(), body: textForNote }]);
+    setNotes([...notes, { timestamp: generateTimestamp(), body: textInput }]);
   }
 
   function showNotesList() {
@@ -187,16 +191,16 @@ export default function TranscriberApp() {
   }
 
   function deleteNote(timestamp) {
+    // Return a new array with selected note filtered out
     setNotes(notes.filter((note) => note.timestamp !== timestamp));
   }
 
-  const [selectedNote, setSelectedNote] = useState([]);
   function selectNote(timestamp, body) {
     setSelectedNote({ timestamp, body });
   }
 
   const clearTextArea = () => {
-    setTextForNote("");
+    setTextInput("");
   };
 
   if (displayList == "hide") {
@@ -208,7 +212,11 @@ export default function TranscriberApp() {
           showListIcon={true}
           onListClick={() => setDisplayList("show")}
         />
-        <TextArea sendTextToDefaultFunction={handleTextFromUserInput} />
+        {/* <TextArea sendTextToDefaultFunction={handleUserInputText} /> */}
+        <TextArea
+          handleUserInputText={handleUserInputText}
+          textInput={textInput}
+        />
         <MainTool icon={faMicrophone} onMainToolClick={() => alert("Mic")} />
         <Toolbar
           handleSaveBtnClick={handleSaveBtnClick}
@@ -227,7 +235,13 @@ export default function TranscriberApp() {
           selectedNote={selectedNote}
           deleteNote={deleteNote}
         />
-        <MainTool icon={faPlus} onMainToolClick={() => setDisplayList("hide")} />
+        <MainTool
+          icon={faPlus}
+          onMainToolClick={function() {
+            setDisplayList("hide");
+            clearTextArea();
+          }}
+        />
       </>
     );
   }
