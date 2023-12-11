@@ -4,6 +4,9 @@ import {
   faMicrophone,
   faArrowUpFromBracket,
   faListUl,
+  faExpand,
+  faArrowLeft,
+  faPen,
 } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
@@ -33,20 +36,61 @@ function generateTimestamp() {
   return Date.now().toString();
 }
 
-function NotesList({ notes }) {
+function NotesList({ notes, selectNote, selectedNote }) {
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+
+  function toggleDetailModal() {
+    console.log("toggle");
+    setIsDetailModalOpen(!isDetailModalOpen);
+  }
+
+  function handleItemClick(timestamp, body) {
+    selectNote(timestamp, body);
+    toggleDetailModal();
+  }
+
   return (
     <main className="list-page-main">
-      {/* change to <ul> <li>?? */}
       {notes.map(({ timestamp, body }) => (
-        <div key={timestamp} id={timestamp} className="list-page-item">
+        <div
+          key={timestamp}
+          id={timestamp}
+          className="list-page-item"
+          onClick={() => handleItemClick(timestamp, body)}
+          // onClick={() => selectNote(timestamp, body)}
+        >
           <div className="item-text">
             <p>{body}</p>
           </div>
           <div className="item-tools">
-            <i className="fa-solid fa-expand"></i>
+            <FontAwesomeIcon icon={faExpand} />
           </div>
         </div>
       ))}
+
+      <section
+        id="detail-view-modal-container"
+        style={{ display: isDetailModalOpen ? "grid" : "none" }}
+      >
+        <div id="detail-view-modal-content">
+          <div id="detail-view-modal-text">{selectedNote.body}</div>
+          <div id="detail-view-modal-tools-container">
+            <div id="back-btn-modal" onClick={toggleDetailModal}>
+              {/* refactor to "Button" component */}
+              <FontAwesomeIcon icon={faArrowLeft} />
+              <div>Back</div>
+            </div>
+            <div id="edit-btn-modal" data-id="${id}">
+              <FontAwesomeIcon icon={faPen} />
+              <div>Edit</div>
+            </div>
+            <div id="delete-btn-modal" data-id="${id}">
+              <FontAwesomeIcon icon={faTrashCan} />
+              <div>Delete</div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
@@ -89,7 +133,11 @@ function Toolbar({ handleSaveBtnClick, onClear }) {
   return (
     <section className="toolbar">
       <div className="footer-left">
-        <Button name="Save" icon={faArrowUpFromBracket} onClick={handleSaveBtnClick} />
+        <Button
+          name="Save"
+          icon={faArrowUpFromBracket}
+          onClick={handleSaveBtnClick}
+        />
       </div>
 
       <div className="footer-right">
@@ -116,7 +164,7 @@ export default function TranscriberApp() {
 
   function saveNote() {
     setNotes([...notes, { timestamp: generateTimestamp(), body: textForNote }]);
-  };
+  }
 
   function showNotesList() {
     setDisplayList("show");
@@ -125,7 +173,13 @@ export default function TranscriberApp() {
   function handleSaveBtnClick() {
     saveNote();
     showNotesList();
-  };
+  }
+
+  const [selectedNote, setSelectedNote] = useState([]);
+  function selectNote(timestamp, body) {
+    setSelectedNote({ timestamp, body });
+    console.log(selectedNote);
+  }
 
   const clearTextArea = () => {
     setTextForNote("");
@@ -141,15 +195,18 @@ export default function TranscriberApp() {
         />
         <TextArea sendTextToDefaultFunction={handleTextFromUserInput} />
         <MicrophoneIcon onMicrophoneClick={() => alert("Mic")} />
-        <Toolbar handleSaveBtnClick={handleSaveBtnClick} clearTextArea={clearTextArea} />
+        <Toolbar
+          handleSaveBtnClick={handleSaveBtnClick}
+          clearTextArea={clearTextArea}
+        />
       </>
     );
   } else {
-    // Display Notes list
+    // Display notes list
     return (
       <>
         <Header title="notes" onListClick={() => setDisplayList("hide")} />
-        <NotesList notes={notes} />
+        <NotesList notes={notes} selectNote={selectNote} selectedNote={selectedNote} />
       </>
     );
   }
