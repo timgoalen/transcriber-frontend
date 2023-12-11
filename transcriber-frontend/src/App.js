@@ -29,19 +29,18 @@ function Header({ title, onListClick }) {
   );
 }
 
+function generateTimestamp() {
+  return Date.now().toString();
+}
+
 function NotesList({ notes }) {
   return (
     <main className="list-page-main">
-      {/* <ul>
-        {notes.map((note, index) => (
-          <li key={index}>{note}</li>
-        ))}
-      </ul> */}
-
-      {notes.map((note, index) => (
-        <div key={index} className="list-page-item">
+      {/* change to <ul> <li>?? */}
+      {notes.map(({ timestamp, body }) => (
+        <div key={timestamp} id={timestamp} className="list-page-item">
           <div className="item-text">
-            <p>{note}</p>
+            <p>{body}</p>
           </div>
           <div className="item-tools">
             <i className="fa-solid fa-expand"></i>
@@ -58,20 +57,7 @@ function TextArea({ sendTextToDefaultFunction, clearTextarea }) {
   function handleTextareaChange(event) {
     setTextInput(event.target.value);
     sendTextToDefaultFunction(textInput);
-    // console.log(textInput);
   }
-
-  // function handleSaveBtnClick() {
-  //   // props.createNote(textInput);
-  //   notes.push(textInput);
-  //   console.log({notes});
-  //   console.log({textInput});
-  // }
-
-  // function handleClearBtnClick() {
-  //   setTextInput("");
-  //   console.log({textInput});
-  // }
 
   return (
     <>
@@ -87,20 +73,6 @@ function TextArea({ sendTextToDefaultFunction, clearTextarea }) {
           </div> */}
         </section>
       </div>
-
-      {/* <section className="toolbar">
-        <div className="footer-left">
-          <Button
-            name="Save"
-            icon={faArrowUpFromBracket}
-            onClick={handleSaveBtnClick}
-          />
-        </div>
-
-        <div className="footer-right">
-          <Button name="Clear" icon={faTrashCan} onClick={handleClearBtnClick} />
-        </div>
-      </section> */}
     </>
   );
 }
@@ -113,11 +85,11 @@ function MicrophoneIcon({ onMicrophoneClick }) {
   );
 }
 
-function Toolbar({ saveNote, onClear }) {
+function Toolbar({ handleSaveBtnClick, onClear }) {
   return (
     <section className="toolbar">
       <div className="footer-left">
-        <Button name="Save" icon={faArrowUpFromBracket} onClick={saveNote} />
+        <Button name="Save" icon={faArrowUpFromBracket} onClick={handleSaveBtnClick} />
       </div>
 
       <div className="footer-right">
@@ -129,20 +101,30 @@ function Toolbar({ saveNote, onClear }) {
 
 // -- APP --
 
-export default function Transcriber() {
+export default function TranscriberApp() {
+  // Control list page display
   const [displayList, setDisplayList] = useState("hide");
+
+  // Retrieve data from Textarea and save to state
   const [textForNote, setTextForNote] = useState("");
   const handleTextFromUserInput = (text) => {
     setTextForNote(text);
   };
 
+  // Save an array of notes to state
   const [notes, setNotes] = useState([]);
 
-  const saveNote = () => {
-    setNotes([...notes, textForNote]);
-    console.log({ notes });
-    console.log({ textForNote });
-    // setTextForNote("");
+  function saveNote() {
+    setNotes([...notes, { timestamp: generateTimestamp(), body: textForNote }]);
+  };
+
+  function showNotesList() {
+    setDisplayList("show");
+  }
+
+  function handleSaveBtnClick() {
+    saveNote();
+    showNotesList();
   };
 
   const clearTextArea = () => {
@@ -151,6 +133,7 @@ export default function Transcriber() {
 
   if (displayList == "hide") {
     return (
+      // Display transcriber
       <>
         <Header
           title="transcriber"
@@ -158,15 +141,11 @@ export default function Transcriber() {
         />
         <TextArea sendTextToDefaultFunction={handleTextFromUserInput} />
         <MicrophoneIcon onMicrophoneClick={() => alert("Mic")} />
-        <Toolbar saveNote={saveNote} clearTextArea={clearTextArea} />
-        <ul>
-          {notes.map((note, index) => (
-            <li key={index}>{note}</li>
-          ))}
-        </ul>
+        <Toolbar handleSaveBtnClick={handleSaveBtnClick} clearTextArea={clearTextArea} />
       </>
     );
   } else {
+    // Display Notes list
     return (
       <>
         <Header title="notes" onListClick={() => setDisplayList("hide")} />
