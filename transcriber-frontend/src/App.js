@@ -7,10 +7,9 @@ import {
   faExpand,
   faArrowLeft,
   faPen,
+  faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
-
-// const notes = [];
 
 function Button({ name, icon, onClick }) {
   return (
@@ -21,13 +20,15 @@ function Button({ name, icon, onClick }) {
   );
 }
 
-function Header({ title, onListClick }) {
+function Header({ title, onListClick, showListIcon }) {
   return (
     <header>
       <h1>{title}</h1>
-      <div className="list-view-btn-container">
-        <Button icon={faListUl} onClick={onListClick} />
-      </div>
+      {showListIcon === true && (
+        <div className="list-view-btn-container">
+          <Button icon={faListUl} onClick={onListClick} />
+        </div>
+      )}
     </header>
   );
 }
@@ -90,7 +91,10 @@ function NotesList({ notes, selectNote, selectedNote, deleteNote }) {
               <div>Edit</div>
             </div>
             <div id="delete-btn-modal">
-              <FontAwesomeIcon icon={faTrashCan} onClick={() => handleDeleteBtnClick(selectedNote.timestamp)}/>
+              <FontAwesomeIcon
+                icon={faTrashCan}
+                onClick={() => handleDeleteBtnClick(selectedNote.timestamp)}
+              />
               <div>Delete</div>
             </div>
           </div>
@@ -99,6 +103,8 @@ function NotesList({ notes, selectNote, selectedNote, deleteNote }) {
     </main>
   );
 }
+
+// -- TEXT AREA --
 
 function TextArea({ sendTextToDefaultFunction, clearTextarea }) {
   const [textInput, setTextInput] = useState("");
@@ -126,10 +132,10 @@ function TextArea({ sendTextToDefaultFunction, clearTextarea }) {
   );
 }
 
-function MicrophoneIcon({ onMicrophoneClick }) {
+function MainTool({ icon, onMainToolClick }) {
   return (
-    <button id="microphone-container" onClick={onMicrophoneClick}>
-      <FontAwesomeIcon icon={faMicrophone} />
+    <button id="microphone-container">
+      <FontAwesomeIcon icon={icon} onClick={onMainToolClick} />
     </button>
   );
 }
@@ -181,13 +187,12 @@ export default function TranscriberApp() {
   }
 
   function deleteNote(timestamp) {
-    setNotes(notes.filter(note => note.timestamp !== timestamp));
+    setNotes(notes.filter((note) => note.timestamp !== timestamp));
   }
 
   const [selectedNote, setSelectedNote] = useState([]);
   function selectNote(timestamp, body) {
     setSelectedNote({ timestamp, body });
-    console.log(selectedNote);
   }
 
   const clearTextArea = () => {
@@ -200,10 +205,11 @@ export default function TranscriberApp() {
       <>
         <Header
           title="transcriber"
+          showListIcon={true}
           onListClick={() => setDisplayList("show")}
         />
         <TextArea sendTextToDefaultFunction={handleTextFromUserInput} />
-        <MicrophoneIcon onMicrophoneClick={() => alert("Mic")} />
+        <MainTool icon={faMicrophone} onMainToolClick={() => alert("Mic")} />
         <Toolbar
           handleSaveBtnClick={handleSaveBtnClick}
           clearTextArea={clearTextArea}
@@ -214,13 +220,14 @@ export default function TranscriberApp() {
     // Display notes list
     return (
       <>
-        <Header title="notes" onListClick={() => setDisplayList("hide")} />
+        <Header title="notes" showListIcon={false} />
         <NotesList
           notes={notes}
           selectNote={selectNote}
           selectedNote={selectedNote}
           deleteNote={deleteNote}
         />
+        <MainTool icon={faPlus} onMainToolClick={() => setDisplayList("hide")} />
       </>
     );
   }
