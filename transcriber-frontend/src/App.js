@@ -121,12 +121,9 @@ function NotesList({
 // -- TEXT AREA --
 
 function TextArea({ handleUserInputText, textInput, clearTextarea }) {
-  // const [textInput, setTextInput] = useState("");
 
   function handleTextareaChange(event) {
     handleUserInputText(event.target.value);
-    // setTextInput(event.target.value);
-    // sendTextToDefaultFunction(textInput);
   }
 
   return (
@@ -187,14 +184,11 @@ export default function TranscriberApp() {
   const [displayPage, setDisplayPage] = useState("create");
 
   // Retrieve data from Textarea and save to state
-  // const [textForNote, setTextForNote] = useState("");
   const handleUserInputText = (text) => {
-    // setTextForNote(text);
     setTextInput(text);
   };
 
   function saveNote() {
-    // setNotes([...notes, { timestamp: generateTimestamp(), body: textInput }]);
     localStorage.setItem(generateTimestamp(), textInput);
   }
 
@@ -214,24 +208,13 @@ export default function TranscriberApp() {
 
   function handleUpdateBtnClick() {
     let timestamp = selectedNote.timestamp;
-
-    // Delete note with 'SelectedNote' timestamp
-    // deleteNote(timestamp);
-    // saveNote(textInput);
-
     localStorage.setItem(timestamp, textInput);
     showNotesList();
   }
 
   function deleteNote(timestamp) {
-    // Return a new array with selected note filtered out
-    // setNotes(notes.filter((note) => note.timestamp !== timestamp));
     localStorage.removeItem(timestamp);
   }
-
-  // function updateNote(timestamp) {
-  //   setNotes([...notes, { timestamp: timestamp, body: selectedNote.body }]);
-  // }
 
   function selectNote(timestamp, body) {
     setSelectedNote({ timestamp, body });
@@ -294,7 +277,6 @@ export default function TranscriberApp() {
         <TextArea
           handleUserInputText={handleUserInputText}
           textInput={textInput}
-          // value={selectedNote.body}
         />
         <MainTool icon={faMicrophone} onMainToolClick={() => alert("Mic")} />
         <Toolbar
