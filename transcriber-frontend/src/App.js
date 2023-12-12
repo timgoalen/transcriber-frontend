@@ -121,7 +121,6 @@ function NotesList({
 // -- TEXT AREA --
 
 function TextArea({ handleUserInputText, textInput, clearTextarea }) {
-
   function handleTextareaChange(event) {
     handleUserInputText(event.target.value);
   }
@@ -224,6 +223,109 @@ export default function TranscriberApp() {
     setTextInput("");
   };
 
+  // Inititalize speach recognition
+  try {
+    var SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+  } catch (e) {
+    alert(
+      "Your browser doesn't support speech recognition. Try using Chrome or Firefox."
+    );
+  }
+
+  try {
+    var recognition = new SpeechRecognition();
+  } catch (e) {
+    alert(
+      "Your browser doesn't support speech recognition. Try using Chrome or Firefox."
+    );
+  }
+
+  let recognising = false;
+
+  // Recognition settings
+  recognition.continuous = true;
+  recognition.interimResults = false;
+  recognition.lang = "en-UK";
+
+  function capitalise(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+  function capitaliseNewSentence(string) {
+    return string.charAt(1).toUpperCase() + string.slice(2);
+  }
+
+  function punctuate(string) {
+    string = string.replace(/(?:\s+|^)full stop(?:\s+|$)/g, ". ");
+    string = string.replace(/(?:\s+|^)comma(?:\s+|$)/g, ", ");
+    string = string.replace(/(?:\s+|^)queation mark(?:\s+|$)/g, "? ");
+    string = string.replace(/(?:\s+|^)exclamation mark(?:\s+|$)/g, "! ");
+    string = string.replace("new paragraph", "\n\n");
+    string = string.replace("hyphen", "-");
+    // string = string.replace("colon", ":");
+    // string = string.replace("semi colon", ";");
+    // string = string.replace("underscore", "_");
+
+    return string;
+  }
+
+  function handleMicrophoneClick() {
+    if (recognising) {
+      recognition.stop();
+      // For audio visualizer
+      // stopVisualizer();
+      // canvasContainer.style.display = "none";
+      // updateUiRecordingStopped();
+    } else {
+      recognition.start();
+      // For audio visualizer
+      // initVisualizer();
+      // updateUiRecordingStarted();
+      // canvasContainer.style.display = "block";
+    }
+
+    recognising = !recognising;
+  }
+
+  // -- RECOGNITION FUNCTIONALITY --
+
+  recognition.onresult = (event) => {
+    let currentTranscript = "";
+    const capitaliseAfterThese = [".", "!", "?"];
+
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      currentTranscript = event.results[i][0].transcript;
+    }
+
+    // TODO: explain this code in comments..
+    if (currentTranscript) {
+      const previousTranscript = textInput;
+      const punctuatedTranscript = punctuate(currentTranscript);
+
+      if (previousTranscript === "") {
+        setTextInput(capitalise(punctuatedTranscript));
+      } else {
+        let lastCharacter = previousTranscript.charAt(
+          previousTranscript.length - 2
+        );
+        console.log(lastCharacter);
+        if (capitaliseAfterThese.includes(lastCharacter)) {
+          setTextInput(previousTranscript + capitaliseNewSentence(punctuatedTranscript));
+        } else {
+          setTextInput(previousTranscript + punctuatedTranscript);
+        }
+      }
+    }
+  };
+
+  // Handle errors
+  recognition.onerror = function (event) {
+    console.error("Speech recognition error: " + event.error);
+  };
+
+  // -- RENDER ELEMENTS --
+
   if (displayPage === "create") {
     return (
       // Display transcriber
@@ -237,7 +339,7 @@ export default function TranscriberApp() {
           handleUserInputText={handleUserInputText}
           textInput={textInput}
         />
-        <MainTool icon={faMicrophone} onMainToolClick={() => alert("Mic")} />
+        <MainTool icon={faMicrophone} onMainToolClick={handleMicrophoneClick} />
         <Toolbar
           tool1Name="Save"
           tool1Icon={faArrowUpFromBracket}
