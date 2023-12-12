@@ -118,10 +118,34 @@ function NotesList({
   );
 }
 
+// TEST SPEECH RECOGNITION
+
+// function Dictaphone() {
+//   const {
+//     transcript,
+//     // listening,
+//     // resetTranscript,
+//     // browserSupportsSpeechRecognition,
+//   } = useSpeechRecognition("");
+
+//   // if (!browserSupportsSpeechRecognition) {
+//   //   return <span>Browser doesn't support speech recognition.</span>;
+//   // }
+
+//   return (
+//     <div>
+//       {/* <p>Microphone: {listening ? "on" : "off"}</p>
+//       <button onClick={SpeechRecognition.startListening}>Start</button>
+//       <button onClick={SpeechRecognition.stopListening}>Stop</button>
+//       <button onClick={resetTranscript}>Reset</button>
+//       <p>{transcript}</p> */}
+//     </div>
+//   );
+// }
+
 // -- TEXT AREA --
 
 function TextArea({ handleUserInputText, textInput, clearTextarea }) {
-
   function handleTextareaChange(event) {
     handleUserInputText(event.target.value);
   }
@@ -143,6 +167,8 @@ function TextArea({ handleUserInputText, textInput, clearTextarea }) {
     </>
   );
 }
+
+// -- Main Speech Recognition Tool --
 
 function MainTool({ icon, onMainToolClick }) {
   return (
@@ -228,6 +254,7 @@ export default function TranscriberApp() {
     return (
       // Display transcriber
       <>
+        {/* <Dictaphone /> */}
         <Header
           title="transcriber"
           showListIcon={true}
