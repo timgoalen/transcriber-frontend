@@ -8,6 +8,7 @@ import {
   faArrowLeft,
   faPen,
   faPlus,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
@@ -39,7 +40,13 @@ function generateTimestamp() {
 
 // -- NOTES LIST --
 
-function NotesList({ notes, selectNote, selectedNote, deleteNote }) {
+function NotesList({
+  notes,
+  selectNote,
+  selectedNote,
+  deleteNote,
+  openEditPage,
+}) {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
   function toggleDetailModal() {
@@ -56,17 +63,24 @@ function NotesList({ notes, selectNote, selectedNote, deleteNote }) {
     toggleDetailModal();
   }
 
+  // Get an array of the note keys (IDs)
+  const localStorageTimestampKeys = Object.keys(localStorage);
+  // Sort the array into reverse chronological order
+  localStorageTimestampKeys.sort((a, b) => {
+    return parseInt(b) - parseInt(a);
+  });
+
   return (
     <main className="list-page-main">
-      {notes.map(({ timestamp, body }) => (
+      {localStorageTimestampKeys.map((key) => (
         <div
-          key={timestamp}
-          id={timestamp}
+          key={key}
+          id={key}
           className="list-page-item"
-          onClick={() => handleItemClick(timestamp, body)}
+          onClick={() => handleItemClick(key, localStorage.getItem(key))}
         >
           <div className="item-text">
-            <p>{body}</p>
+            <p>{localStorage.getItem(key)}</p>
           </div>
           <div className="item-tools">
             <FontAwesomeIcon icon={faExpand} />
@@ -86,7 +100,7 @@ function NotesList({ notes, selectNote, selectedNote, deleteNote }) {
               <FontAwesomeIcon icon={faArrowLeft} />
               <div>Back</div>
             </div>
-            <div id="edit-btn-modal">
+            <div id="edit-btn-modal" onClick={openEditPage}>
               <FontAwesomeIcon icon={faPen} />
               <div>Edit</div>
             </div>
@@ -107,12 +121,9 @@ function NotesList({ notes, selectNote, selectedNote, deleteNote }) {
 // -- TEXT AREA --
 
 function TextArea({ handleUserInputText, textInput, clearTextarea }) {
-  // const [textInput, setTextInput] = useState("");
 
   function handleTextareaChange(event) {
     handleUserInputText(event.target.value);
-    // setTextInput(event.target.value);
-    // sendTextToDefaultFunction(textInput);
   }
 
   return (
@@ -141,19 +152,22 @@ function MainTool({ icon, onMainToolClick }) {
   );
 }
 
-function Toolbar({ handleSaveBtnClick, clearTextArea }) {
+function Toolbar({
+  tool1Name,
+  tool1Icon,
+  tool1OnClick,
+  tool2Name,
+  tool2Icon,
+  tool2OnClick,
+}) {
   return (
     <section className="toolbar">
       <div className="footer-left">
-        <Button
-          name="Save"
-          icon={faArrowUpFromBracket}
-          onClick={handleSaveBtnClick}
-        />
+        <Button name={tool1Name} icon={tool1Icon} onClick={tool1OnClick} />
       </div>
 
       <div className="footer-right">
-        <Button name="Clear" icon={faTrashCan} onClick={clearTextArea} />
+        <Button name={tool2Name} icon={tool2Icon} onClick={tool2OnClick} />
       </div>
     </section>
   );
@@ -167,32 +181,39 @@ export default function TranscriberApp() {
   // Save an array of notes to state
   const [notes, setNotes] = useState([]);
   // Control list page display
-  const [displayList, setDisplayList] = useState("hide");
+  const [displayPage, setDisplayPage] = useState("create");
 
   // Retrieve data from Textarea and save to state
-  // const [textForNote, setTextForNote] = useState("");
   const handleUserInputText = (text) => {
-    // setTextForNote(text);
     setTextInput(text);
   };
 
   function saveNote() {
-    // setNotes([...notes, { timestamp: generateTimestamp(), body: textForNote }]);
-    setNotes([...notes, { timestamp: generateTimestamp(), body: textInput }]);
+    localStorage.setItem(generateTimestamp(), textInput);
   }
 
   function showNotesList() {
-    setDisplayList("show");
+    setDisplayPage("list");
+  }
+
+  function openEditPage() {
+    setTextInput(selectedNote.body);
+    setDisplayPage("update");
   }
 
   function handleSaveBtnClick() {
-    saveNote();
+    saveNote(textInput);
+    showNotesList();
+  }
+
+  function handleUpdateBtnClick() {
+    let timestamp = selectedNote.timestamp;
+    localStorage.setItem(timestamp, textInput);
     showNotesList();
   }
 
   function deleteNote(timestamp) {
-    // Return a new array with selected note filtered out
-    setNotes(notes.filter((note) => note.timestamp !== timestamp));
+    localStorage.removeItem(timestamp);
   }
 
   function selectNote(timestamp, body) {
@@ -203,28 +224,31 @@ export default function TranscriberApp() {
     setTextInput("");
   };
 
-  if (displayList == "hide") {
+  if (displayPage === "create") {
     return (
       // Display transcriber
       <>
         <Header
           title="transcriber"
           showListIcon={true}
-          onListClick={() => setDisplayList("show")}
+          onListClick={showNotesList}
         />
-        {/* <TextArea sendTextToDefaultFunction={handleUserInputText} /> */}
         <TextArea
           handleUserInputText={handleUserInputText}
           textInput={textInput}
         />
         <MainTool icon={faMicrophone} onMainToolClick={() => alert("Mic")} />
         <Toolbar
-          handleSaveBtnClick={handleSaveBtnClick}
-          clearTextArea={clearTextArea}
+          tool1Name="Save"
+          tool1Icon={faArrowUpFromBracket}
+          tool1OnClick={handleSaveBtnClick}
+          tool2Name="Clear"
+          tool2Icon={faTrashCan}
+          tool2OnClick={clearTextArea}
         />
       </>
     );
-  } else {
+  } else if (displayPage === "list") {
     // Display notes list
     return (
       <>
@@ -234,13 +258,34 @@ export default function TranscriberApp() {
           selectNote={selectNote}
           selectedNote={selectedNote}
           deleteNote={deleteNote}
+          openEditPage={openEditPage}
         />
         <MainTool
           icon={faPlus}
-          onMainToolClick={function() {
-            setDisplayList("hide");
+          onMainToolClick={function () {
+            setDisplayPage("create");
             clearTextArea();
           }}
+        />
+      </>
+    );
+  } else {
+    // Display update page
+    return (
+      <>
+        <Header title="edit" showListIcon={false} />
+        <TextArea
+          handleUserInputText={handleUserInputText}
+          textInput={textInput}
+        />
+        <MainTool icon={faMicrophone} onMainToolClick={() => alert("Mic")} />
+        <Toolbar
+          tool1Name="Update"
+          tool1Icon={faArrowUpFromBracket}
+          tool1OnClick={handleUpdateBtnClick}
+          tool2Name="Cancel"
+          tool2Icon={faXmark}
+          tool2OnClick={showNotesList}
         />
       </>
     );
