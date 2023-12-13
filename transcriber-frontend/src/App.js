@@ -1,180 +1,33 @@
 import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+// 3rd party imports
+
 import {
   faMicrophone,
   faArrowUpFromBracket,
   faListUl,
-  faExpand,
-  faArrowLeft,
-  faPen,
   faPlus,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
-function Button({ name, icon, onClick }) {
-  return (
-    <button className="btn-container" onClick={onClick}>
-      <FontAwesomeIcon icon={icon} />
-      <div className="btn-text">{name}</div>
-    </button>
-  );
-}
+// Internal imports
 
-function Header({ title, onListClick, showListIcon }) {
-  return (
-    <header>
-      <h1>{title}</h1>
-      {showListIcon === true && (
-        <div className="list-view-btn-container">
-          <Button icon={faListUl} onClick={onListClick} />
-        </div>
-      )}
-    </header>
-  );
-}
+import Header from "./components/Header.js";
+import NotesList from "./components/NotesList.js";
+import TextArea from "./components/TextArea.js";
+import MainTool from "./components/MainTool.js";
+import Toolbar from "./components/Toolbar.js";
+import { generateTimestamp } from "./utils/utils.js";
+import {
+  capitalise,
+  capitaliseNewSentence,
+  punctuate,
+} from "./utils/speechRecognitionUtils.js";
 
-function generateTimestamp() {
-  return Date.now().toString();
-}
+// APP
 
-// -- NOTES LIST --
-
-function NotesList({
-  notes,
-  selectNote,
-  selectedNote,
-  deleteNote,
-  openEditPage,
-}) {
-  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
-
-  function toggleDetailModal() {
-    setIsDetailModalOpen(!isDetailModalOpen);
-  }
-
-  function handleItemClick(timestamp, body) {
-    selectNote(timestamp, body);
-    toggleDetailModal();
-  }
-
-  function handleDeleteBtnClick(timestamp) {
-    deleteNote(timestamp);
-    toggleDetailModal();
-  }
-
-  // Get an array of the note keys (IDs)
-  const localStorageTimestampKeys = Object.keys(localStorage);
-  // Sort the array into reverse chronological order
-  localStorageTimestampKeys.sort((a, b) => {
-    return parseInt(b) - parseInt(a);
-  });
-
-  return (
-    <main className="list-page-main">
-      {localStorageTimestampKeys.map((key) => (
-        <div
-          key={key}
-          id={key}
-          className="list-page-item"
-          onClick={() => handleItemClick(key, localStorage.getItem(key))}
-        >
-          <div className="item-text">
-            <p>{localStorage.getItem(key)}</p>
-          </div>
-          <div className="item-tools">
-            <FontAwesomeIcon icon={faExpand} />
-          </div>
-        </div>
-      ))}
-
-      <section
-        id="detail-view-modal-container"
-        style={{ display: isDetailModalOpen ? "grid" : "none" }}
-      >
-        <div id="detail-view-modal-content">
-          <div id="detail-view-modal-text">{selectedNote.body}</div>
-          <div id="detail-view-modal-tools-container">
-            <div id="back-btn-modal" onClick={toggleDetailModal}>
-              {/* refactor to "Button" component */}
-              <FontAwesomeIcon icon={faArrowLeft} />
-              <div>Back</div>
-            </div>
-            <div id="edit-btn-modal" onClick={openEditPage}>
-              <FontAwesomeIcon icon={faPen} />
-              <div>Edit</div>
-            </div>
-            <div id="delete-btn-modal">
-              <FontAwesomeIcon
-                icon={faTrashCan}
-                onClick={() => handleDeleteBtnClick(selectedNote.timestamp)}
-              />
-              <div>Delete</div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-  );
-}
-
-// -- TEXT AREA --
-
-function TextArea({ handleUserInputText, textInput, clearTextarea }) {
-  function handleTextareaChange(event) {
-    handleUserInputText(event.target.value);
-  }
-
-  return (
-    <>
-      <div id="main-container">
-        <section id="text-container">
-          <textarea
-            id="text-area"
-            value={textInput}
-            onChange={handleTextareaChange}
-          ></textarea>
-          {/* <div id="canvas-container">
-            <canvas id="audio-visualizer"></canvas>
-          </div> */}
-        </section>
-      </div>
-    </>
-  );
-}
-
-function MainTool({ icon, onMainToolClick }) {
-  return (
-    <button id="microphone-container">
-      <FontAwesomeIcon icon={icon} onClick={onMainToolClick} />
-    </button>
-  );
-}
-
-function Toolbar({
-  tool1Name,
-  tool1Icon,
-  tool1OnClick,
-  tool2Name,
-  tool2Icon,
-  tool2OnClick,
-}) {
-  return (
-    <section className="toolbar">
-      <div className="footer-left">
-        <Button name={tool1Name} icon={tool1Icon} onClick={tool1OnClick} />
-      </div>
-
-      <div className="footer-right">
-        <Button name={tool2Name} icon={tool2Icon} onClick={tool2OnClick} />
-      </div>
-    </section>
-  );
-}
-
-// -- APP --
-
-export default function TranscriberApp() {
+export default function App() {
   const [textInput, setTextInput] = useState("");
   const [selectedNote, setSelectedNote] = useState([]);
   // Save an array of notes to state
@@ -223,7 +76,8 @@ export default function TranscriberApp() {
     setTextInput("");
   };
 
-  // Inititalize speach recognition
+  // -- RECOGNITION INITIALIZATION --
+
   try {
     var SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -242,33 +96,9 @@ export default function TranscriberApp() {
   }
 
   let recognising = false;
-
-  // Recognition settings
   recognition.continuous = true;
   recognition.interimResults = false;
   recognition.lang = "en-UK";
-
-  function capitalise(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
-
-  function capitaliseNewSentence(string) {
-    return string.charAt(1).toUpperCase() + string.slice(2);
-  }
-
-  function punctuate(string) {
-    string = string.replace(/(?:\s+|^)full stop(?:\s+|$)/g, ". ");
-    string = string.replace(/(?:\s+|^)comma(?:\s+|$)/g, ", ");
-    string = string.replace(/(?:\s+|^)queation mark(?:\s+|$)/g, "? ");
-    string = string.replace(/(?:\s+|^)exclamation mark(?:\s+|$)/g, "! ");
-    string = string.replace("new paragraph", "\n\n");
-    string = string.replace("hyphen", "-");
-    // string = string.replace("colon", ":");
-    // string = string.replace("semi colon", ";");
-    // string = string.replace("underscore", "_");
-
-    return string;
-  }
 
   function handleMicrophoneClick() {
     if (recognising) {
@@ -311,7 +141,9 @@ export default function TranscriberApp() {
         );
         console.log(lastCharacter);
         if (capitaliseAfterThese.includes(lastCharacter)) {
-          setTextInput(previousTranscript + capitaliseNewSentence(punctuatedTranscript));
+          setTextInput(
+            previousTranscript + capitaliseNewSentence(punctuatedTranscript)
+          );
         } else {
           setTextInput(previousTranscript + punctuatedTranscript);
         }
@@ -333,6 +165,7 @@ export default function TranscriberApp() {
         <Header
           title="transcriber"
           showListIcon={true}
+          listIcon={faListUl}
           onListClick={showNotesList}
         />
         <TextArea
