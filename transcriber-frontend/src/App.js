@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // 3rd party imports
 
@@ -34,6 +34,15 @@ export default function App() {
   const [notes, setNotes] = useState([]);
   // Control list page display
   const [displayPage, setDisplayPage] = useState("create");
+
+  const [isRecording, setIsRecording] = useState(false);
+
+  useEffect(() => {
+    console.log("use effect has run");
+  });
+  // useEffect(() => {
+  //   console.log(`isRecording has been changed to ${isRecording}`);
+  // }, [isRecording]);
 
   // Retrieve data from Textarea and save to state
   const handleUserInputText = (text) => {
@@ -78,83 +87,91 @@ export default function App() {
 
   // -- RECOGNITION INITIALIZATION --
 
-  try {
-    var SpeechRecognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
-  } catch (e) {
-    alert(
-      "Your browser doesn't support speech recognition. Try using Chrome or Firefox."
-    );
-  }
-
-  try {
-    var recognition = new SpeechRecognition();
-  } catch (e) {
-    alert(
-      "Your browser doesn't support speech recognition. Try using Chrome or Firefox."
-    );
-  }
-
-  let recognising = false;
-  recognition.continuous = true;
-  recognition.interimResults = false;
-  recognition.lang = "en-UK";
-
-  function handleMicrophoneClick() {
-    if (recognising) {
-      recognition.stop();
-      // For audio visualizer
-      // stopVisualizer();
-      // canvasContainer.style.display = "none";
-      // updateUiRecordingStopped();
-    } else {
-      recognition.start();
-      // For audio visualizer
-      // initVisualizer();
-      // updateUiRecordingStarted();
-      // canvasContainer.style.display = "block";
+  // this only runs on first render (has '[]' after useEffect callback)
+  useEffect(() => {
+    try {
+      var SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
+      console.log("speech recognisiotn initialized");
+    } catch (e) {
+      alert(
+        "Your browser doesn't support speech recognition. Try using Chrome or Safari."
+      );
     }
 
-    recognising = !recognising;
+    try {
+      var recognition = new SpeechRecognition();
+      console.log("speech recognisiotn declared");
+    } catch (e) {
+      alert(
+        "Your browser doesn't support speech recognition. Try using Chrome or Safari."
+      );
+    }
+
+    let recognising = false;
+    recognition.continuous = true;
+    recognition.interimResults = false;
+    recognition.lang = "en-UK";
+  }, []);
+
+  function handleMicrophoneClick() {
+    setIsRecording(!isRecording);
+    // if (recognising) {
+    //   // recognition.stop();
+    //   setIsRecording(false);
+    //   // For audio visualizer
+    //   // stopVisualizer();
+    //   // canvasContainer.style.display = "none";
+    //   // updateUiRecordingStopped();
+    // } else {
+    //   // recognition.start();
+    //   setIsRecording(true);
+    //   // For audio visualizer
+    //   // initVisualizer();
+    //   // updateUiRecordingStarted();
+    //   // canvasContainer.style.display = "block";
+    // }
+
+    // recognising = !recognising;
   }
 
   // -- RECOGNITION FUNCTIONALITY --
 
-  recognition.onresult = (event) => {
-    let currentTranscript = "";
-    const capitaliseAfterThese = [".", "!", "?"];
+  // recognition.onresult = (event) => {
+  //   let currentTranscript = "";
+  //   const capitaliseAfterThese = [".", "!", "?"];
 
-    for (let i = event.resultIndex; i < event.results.length; i++) {
-      currentTranscript = event.results[i][0].transcript;
-    }
+  //   for (let i = event.resultIndex; i < event.results.length; i++) {
+  //     currentTranscript = event.results[i][0].transcript;
+  //   }
 
-    // TODO: explain this code in comments..
-    if (currentTranscript) {
-      const previousTranscript = textInput;
-      const punctuatedTranscript = punctuate(currentTranscript);
+  //   // TODO: explain this code in comments..
+  //   if (currentTranscript) {
+  //     const previousTranscript = textInput;
+  //     const punctuatedTranscript = punctuate(currentTranscript);
 
-      if (previousTranscript === "") {
-        setTextInput(capitalise(punctuatedTranscript));
-      } else {
-        let lastCharacter = previousTranscript.charAt(
-          previousTranscript.length - 2
-        );
-        console.log(lastCharacter);
-        if (capitaliseAfterThese.includes(lastCharacter)) {
-          setTextInput(
-            previousTranscript + capitaliseNewSentence(punctuatedTranscript)
-          );
-        } else {
-          setTextInput(previousTranscript + punctuatedTranscript);
-        }
-      }
-    }
-  };
+  //     if (previousTranscript === "") {
+  //       setTextInput(capitalise(punctuatedTranscript));
+  //     } else {
+  //       let lastCharacter = previousTranscript.charAt(
+  //         previousTranscript.length - 2
+  //       );
+  //       console.log(lastCharacter);
+  //       if (capitaliseAfterThese.includes(lastCharacter)) {
+  //         setTextInput(
+  //           previousTranscript + capitaliseNewSentence(punctuatedTranscript)
+  //         );
+  //       } else {
+  //         setTextInput(previousTranscript + punctuatedTranscript);
+  //       }
+  //     }
+  //   }
+  // };
 
-  // Handle errors
-  recognition.onerror = function (event) {
-    console.error("Speech recognition error: " + event.error);
-  };
+  // // Handle errors
+  // recognition.onerror = function (event) {
+  //   console.error("Speech recognition error: " + event.error);
+  // };
 
   // -- RENDER ELEMENTS --
 
@@ -171,8 +188,9 @@ export default function App() {
         <TextArea
           handleUserInputText={handleUserInputText}
           textInput={textInput}
+          isRecording={isRecording}
         />
-        <MainTool icon={faMicrophone} onMainToolClick={handleMicrophoneClick} />
+        <MainTool icon={faMicrophone} onMainToolClick={handleMicrophoneClick} isRecording={isRecording} />
         <Toolbar
           tool1Name="Save"
           tool1Icon={faArrowUpFromBracket}
@@ -212,6 +230,7 @@ export default function App() {
         <TextArea
           handleUserInputText={handleUserInputText}
           textInput={textInput}
+          isRecording={isRecording}
         />
         <MainTool icon={faMicrophone} onMainToolClick={() => alert("Mic")} />
         <Toolbar

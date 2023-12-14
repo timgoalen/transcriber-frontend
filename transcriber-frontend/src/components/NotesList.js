@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -17,6 +17,39 @@ export default function NotesList({
 }) {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
+  const [localStorageKeys, setLocalStorageKeys] = useState([]);
+
+  // useEffect(() => {
+  //   console.log("EFFECT getting local storage keys");
+  //     // Get an array of the note keys (IDs)
+  //   const localStorageTimestampKeys = Object.keys(localStorage);
+  //   // Sort the array into reverse chronological order
+  //   // COPY TO HERE
+  //   setLocalStorageKeys(localStorageTimestampKeys);
+  //   console.log(localStorageKeys);
+
+  // }, []);
+
+  function getLocalStorageKeys() {
+    console.log("FUNCTION getting local storage keys");
+      // Get an array of the note keys (IDs)
+    const localStorageTimestampKeys = Object.keys(localStorage);
+    // Sort the array into reverse chronological order
+    localStorageTimestampKeys.sort((a, b) => {
+    return parseInt(b) - parseInt(a);
+    });
+    console.log(localStorageTimestampKeys);
+
+    return localStorageTimestampKeys;
+  };
+
+  const fetchedKeys = getLocalStorageKeys();
+  console.log({fetchedKeys});
+
+  // useEffect(() => {
+  //   console.log("render has happened")
+  // })
+
   function toggleDetailModal() {
     setIsDetailModalOpen(!isDetailModalOpen);
   }
@@ -31,16 +64,9 @@ export default function NotesList({
     toggleDetailModal();
   }
 
-  // Get an array of the note keys (IDs)
-  const localStorageTimestampKeys = Object.keys(localStorage);
-  // Sort the array into reverse chronological order
-  localStorageTimestampKeys.sort((a, b) => {
-    return parseInt(b) - parseInt(a);
-  });
-
   return (
     <main className="list-page-main">
-      {localStorageTimestampKeys.map((key) => (
+      {/* {localStorageTimestampKeys.map((key) => (
         <div
           key={key}
           id={key}
@@ -54,7 +80,7 @@ export default function NotesList({
             <FontAwesomeIcon icon={faExpand} />
           </div>
         </div>
-      ))}
+      ))} */}
 
       <section
         id="detail-view-modal-container"
