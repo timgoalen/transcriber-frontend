@@ -1,4 +1,6 @@
-export default function AudioVisualizer() {
+import { useEffect, useRef } from "react";
+
+export default function AudioVisualizer({ isRecording }) {
   let animationRequestId;
   let stream;
   let context;
@@ -14,7 +16,7 @@ export default function AudioVisualizer() {
 
     const audioContext = new (window.AudioContext ||
       window.webkitAudioContext)();
-    analyser = audioContext.createAnalyser();
+    const analyser = audioContext.createAnalyser();
     const source = audioContext.createMediaStreamSource(stream);
     source.connect(analyser);
     analyser.fftSize = 128;
@@ -54,8 +56,23 @@ export default function AudioVisualizer() {
     cancelAnimationFrame(animationRequestId);
   }
 
+  useEffect(() => {
+    if (isRecording) {
+      initVisualizer();
+    } else {
+      stopVisualizer();
+    }
+
+    // Clean up resources when the component unmounts
+    return () => {
+      stopVisualizer();
+    };
+  }, [isRecording]);
+
+  const showHideCanvas = { display: isRecording ? "block" : "none" };
+
   return (
-    <div id="canvas-container">
+    <div id="canvas-container" style={showHideCanvas}>
       <canvas id="audio-visualizer"></canvas>
     </div>
   );

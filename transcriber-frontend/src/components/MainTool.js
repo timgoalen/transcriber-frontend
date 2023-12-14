@@ -5,8 +5,9 @@ export default function MainTool({ icon, onMainToolClick, isRecording }) {
     <button
       id="microphone-container"
       className={isRecording ? "recording-on" : "recording-off"}
+      onClick={onMainToolClick}
     >
-      <FontAwesomeIcon icon={icon} onClick={onMainToolClick} />
+      <FontAwesomeIcon icon={icon} />
     </button>
   );
 }

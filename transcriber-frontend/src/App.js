@@ -18,6 +18,7 @@ import NotesList from "./components/NotesList.js";
 import TextArea from "./components/TextArea.js";
 import MainTool from "./components/MainTool.js";
 import Toolbar from "./components/Toolbar.js";
+import SpeechRecognition from "./components/SpeechRecognition.js";
 import { generateTimestamp } from "./utils/utils.js";
 import {
   capitalise,
@@ -25,23 +26,42 @@ import {
   punctuate,
 } from "./utils/speechRecognitionUtils.js";
 
-// APP
+// -- APP --
 
 export default function App() {
   const [textInput, setTextInput] = useState("");
   const [selectedNote, setSelectedNote] = useState([]);
   // Save an array of notes to state
-  const [notes, setNotes] = useState([]);
+  // const [notes, setNotes] = useState([]);
+
+  // Get any existing notes from local storage
+  const getInitialData = () => {
+    const initialData = JSON.parse(localStorage.getItem("notes"));
+    if (!initialData) {
+      return [];
+    } else {
+      return initialData;
+    }
+  };
+
+  const [notes, setNotes] = useState(getInitialData);
   // Control list page display
   const [displayPage, setDisplayPage] = useState("create");
 
   const [isRecording, setIsRecording] = useState(false);
 
+  // Transfer 'notes' state to local storage any time the state is changed
   useEffect(() => {
-    console.log("use effect has run");
-  });
+    localStorage.setItem("notes", JSON.stringify(notes));
+    console.log("notes:");
+    console.log(notes);
+  }, [notes]);
+
   // useEffect(() => {
   //   console.log(`isRecording has been changed to ${isRecording}`);
+  //   if (isRecording) {
+  //   } else {
+  //   }
   // }, [isRecording]);
 
   // Retrieve data from Textarea and save to state
@@ -49,73 +69,105 @@ export default function App() {
     setTextInput(text);
   };
 
-  function saveNote() {
-    localStorage.setItem(generateTimestamp(), textInput);
+  function setTextFromSpeechRecognition(text) {
+    setTextInput(text);
   }
+
+  // CRUD FUNCTIONS
+
+  function createNote(text) {
+    const id = generateTimestamp();
+    const newNote = {id: id, text: text}
+    return newNote;
+  }
+
+  function saveNote(note) {
+    // setNotes([...notes], {generateTimestamp(), text})
+    // localStorage.setItem(generateTimestamp(), textInput);
+    setNotes((prevNotes) => [...prevNotes, note]);
+  }
+
+  // function deleteNote(timestamp) {
+  //   localStorage.removeItem(timestamp);
+  // }
+  function deleteNote(id) {
+    setNotes((prevNotes) => {
+      return prevNotes.filter((note) => note.id !== id);
+    });
+  }
+
+  // EVENT HANDLERS
 
   function showNotesList() {
     setDisplayPage("list");
   }
 
-  function openEditPage() {
-    setTextInput(selectedNote.body);
-    setDisplayPage("update");
-  }
-
   function handleSaveBtnClick() {
-    saveNote(textInput);
+    const newNote = createNote(textInput);
+    saveNote(newNote);
     showNotesList();
-  }
-
-  function handleUpdateBtnClick() {
-    let timestamp = selectedNote.timestamp;
-    localStorage.setItem(timestamp, textInput);
-    showNotesList();
-  }
-
-  function deleteNote(timestamp) {
-    localStorage.removeItem(timestamp);
-  }
-
-  function selectNote(timestamp, body) {
-    setSelectedNote({ timestamp, body });
   }
 
   const clearTextArea = () => {
     setTextInput("");
   };
 
+  function selectNote(id, text) {
+    setSelectedNote({ id, text });
+  }
+
+  function openEditPage() {
+    setTextInput(selectedNote.text);
+    setDisplayPage("update");
+  }
+
+  function handleUpdateBtnClick() {
+    // Assemble the new note
+    const id = selectedNote.id;
+    const updatedNote = {id: id, text: textInput};
+    // Delete the old version
+    deleteNote(id);
+    // Save the updated version (with the original timestamp ID)
+    saveNote(updatedNote);
+    showNotesList();
+  }
+
   // -- RECOGNITION INITIALIZATION --
 
   // this only runs on first render (has '[]' after useEffect callback)
-  useEffect(() => {
-    try {
-      var SpeechRecognition =
-        window.SpeechRecognition || window.webkitSpeechRecognition;
-      console.log("speech recognisiotn initialized");
-    } catch (e) {
-      alert(
-        "Your browser doesn't support speech recognition. Try using Chrome or Safari."
-      );
-    }
+  // useEffect(() => {
+  // try {
+  //   var SpeechRecognition =
+  //     window.SpeechRecognition || window.webkitSpeechRecognition;
+  //   console.log("speech recognisiotn initialized");
+  // } catch (e) {
+  //   alert(
+  //     "Your browser doesn't support speech recognition. Try using Chrome or Safari."
+  //   );
+  // }
 
-    try {
-      var recognition = new SpeechRecognition();
-      console.log("speech recognisiotn declared");
-    } catch (e) {
-      alert(
-        "Your browser doesn't support speech recognition. Try using Chrome or Safari."
-      );
-    }
+  // try {
+  //   var recognition = new SpeechRecognition();
+  //   console.log("speech recognisiotn declared");
+  // } catch (e) {
+  //   alert(
+  //     "Your browser doesn't support speech recognition. Try using Chrome or Safari."
+  //   );
+  //   }
 
-    let recognising = false;
-    recognition.continuous = true;
-    recognition.interimResults = false;
-    recognition.lang = "en-UK";
-  }, []);
+  //   let recognising = false;
+  //   recognition.continuous = true;
+  //   recognition.interimResults = false;
+  //   recognition.lang = "en-UK";
+  // }, []);
 
   function handleMicrophoneClick() {
-    setIsRecording(!isRecording);
+    if (!isRecording) {
+      setIsRecording(true);
+    } else {
+      setIsRecording(false);
+    }
+    // setIsRecording(!isRecording);
     // if (recognising) {
     //   // recognition.stop();
     //   setIsRecording(false);
@@ -190,7 +242,16 @@ export default function App() {
           textInput={textInput}
           isRecording={isRecording}
         />
-        <MainTool icon={faMicrophone} onMainToolClick={handleMicrophoneClick} isRecording={isRecording} />
+        <SpeechRecognition
+          isRecording={isRecording}
+          setTextFromSpeechRecognition={setTextFromSpeechRecognition}
+          textInput={textInput}
+        />
+        <MainTool
+          icon={faMicrophone}
+          onMainToolClick={handleMicrophoneClick}
+          isRecording={isRecording}
+        />
         <Toolbar
           tool1Name="Save"
           tool1Icon={faArrowUpFromBracket}
