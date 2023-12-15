@@ -1,9 +1,7 @@
 import { useEffect } from "react";
 
-// *TODO: refactor this code*
 export default function SpeechRecognition({
   isRecording,
-  handleUserInputText,
   setTextFromSpeechRecognition,
 }) {
   let recognition;
@@ -14,7 +12,6 @@ export default function SpeechRecognition({
       SpeechRecognition =
         window.SpeechRecognition || window.webkitSpeechRecognition;
       recognition = new SpeechRecognition();
-      console.log("speech recognition initialized");
     } catch (e) {
       alert(
         "Your browser doesn't support speech recognition. Try using Chrome or Safari."
@@ -25,40 +22,13 @@ export default function SpeechRecognition({
     recognition.interimResults = false;
     recognition.lang = "en-UK";
 
-    // -- RECOGNITION FUNCTIONALITY --
-
+    // Save transcript to state
     recognition.onresult = (event) => {
       let currentTranscript = "";
-
       for (let i = event.resultIndex; i < event.results.length; i++) {
         currentTranscript = event.results[i][0].transcript;
       }
-
       setTextFromSpeechRecognition(currentTranscript);
-
-      // // TODO: explain this code in comments..
-      // if (currentTranscript) {
-      //   // const previousTranscript = textInput;
-      //   const previousTranscript = textInput;
-      //   const punctuatedTranscript = punctuate(currentTranscript);
-
-      //   if (previousTranscript === "") {
-      //     // setTextInput(capitalise(punctuatedTranscript));
-      //     console.log(capitalise(punctuatedTranscript));
-      //   } else {
-      //     let lastCharacter = previousTranscript.charAt(
-      //       previousTranscript.length - 2
-      //     );
-      //     if (capitaliseAfterThese.includes(lastCharacter)) {
-      //       // setTextInput(
-      //       //   previousTranscript + capitaliseNewSentence(punctuatedTranscript)
-      //       // );
-      //     } else {
-      //       // setTextInput(previousTranscript + punctuatedTranscript);
-      //       console.log(previousTranscript + punctuatedTranscript);
-      //     }
-      //   }
-      // }
     };
 
     // Handle errors
@@ -70,6 +40,7 @@ export default function SpeechRecognition({
       recognition.start();
     }
 
+    // Clean up resources when the component unmounts
     return () => {
       recognition.stop();
     };

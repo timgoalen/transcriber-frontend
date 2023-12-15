@@ -72,7 +72,6 @@ export default function App() {
       let capitalisedTranscript = capitalise(punctuatedTranscript);
       setTextInput((prevTextInput) => prevTextInput + capitalisedTranscript);
     } else {
-
       // **THIS FUNCTIONALITY NOT WORKING YET**
 
       console.log(`textInput:${textInput}`);
@@ -222,7 +221,17 @@ export default function App() {
           textInput={textInput}
           isRecording={isRecording}
         />
-        <MainTool icon={faMicrophone} onMainToolClick={() => alert("Mic")} />
+        <MainTool
+          icon={faMicrophone}
+          onMainToolClick={handleMicrophoneClick}
+          isRecording={isRecording}
+        />
+        <SpeechRecognition
+          isRecording={isRecording}
+          setTextFromSpeechRecognition={setTextFromSpeechRecognition}
+          textInput={textInput}
+          handleUserInputText={handleUserInputText}
+        />
         <Toolbar
           tool1Name="Update"
           tool1Icon={faArrowUpFromBracket}
