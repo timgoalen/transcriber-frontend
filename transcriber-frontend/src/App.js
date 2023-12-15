@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 // 3rd party imports
 
@@ -26,29 +26,29 @@ import {
   punctuate,
 } from "./utils/speechRecognitionUtils.js";
 
+// Get any existing notes from local storage
+const getInitialData = () => {
+  const initialData = JSON.parse(localStorage.getItem("notes"));
+  if (!initialData) {
+    return [];
+  } else {
+    return initialData;
+  }
+};
+
 // -- APP --
 
 export default function App() {
-  const [textInput, setTextInput] = useState("");
-  const [selectedNote, setSelectedNote] = useState([]);
   // Save an array of notes to state
-  // const [notes, setNotes] = useState([]);
-
-  // Get any existing notes from local storage
-  const getInitialData = () => {
-    const initialData = JSON.parse(localStorage.getItem("notes"));
-    if (!initialData) {
-      return [];
-    } else {
-      return initialData;
-    }
-  };
-
   const [notes, setNotes] = useState(getInitialData);
-  // Control list page display
-  const [displayPage, setDisplayPage] = useState("create");
-
+  // Get user input from the text area
+  const [textInput, setTextInput] = useState("");
+  // Currently selected note
+  const [selectedNote, setSelectedNote] = useState([]);
+  // Microphone recording status
   const [isRecording, setIsRecording] = useState(false);
+  // Page display choice
+  const [displayPageChoice, setDisplayPageChoice] = useState("create");
 
   // Transfer 'notes' state to local storage any time the state is changed
   useEffect(() => {
@@ -57,39 +57,28 @@ export default function App() {
     console.log(notes);
   }, [notes]);
 
-  // useEffect(() => {
-  //   console.log(`isRecording has been changed to ${isRecording}`);
-  //   if (isRecording) {
-  //   } else {
-  //   }
-  // }, [isRecording]);
-
   // Retrieve data from Textarea and save to state
   const handleUserInputText = (text) => {
     setTextInput(text);
   };
 
-  function setTextFromSpeechRecognition(text) {
-    setTextInput(text);
+  // Retrieve data from Speech Recognition and save to state
+  function setTextFromSpeechRecognition(transcript) {
+    setTextInput((prevTextInput) => prevTextInput + transcript);
   }
 
   // CRUD FUNCTIONS
 
-  function createNote(text) {
+  function assembleNote(text) {
     const id = generateTimestamp();
-    const newNote = {id: id, text: text}
+    const newNote = { id: id, text: text };
     return newNote;
   }
 
-  function saveNote(note) {
-    // setNotes([...notes], {generateTimestamp(), text})
-    // localStorage.setItem(generateTimestamp(), textInput);
-    setNotes((prevNotes) => [...prevNotes, note]);
+  function saveNote(newNote) {
+    setNotes((prevNotes) => [...prevNotes, newNote]);
   }
 
-  // function deleteNote(timestamp) {
-  //   localStorage.removeItem(timestamp);
-  // }
   function deleteNote(id) {
     setNotes((prevNotes) => {
       return prevNotes.filter((note) => note.id !== id);
@@ -99,11 +88,11 @@ export default function App() {
   // EVENT HANDLERS
 
   function showNotesList() {
-    setDisplayPage("list");
+    setDisplayPageChoice("list");
   }
 
   function handleSaveBtnClick() {
-    const newNote = createNote(textInput);
+    const newNote = assembleNote(textInput);
     saveNote(newNote);
     showNotesList();
   }
@@ -118,13 +107,14 @@ export default function App() {
 
   function openEditPage() {
     setTextInput(selectedNote.text);
-    setDisplayPage("update");
+    setDisplayPageChoice("update");
   }
 
   function handleUpdateBtnClick() {
+    // *TODO: break down into seperate functions:
     // Assemble the new note
     const id = selectedNote.id;
-    const updatedNote = {id: id, text: textInput};
+    const updatedNote = { id: id, text: textInput };
     // Delete the old version
     deleteNote(id);
     // Save the updated version (with the original timestamp ID)
@@ -132,102 +122,17 @@ export default function App() {
     showNotesList();
   }
 
-  // -- RECOGNITION INITIALIZATION --
-
-  // this only runs on first render (has '[]' after useEffect callback)
-  // useEffect(() => {
-  // try {
-  //   var SpeechRecognition =
-  //     window.SpeechRecognition || window.webkitSpeechRecognition;
-  //   console.log("speech recognisiotn initialized");
-  // } catch (e) {
-  //   alert(
-  //     "Your browser doesn't support speech recognition. Try using Chrome or Safari."
-  //   );
-  // }
-
-  // try {
-  //   var recognition = new SpeechRecognition();
-  //   console.log("speech recognisiotn declared");
-  // } catch (e) {
-  //   alert(
-  //     "Your browser doesn't support speech recognition. Try using Chrome or Safari."
-  //   );
-  //   }
-
-  //   let recognising = false;
-  //   recognition.continuous = true;
-  //   recognition.interimResults = false;
-  //   recognition.lang = "en-UK";
-  // }, []);
-
   function handleMicrophoneClick() {
     if (!isRecording) {
       setIsRecording(true);
     } else {
       setIsRecording(false);
     }
-    // setIsRecording(!isRecording);
-    // if (recognising) {
-    //   // recognition.stop();
-    //   setIsRecording(false);
-    //   // For audio visualizer
-    //   // stopVisualizer();
-    //   // canvasContainer.style.display = "none";
-    //   // updateUiRecordingStopped();
-    // } else {
-    //   // recognition.start();
-    //   setIsRecording(true);
-    //   // For audio visualizer
-    //   // initVisualizer();
-    //   // updateUiRecordingStarted();
-    //   // canvasContainer.style.display = "block";
-    // }
-
-    // recognising = !recognising;
   }
-
-  // -- RECOGNITION FUNCTIONALITY --
-
-  // recognition.onresult = (event) => {
-  //   let currentTranscript = "";
-  //   const capitaliseAfterThese = [".", "!", "?"];
-
-  //   for (let i = event.resultIndex; i < event.results.length; i++) {
-  //     currentTranscript = event.results[i][0].transcript;
-  //   }
-
-  //   // TODO: explain this code in comments..
-  //   if (currentTranscript) {
-  //     const previousTranscript = textInput;
-  //     const punctuatedTranscript = punctuate(currentTranscript);
-
-  //     if (previousTranscript === "") {
-  //       setTextInput(capitalise(punctuatedTranscript));
-  //     } else {
-  //       let lastCharacter = previousTranscript.charAt(
-  //         previousTranscript.length - 2
-  //       );
-  //       console.log(lastCharacter);
-  //       if (capitaliseAfterThese.includes(lastCharacter)) {
-  //         setTextInput(
-  //           previousTranscript + capitaliseNewSentence(punctuatedTranscript)
-  //         );
-  //       } else {
-  //         setTextInput(previousTranscript + punctuatedTranscript);
-  //       }
-  //     }
-  //   }
-  // };
-
-  // // Handle errors
-  // recognition.onerror = function (event) {
-  //   console.error("Speech recognition error: " + event.error);
-  // };
 
   // -- RENDER ELEMENTS --
 
-  if (displayPage === "create") {
+  if (displayPageChoice === "create") {
     return (
       // Display transcriber
       <>
@@ -246,6 +151,7 @@ export default function App() {
           isRecording={isRecording}
           setTextFromSpeechRecognition={setTextFromSpeechRecognition}
           textInput={textInput}
+          handleUserInputText={handleUserInputText}
         />
         <MainTool
           icon={faMicrophone}
@@ -262,7 +168,7 @@ export default function App() {
         />
       </>
     );
-  } else if (displayPage === "list") {
+  } else if (displayPageChoice === "list") {
     // Display notes list
     return (
       <>
@@ -277,7 +183,7 @@ export default function App() {
         <MainTool
           icon={faPlus}
           onMainToolClick={function () {
-            setDisplayPage("create");
+            setDisplayPageChoice("create");
             clearTextArea();
           }}
         />
