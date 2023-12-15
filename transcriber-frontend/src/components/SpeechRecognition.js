@@ -29,7 +29,6 @@ export default function SpeechRecognition({
 
     recognition.onresult = (event) => {
       let currentTranscript = "";
-      // const capitaliseAfterThese = [".", "!", "?"];
 
       for (let i = event.resultIndex; i < event.results.length; i++) {
         currentTranscript = event.results[i][0].transcript;

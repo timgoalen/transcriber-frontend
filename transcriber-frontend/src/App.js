@@ -64,7 +64,30 @@ export default function App() {
 
   // Retrieve data from Speech Recognition and save to state
   function setTextFromSpeechRecognition(transcript) {
-    setTextInput((prevTextInput) => prevTextInput + transcript);
+    // Add punctuation to replace the voice commands
+    let punctuatedTranscript = punctuate(transcript);
+
+    // If it's an empty note, start with a capital letter
+    if (textInput === "") {
+      let capitalisedTranscript = capitalise(punctuatedTranscript);
+      setTextInput((prevTextInput) => prevTextInput + capitalisedTranscript);
+    } else {
+
+      // **THIS FUNCTIONALITY NOT WORKING YET**
+
+      console.log(`textInput:${textInput}`);
+      // Else if previous text in is the text area, get the last character
+      let lastCharacter = textInput.charAt(textInput.length - 2);
+      console.log(`last char:${lastCharacter}`);
+      const capitaliseAfterThese = [".", "!", "?"];
+      // If the last character signal a new sentence, add a capital letter
+      if (capitaliseAfterThese.includes(lastCharacter)) {
+        let newSentence = capitaliseNewSentence(punctuatedTranscript);
+        setTextInput((prevTextInput) => prevTextInput + newSentence);
+      } else {
+        setTextInput((prevTextInput) => prevTextInput + punctuatedTranscript);
+      }
+    }
   }
 
   // CRUD FUNCTIONS
