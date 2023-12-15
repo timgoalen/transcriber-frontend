@@ -1,243 +1,185 @@
-import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState, useEffect, useRef } from "react";
+
+// 3rd party imports
+
 import {
   faMicrophone,
   faArrowUpFromBracket,
   faListUl,
-  faExpand,
-  faArrowLeft,
-  faPen,
   faPlus,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
-function Button({ name, icon, onClick }) {
-  return (
-    <button className="btn-container" onClick={onClick}>
-      <FontAwesomeIcon icon={icon} />
-      <div className="btn-text">{name}</div>
-    </button>
-  );
-}
+// Internal imports
 
-function Header({ title, onListClick, showListIcon }) {
-  return (
-    <header>
-      <h1>{title}</h1>
-      {showListIcon === true && (
-        <div className="list-view-btn-container">
-          <Button icon={faListUl} onClick={onListClick} />
-        </div>
-      )}
-    </header>
-  );
-}
+import Header from "./components/Header.js";
+import NotesList from "./components/NotesList.js";
+import TextArea from "./components/TextArea.js";
+import MainTool from "./components/MainTool.js";
+import Toolbar from "./components/Toolbar.js";
+import SpeechRecognition from "./components/SpeechRecognition.js";
+import { generateTimestamp } from "./utils/utils.js";
+import {
+  capitalise,
+  capitaliseNewSentence,
+  punctuate,
+} from "./utils/speechRecognitionUtils.js";
 
-function generateTimestamp() {
-  return Date.now().toString();
-}
-
-// -- NOTES LIST --
-
-function NotesList({
-  notes,
-  selectNote,
-  selectedNote,
-  deleteNote,
-  openEditPage,
-}) {
-  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
-
-  function toggleDetailModal() {
-    setIsDetailModalOpen(!isDetailModalOpen);
+// Get any existing notes from local storage
+const getInitialData = () => {
+  const initialData = JSON.parse(localStorage.getItem("notes"));
+  if (!initialData) {
+    return [];
+  } else {
+    return initialData;
   }
-
-  function handleItemClick(timestamp, body) {
-    selectNote(timestamp, body);
-    toggleDetailModal();
-  }
-
-  function handleDeleteBtnClick(timestamp) {
-    deleteNote(timestamp);
-    toggleDetailModal();
-  }
-
-  // Get an array of the note keys (IDs)
-  const localStorageTimestampKeys = Object.keys(localStorage);
-  // Sort the array into reverse chronological order
-  localStorageTimestampKeys.sort((a, b) => {
-    return parseInt(b) - parseInt(a);
-  });
-
-  return (
-    <main className="list-page-main">
-      {localStorageTimestampKeys.map((key) => (
-        <div
-          key={key}
-          id={key}
-          className="list-page-item"
-          onClick={() => handleItemClick(key, localStorage.getItem(key))}
-        >
-          <div className="item-text">
-            <p>{localStorage.getItem(key)}</p>
-          </div>
-          <div className="item-tools">
-            <FontAwesomeIcon icon={faExpand} />
-          </div>
-        </div>
-      ))}
-
-      <section
-        id="detail-view-modal-container"
-        style={{ display: isDetailModalOpen ? "grid" : "none" }}
-      >
-        <div id="detail-view-modal-content">
-          <div id="detail-view-modal-text">{selectedNote.body}</div>
-          <div id="detail-view-modal-tools-container">
-            <div id="back-btn-modal" onClick={toggleDetailModal}>
-              {/* refactor to "Button" component */}
-              <FontAwesomeIcon icon={faArrowLeft} />
-              <div>Back</div>
-            </div>
-            <div id="edit-btn-modal" onClick={openEditPage}>
-              <FontAwesomeIcon icon={faPen} />
-              <div>Edit</div>
-            </div>
-            <div id="delete-btn-modal">
-              <FontAwesomeIcon
-                icon={faTrashCan}
-                onClick={() => handleDeleteBtnClick(selectedNote.timestamp)}
-              />
-              <div>Delete</div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-  );
-}
-
-// -- TEXT AREA --
-
-function TextArea({ handleUserInputText, textInput, clearTextarea }) {
-
-  function handleTextareaChange(event) {
-    handleUserInputText(event.target.value);
-  }
-
-  return (
-    <>
-      <div id="main-container">
-        <section id="text-container">
-          <textarea
-            id="text-area"
-            value={textInput}
-            onChange={handleTextareaChange}
-          ></textarea>
-          {/* <div id="canvas-container">
-            <canvas id="audio-visualizer"></canvas>
-          </div> */}
-        </section>
-      </div>
-    </>
-  );
-}
-
-function MainTool({ icon, onMainToolClick }) {
-  return (
-    <button id="microphone-container">
-      <FontAwesomeIcon icon={icon} onClick={onMainToolClick} />
-    </button>
-  );
-}
-
-function Toolbar({
-  tool1Name,
-  tool1Icon,
-  tool1OnClick,
-  tool2Name,
-  tool2Icon,
-  tool2OnClick,
-}) {
-  return (
-    <section className="toolbar">
-      <div className="footer-left">
-        <Button name={tool1Name} icon={tool1Icon} onClick={tool1OnClick} />
-      </div>
-
-      <div className="footer-right">
-        <Button name={tool2Name} icon={tool2Icon} onClick={tool2OnClick} />
-      </div>
-    </section>
-  );
-}
+};
 
 // -- APP --
 
-export default function TranscriberApp() {
-  const [textInput, setTextInput] = useState("");
-  const [selectedNote, setSelectedNote] = useState([]);
+export default function App() {
   // Save an array of notes to state
-  const [notes, setNotes] = useState([]);
-  // Control list page display
-  const [displayPage, setDisplayPage] = useState("create");
+  const [notes, setNotes] = useState(getInitialData);
+  // Get user input from the text area
+  const [textInput, setTextInput] = useState("");
+  // Currently selected note
+  const [selectedNote, setSelectedNote] = useState([]);
+  // Microphone recording status
+  const [isRecording, setIsRecording] = useState(false);
+  // Page display choice
+  const [displayPageChoice, setDisplayPageChoice] = useState("create");
+
+  // Transfer 'notes' state to local storage any time the state is changed
+  useEffect(() => {
+    localStorage.setItem("notes", JSON.stringify(notes));
+    console.log("notes:");
+    console.log(notes);
+  }, [notes]);
 
   // Retrieve data from Textarea and save to state
   const handleUserInputText = (text) => {
     setTextInput(text);
   };
 
-  function saveNote() {
-    localStorage.setItem(generateTimestamp(), textInput);
+  // Retrieve data from Speech Recognition and save to state
+  function setTextFromSpeechRecognition(transcript) {
+    // Add punctuation to replace the voice commands
+    let punctuatedTranscript = punctuate(transcript);
+
+    // If it's an empty note, start with a capital letter
+    if (textInput === "") {
+      let capitalisedTranscript = capitalise(punctuatedTranscript);
+      setTextInput((prevTextInput) => prevTextInput + capitalisedTranscript);
+    } else {
+      // **THIS FUNCTIONALITY NOT WORKING YET**
+
+      console.log(`textInput:${textInput}`);
+      // Else if previous text in is the text area, get the last character
+      let lastCharacter = textInput.charAt(textInput.length - 2);
+      console.log(`last char:${lastCharacter}`);
+      const capitaliseAfterThese = [".", "!", "?"];
+      // If the last character signal a new sentence, add a capital letter
+      if (capitaliseAfterThese.includes(lastCharacter)) {
+        let newSentence = capitaliseNewSentence(punctuatedTranscript);
+        setTextInput((prevTextInput) => prevTextInput + newSentence);
+      } else {
+        setTextInput((prevTextInput) => prevTextInput + punctuatedTranscript);
+      }
+    }
   }
+
+  // CRUD FUNCTIONS
+
+  function assembleNote(text) {
+    const id = generateTimestamp();
+    const newNote = { id: id, text: text };
+    return newNote;
+  }
+
+  function saveNote(newNote) {
+    setNotes((prevNotes) => [...prevNotes, newNote]);
+  }
+
+  function deleteNote(id) {
+    setNotes((prevNotes) => {
+      return prevNotes.filter((note) => note.id !== id);
+    });
+  }
+
+  // EVENT HANDLERS
 
   function showNotesList() {
-    setDisplayPage("list");
-  }
-
-  function openEditPage() {
-    setTextInput(selectedNote.body);
-    setDisplayPage("update");
+    setDisplayPageChoice("list");
   }
 
   function handleSaveBtnClick() {
-    saveNote(textInput);
+    const newNote = assembleNote(textInput);
+    saveNote(newNote);
     showNotesList();
-  }
-
-  function handleUpdateBtnClick() {
-    let timestamp = selectedNote.timestamp;
-    localStorage.setItem(timestamp, textInput);
-    showNotesList();
-  }
-
-  function deleteNote(timestamp) {
-    localStorage.removeItem(timestamp);
-  }
-
-  function selectNote(timestamp, body) {
-    setSelectedNote({ timestamp, body });
   }
 
   const clearTextArea = () => {
     setTextInput("");
   };
 
-  if (displayPage === "create") {
+  function selectNote(id, text) {
+    setSelectedNote({ id, text });
+  }
+
+  function openEditPage() {
+    setTextInput(selectedNote.text);
+    setDisplayPageChoice("update");
+  }
+
+  function handleUpdateBtnClick() {
+    // *TODO: break down into seperate functions:
+    // Assemble the new note
+    const id = selectedNote.id;
+    const updatedNote = { id: id, text: textInput };
+    // Delete the old version
+    deleteNote(id);
+    // Save the updated version (with the original timestamp ID)
+    saveNote(updatedNote);
+    showNotesList();
+  }
+
+  function handleMicrophoneClick() {
+    if (!isRecording) {
+      setIsRecording(true);
+    } else {
+      setIsRecording(false);
+    }
+  }
+
+  // -- RENDER ELEMENTS --
+
+  if (displayPageChoice === "create") {
     return (
       // Display transcriber
       <>
         <Header
           title="transcriber"
           showListIcon={true}
+          listIcon={faListUl}
           onListClick={showNotesList}
         />
         <TextArea
           handleUserInputText={handleUserInputText}
           textInput={textInput}
+          isRecording={isRecording}
         />
-        <MainTool icon={faMicrophone} onMainToolClick={() => alert("Mic")} />
+        <SpeechRecognition
+          isRecording={isRecording}
+          setTextFromSpeechRecognition={setTextFromSpeechRecognition}
+          textInput={textInput}
+          handleUserInputText={handleUserInputText}
+        />
+        <MainTool
+          icon={faMicrophone}
+          onMainToolClick={handleMicrophoneClick}
+          isRecording={isRecording}
+        />
         <Toolbar
           tool1Name="Save"
           tool1Icon={faArrowUpFromBracket}
@@ -248,7 +190,7 @@ export default function TranscriberApp() {
         />
       </>
     );
-  } else if (displayPage === "list") {
+  } else if (displayPageChoice === "list") {
     // Display notes list
     return (
       <>
@@ -263,7 +205,7 @@ export default function TranscriberApp() {
         <MainTool
           icon={faPlus}
           onMainToolClick={function () {
-            setDisplayPage("create");
+            setDisplayPageChoice("create");
             clearTextArea();
           }}
         />
@@ -277,8 +219,19 @@ export default function TranscriberApp() {
         <TextArea
           handleUserInputText={handleUserInputText}
           textInput={textInput}
+          isRecording={isRecording}
         />
-        <MainTool icon={faMicrophone} onMainToolClick={() => alert("Mic")} />
+        <MainTool
+          icon={faMicrophone}
+          onMainToolClick={handleMicrophoneClick}
+          isRecording={isRecording}
+        />
+        <SpeechRecognition
+          isRecording={isRecording}
+          setTextFromSpeechRecognition={setTextFromSpeechRecognition}
+          textInput={textInput}
+          handleUserInputText={handleUserInputText}
+        />
         <Toolbar
           tool1Name="Update"
           tool1Icon={faArrowUpFromBracket}

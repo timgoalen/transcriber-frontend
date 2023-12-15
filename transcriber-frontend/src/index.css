@@ -82,7 +82,7 @@ h1 {
 
 #text-area {
   padding: 0.2rem 0.5rem;
-  border: 1px solid var(--grey);
+  /* border: 1px solid var(--grey); */
   border-radius: 8px;
   height: 98%;
   width: 95%;
@@ -163,7 +163,6 @@ canvas {
 }
 
 .btn-container,
-/* #save-btn, */
 #clear-btn,
 #update-btn,
 #cancel-btn,
@@ -174,7 +173,6 @@ canvas {
   color: var(--blue);
 }
 
-/* #save-btn:hover, */
 .btn-container:hover,
 #clear-btn:hover,
 #update-btn:hover,
@@ -187,12 +185,12 @@ canvas {
   color: #0B66C1;
 }
 
-#microphone-container:hover,
 #new-note-container:hover {
   cursor: pointer;
   color: #E77A0D;
   border-color: #E77A0D;
 }
+
 .list-page-item:hover {
   cursor: pointer;
   border-color: var(--black);
@@ -211,10 +209,30 @@ canvas {
   transform: translateX(-50%);
   display: grid;
   place-items: center;
-  border: 1px solid var(--orange);
-  color: var(--orange);
   background-color: var(--white);
   box-shadow: var(--m3-elevation-light-2);
+}
+
+.recording-on {
+  border: 1px solid var(--red);
+  color: var(--red);
+}
+
+.recording-on:hover {
+  cursor: pointer;
+  /* color: #d72323; */
+  /* border-color: #d72323; */
+}
+
+.recording-off {
+  border: 1px solid var(--orange);
+  color: var(--orange);
+}
+
+.recording-off:hover {
+  cursor: pointer;
+  border: 1px solid #E77A0D;
+  color: #E77A0D;
 }
 
 /* -- LIST PAGE -- */
