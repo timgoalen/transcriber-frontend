@@ -9,7 +9,7 @@ import {
   faPlus,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
+import { faTrashCan, faFolder } from "@fortawesome/free-regular-svg-icons";
 
 // Internal imports
 
@@ -53,8 +53,6 @@ export default function App() {
   // Transfer 'notes' state to local storage any time the state is changed
   useEffect(() => {
     localStorage.setItem("notes", JSON.stringify(notes));
-    console.log("notes:");
-    console.log(notes);
   }, [notes]);
 
   // Retrieve data from Textarea and save to state
@@ -111,6 +109,10 @@ export default function App() {
 
   function showNotesList() {
     setDisplayPageChoice("list");
+  }
+
+  function showFoldersList() {
+    setDisplayPageChoice("folders");
   }
 
   function handleSaveBtnClick() {
@@ -173,7 +175,6 @@ export default function App() {
           isRecording={isRecording}
           setTextFromSpeechRecognition={setTextFromSpeechRecognition}
           textInput={textInput}
-          handleUserInputText={handleUserInputText}
         />
         <MainTool
           icon={faMicrophone}
@@ -194,7 +195,9 @@ export default function App() {
     // Display notes list
     return (
       <>
-        <Header title="notes" showListIcon={false} />
+        <Header title="notes" showListIcon={true} 
+        listIcon={faFolder}
+        onListClick={showFoldersList} />
         <NotesList
           notes={notes}
           selectNote={selectNote}
@@ -211,7 +214,7 @@ export default function App() {
         />
       </>
     );
-  } else {
+  } else if (displayPageChoice === "update") {
     // Display update page
     return (
       <>
@@ -230,7 +233,6 @@ export default function App() {
           isRecording={isRecording}
           setTextFromSpeechRecognition={setTextFromSpeechRecognition}
           textInput={textInput}
-          handleUserInputText={handleUserInputText}
         />
         <Toolbar
           tool1Name="Update"
@@ -239,6 +241,25 @@ export default function App() {
           tool2Name="Cancel"
           tool2Icon={faXmark}
           tool2OnClick={showNotesList}
+        />
+      </>
+    );
+  } else {
+    // Display folders page
+    return (
+      <>
+        <Header title="folders" showListIcon={true} 
+        listIcon={faListUl}
+        onListClick={showNotesList} />
+        
+        <div>Add a folder +</div>
+
+        <MainTool
+          icon={faPlus}
+          onMainToolClick={function () {
+            setDisplayPageChoice("create");
+            clearTextArea();
+          }}
         />
       </>
     );

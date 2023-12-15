@@ -19,47 +19,9 @@ export default function NotesList({
 }) {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
-  const [localStorageKeys, setLocalStorageKeys] = useState([]);
-
-  // useEffect(() => {
-  //   console.log("EFFECT getting local storage keys");
-  //     // Get an array of the note keys (IDs)
-  //   const localStorageTimestampKeys = Object.keys(localStorage);
-  //   // Sort the array into reverse chronological order
-  //   // COPY TO HERE
-  //   setLocalStorageKeys(localStorageTimestampKeys);
-  //   console.log(localStorageKeys);
-
-  // }, []);
-
-  // function getLocalStorageKeys() {
-  //   console.log("FUNCTION getting local storage keys");
-  //   // Get an array of the note keys (IDs)
-  //   const localStorageTimestampKeys = Object.keys(localStorage);
-  //   // Sort the array into reverse chronological order
-  //   localStorageTimestampKeys.sort((a, b) => {
-  //     return parseInt(b) - parseInt(a);
-  //   });
-  //   console.log(localStorageTimestampKeys);
-
-  //   return localStorageTimestampKeys;
-  // }
-
-  // const fetchedKeys = getLocalStorageKeys();
-  // console.log({ fetchedKeys });
-
-  // useEffect(() => {
-  //   console.log("render has happened")
-  // })
-
   function toggleDetailModal() {
     setIsDetailModalOpen(!isDetailModalOpen);
   }
-
-  // function handleItemClick(timestamp, body) {
-  //   selectNote(timestamp, body);
-  //   toggleDetailModal();
-  // }
 
   function handleItemClick(id, text) {
     selectNote(id, text);
@@ -74,22 +36,6 @@ export default function NotesList({
   return (
     // refactor into <ListItem /> components
     <main className="list-page-main">
-      {/* {localStorageTimestampKeys.map((key) => (
-        <div
-          key={key}
-          id={key}
-          className="list-page-item"
-          onClick={() => handleItemClick(key, localStorage.getItem(key))}
-        >
-          <div className="item-text">
-            <p>{localStorage.getItem(key)}</p>
-          </div>
-          <div className="item-tools">
-            <FontAwesomeIcon icon={faExpand} />
-          </div>
-        </div>
-      ))} */}
-
       {notes.map((note) => (
         <div
           key={note.id}
