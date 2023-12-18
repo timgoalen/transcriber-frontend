@@ -1,18 +1,23 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Delius&display=swap'); */
 
 :root {
-  --orange: #F28C26;
-  --blue: #268CF2;
+  --orange: #f28c26;
+  --blue: #268cf2;
   --grey: #989898;
-  --white: #FFF;
+  --white: #fff;
   --black: #212121;
-  --red: #F22626;
+  --red: #f22626;
   /* Google Material Design box shadows: */
-  --m3-elevation-light-1: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
-  --m3-elevation-light-2: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 1px 6px 2px rgba(0, 0, 0, 0.15);
-  --m3-elevation-light-3: 0px 1px 3px 0px rgba(0, 0, 0, 0.3), 0px 4px 8px 3px rgba(0, 0, 0, 0.15);
-  --m3-elevation-light-4: 0px 2px 3px 0px rgba(0, 0, 0, 0.3), 0px 6px 10px 4px rgba(0, 0, 0, 0.15);
-  --m3-elevation-light-5: 0px 4px 4px 0px rgba(0, 0, 0, 0.3), 0px 8px 12px 6px rgba(0, 0, 0, 0.15);
+  --m3-elevation-light-1: 0px 1px 2px 0px rgba(0, 0, 0, 0.3),
+    0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+  --m3-elevation-light-2: 0px 1px 2px 0px rgba(0, 0, 0, 0.3),
+    0px 1px 6px 2px rgba(0, 0, 0, 0.15);
+  --m3-elevation-light-3: 0px 1px 3px 0px rgba(0, 0, 0, 0.3),
+    0px 4px 8px 3px rgba(0, 0, 0, 0.15);
+  --m3-elevation-light-4: 0px 2px 3px 0px rgba(0, 0, 0, 0.3),
+    0px 6px 10px 4px rgba(0, 0, 0, 0.15);
+  --m3-elevation-light-5: 0px 4px 4px 0px rgba(0, 0, 0, 0.3),
+    0px 8px 12px 6px rgba(0, 0, 0, 0.15);
 }
 
 * {
@@ -45,7 +50,7 @@ a {
 body {
   height: 100vh;
   height: 100dvh;
-  font-family: 'Delius', sans-serif;
+  font-family: "Delius", sans-serif;
   background-color: var(--white);
   color: var(--black);
 }
@@ -97,7 +102,7 @@ h1 {
 } */
 
 textarea {
-  font-family: 'Delius', sans-serif;
+  font-family: "Delius", sans-serif;
   resize: none;
 }
 
@@ -110,7 +115,7 @@ textarea {
   height: 100%;
   display: none;
   place-items: center;
-  background-color: rgba(33,33,33,0.3);
+  background-color: rgba(33, 33, 33, 0.3);
 }
 
 #modal-content {
@@ -182,13 +187,13 @@ canvas {
 #delete-btn-modal:hover,
 .list-view-btn-container:hover {
   cursor: pointer;
-  color: #0B66C1;
+  color: #0b66c1;
 }
 
 #new-note-container:hover {
   cursor: pointer;
-  color: #E77A0D;
-  border-color: #E77A0D;
+  color: #e77a0d;
+  border-color: #e77a0d;
 }
 
 .list-page-item:hover {
@@ -231,8 +236,8 @@ canvas {
 
 .recording-off:hover {
   cursor: pointer;
-  border: 1px solid #E77A0D;
-  color: #E77A0D;
+  border: 1px solid #e77a0d;
+  color: #e77a0d;
 }
 
 /* -- LIST PAGE -- */
@@ -246,11 +251,10 @@ canvas {
   justify-content: space-between;
 }
 
-.item-colour-clock {
+.item-colour-block {
   width: 0.62rem;
   margin-right: 0.3rem;
-  background-color: #81E071;
-  border-radius: 8px;
+  border-radius: 7px 0 0 7px;
   z-index: -1;
 }
 
@@ -278,6 +282,12 @@ canvas {
 
 .item-tools .fa-expand {
   color: var(--grey);
+}
+
+.new-folder-btn {
+  display: grid;
+  place-items: center;
+  height: 6rem;
 }
 
 #detail-view-modal-container {
@@ -313,7 +323,8 @@ canvas {
 
 #back-btn-modal,
 #edit-btn-modal,
-#delete-btn-modal {
+#delete-btn-modal,
+#folder-btn-modal {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -325,48 +336,48 @@ canvas {
 @media screen and (min-width: 800px) {
   #main-container,
   header {
-      margin: 0 8%;
+    margin: 0 8%;
   }
 
   .footer-left {
-      margin-left: 16%;
+    margin-left: 16%;
   }
 
   .footer-right {
-      margin-right: 16%;
+    margin-right: 16%;
   }
 
-  #microphone-container, 
+  #microphone-container,
   #new-note-container {
-      bottom: 6vh;
-      bottom: 6dvh;
+    bottom: 6vh;
+    bottom: 6dvh;
   }
 
   #detail-view-modal-content {
-      width: 78%;
+    width: 78%;
   }
 }
 
 @media screen and (min-width: 1024px) {
   #main-container,
   header {
-      margin: 0 15%;
+    margin: 0 15%;
   }
 
   .list-page-item {
-      margin: 1.5rem auto 0 auto;
-      max-width: 600px;
+    margin: 1.5rem auto 0 auto;
+    max-width: 600px;
   }
 
   #detail-view-modal-content {
-      max-width: 600px;
+    max-width: 600px;
   }
 
   .footer-left {
-      margin-left: 30%;
+    margin-left: 30%;
   }
 
   .footer-right {
-      margin-right: 30%;
+    margin-right: 30%;
   }
 }

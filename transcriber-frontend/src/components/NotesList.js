@@ -6,7 +6,9 @@ import {
   faArrowLeft,
   faPen,
 } from "@fortawesome/free-solid-svg-icons";
-import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
+import { faTrashCan, faFolder } from "@fortawesome/free-regular-svg-icons";
+
+import NewFolderForm from "./NewFolderForm.js";
 
 // -- MAIN FUNCTION --
 
@@ -18,6 +20,9 @@ export default function NotesList({
   openEditPage,
   isIcon,
   isColourBlock,
+  showNewFolderForm,
+  assembleFolder,
+  saveFolder,
 }) {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
@@ -37,7 +42,8 @@ export default function NotesList({
 
   return (
     // refactor into <ListItem /> components
-    <main className="list-page-main">
+    // <main className="list-page-main">
+    <>
       {notes.map((note) => (
         <div
           key={note.id}
@@ -45,7 +51,12 @@ export default function NotesList({
           className="list-page-item"
           onClick={() => handleItemClick(note.id, note.text)}
         >
-          {isColourBlock && <div className="item-colour-clock"></div>}
+          {isColourBlock && (
+            <div
+              className="item-colour-block"
+              style={{ backgroundColor: note.colour }}
+            ></div>
+          )}
 
           <div className="item-text">
             <p>{note.text}</p>
@@ -58,6 +69,13 @@ export default function NotesList({
           )}
         </div>
       ))}
+
+      {showNewFolderForm && (
+        <NewFolderForm
+          assembleFolder={assembleFolder}
+          saveFolder={saveFolder}
+        />
+      )}
 
       <section
         id="detail-view-modal-container"
@@ -76,6 +94,13 @@ export default function NotesList({
               <div>Edit</div>
             </div>
             <div
+              id="folder-btn-modal"
+              onClick={() => alert("TODO: create folder selection function")}
+            >
+              <FontAwesomeIcon icon={faFolder} />
+              <div>Folder</div>
+            </div>
+            <div
               id="delete-btn-modal"
               onClick={() => handleDeleteBtnClick(selectedNote.id)}
             >
@@ -85,6 +110,6 @@ export default function NotesList({
           </div>
         </div>
       </section>
-    </main>
+    </>
   );
 }

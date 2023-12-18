@@ -9,7 +9,11 @@ import {
   faPlus,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import { faTrashCan, faFolder } from "@fortawesome/free-regular-svg-icons";
+import {
+  faTrashCan,
+  faFolder,
+  faSquarePlus,
+} from "@fortawesome/free-regular-svg-icons";
 
 // Internal imports
 
@@ -19,12 +23,13 @@ import TextArea from "./components/TextArea.js";
 import MainTool from "./components/MainTool.js";
 import Toolbar from "./components/Toolbar.js";
 import SpeechRecognition from "./components/SpeechRecognition.js";
-import { generateTimestamp } from "./utils/utils.js";
+import { generateTimestamp, generateRandomColour } from "./utils/utils.js";
 import {
   capitalise,
   capitaliseNewSentence,
   punctuate,
 } from "./utils/speechRecognitionUtils.js";
+import Button from "./components/Button.js";
 
 // Get any existing notes from local storage
 const getInitialData = () => {
@@ -37,19 +42,19 @@ const getInitialData = () => {
 };
 
 // Get any existing notes from local storage
-// const getInitialFoldersData = () => {
-//   const initialFoldersData = JSON.parse(localStorage.getItem("folders"));
-//   if (!initialFoldersData) {
-//     return [];
-//   } else {
-//     return initialFoldersData;
-//   }
-// };
+const getInitialFoldersData = () => {
+  const initialFoldersData = JSON.parse(localStorage.getItem("folders"));
+  if (!initialFoldersData) {
+    return [];
+  } else {
+    return initialFoldersData;
+  }
+};
 
-const foldersDummyData = [
-  {id: 1, text: "App ideas"},
-  {id: 2, text: "Misc Notes"},
-]
+// const foldersDummyData = [
+//   { id: 1, text: "App ideas", colour: "#81E071", notes: [] },
+//   { id: 2, text: "Misc Notes", colour: "#71E0D9", notes: [] },
+// ];
 
 // -- APP --
 
@@ -57,7 +62,7 @@ export default function App() {
   // Save an array of notes to state
   const [notes, setNotes] = useState(getInitialData);
   // Save an array of folders to state
-  const [folders, setFolders] = useState(foldersDummyData);
+  const [folders, setFolders] = useState(getInitialFoldersData);
   // Get user input from the text area
   const [textInput, setTextInput] = useState("");
   // Currently selected note
@@ -66,6 +71,8 @@ export default function App() {
   const [isRecording, setIsRecording] = useState(false);
   // Page display choice
   const [displayPageChoice, setDisplayPageChoice] = useState("create");
+  // Show Add Folder form
+  const [showNewFolderForm, setShowNewFolderForm] = useState(false);
 
   // Transfer 'notes' state to local storage any time the state is changed
   useEffect(() => {
@@ -74,7 +81,7 @@ export default function App() {
 
   // Transfer 'folders' state to local storage any time the state is changed
   useEffect(() => {
-    localStorage.setItem("folders", JSON.stringify(notes));
+    localStorage.setItem("folders", JSON.stringify(folders));
   }, [folders]);
 
   // Retrieve data from Textarea and save to state
@@ -109,7 +116,7 @@ export default function App() {
     }
   }
 
-  // CRUD FUNCTIONS
+  // -- CRUD FUNCTIONS --
 
   function assembleNote(text) {
     const id = generateTimestamp();
@@ -117,8 +124,20 @@ export default function App() {
     return newNote;
   }
 
+  function assembleFolder(text) {
+    const id = generateTimestamp();
+    const colour = generateRandomColour();
+    const newFolder = { id: id, text: text, colour: colour, notes: [] };
+    return newFolder;
+  }
+
   function saveNote(newNote) {
     setNotes((prevNotes) => [...prevNotes, newNote]);
+  }
+
+  function saveFolder(folderName) {
+    setFolders((prevFolders) => [...prevFolders, folderName]);
+    setShowNewFolderForm(false);
   }
 
   function deleteNote(id) {
@@ -176,6 +195,10 @@ export default function App() {
     }
   }
 
+  function handleShowNewFolderBtnClick() {
+    setShowNewFolderForm(true);
+  }
+
   // -- RENDER ELEMENTS --
 
   if (displayPageChoice === "create") {
@@ -217,9 +240,12 @@ export default function App() {
     // Display notes list
     return (
       <>
-        <Header title="notes" showListIcon={true} 
-        listIcon={faFolder}
-        onListClick={showFoldersList} />
+        <Header
+          title="notes"
+          showListIcon={true}
+          listIcon={faFolder}
+          onListClick={showFoldersList}
+        />
         <NotesList
           notes={notes}
           selectNote={selectNote}
@@ -228,6 +254,7 @@ export default function App() {
           openEditPage={openEditPage}
           isIcon={true}
           isColourBlock={false}
+          showNewFolderForm={showNewFolderForm}
         />
         <MainTool
           icon={faPlus}
@@ -272,26 +299,44 @@ export default function App() {
     // Display folders page
     return (
       <>
-        <Header title="folders" showListIcon={true} 
-        listIcon={faListUl}
-        onListClick={showNotesList} />
-        <NotesList
-          notes={folders}
-          selectNote={selectNote}
-          selectedNote={selectedNote}
-          deleteNote={deleteNote}
-          openEditPage={openEditPage}
-          isIcon={false}
-          isColourBlock={true}
+        <Header
+          title="folders"
+          showListIcon={true}
+          listIcon={faListUl}
+          onListClick={showNotesList}
         />
-        <div>Add a folder +</div>
-        <MainTool
-          icon={faPlus}
-          onMainToolClick={function () {
-            setDisplayPageChoice("create");
-            clearTextArea();
-          }}
-        />
+        <main className="list-page-main">
+          <NotesList
+            notes={folders}
+            selectNote={selectNote}
+            selectedNote={selectedNote}
+            deleteNote={deleteNote}
+            openEditPage={openEditPage}
+            isIcon={false}
+            isColourBlock={true}
+            showNewFolderForm={showNewFolderForm}
+            saveFolder={saveFolder}
+            assembleFolder={assembleFolder}
+          />
+          {!showNewFolderForm && (
+            <div className="new-folder-btn">
+              <Button
+                name="New Folder"
+                icon={faSquarePlus}
+                onClick={handleShowNewFolderBtnClick}
+                className="new-folder-btn"
+              />
+            </div>
+          )}
+
+          <MainTool
+            icon={faPlus}
+            onMainToolClick={function () {
+              setDisplayPageChoice("create");
+              clearTextArea();
+            }}
+          />
+        </main>
       </>
     );
   }
