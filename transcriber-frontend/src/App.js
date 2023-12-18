@@ -36,11 +36,28 @@ const getInitialData = () => {
   }
 };
 
+// Get any existing notes from local storage
+// const getInitialFoldersData = () => {
+//   const initialFoldersData = JSON.parse(localStorage.getItem("folders"));
+//   if (!initialFoldersData) {
+//     return [];
+//   } else {
+//     return initialFoldersData;
+//   }
+// };
+
+const foldersDummyData = [
+  {id: 1, text: "App ideas"},
+  {id: 2, text: "Misc Notes"},
+]
+
 // -- APP --
 
 export default function App() {
   // Save an array of notes to state
   const [notes, setNotes] = useState(getInitialData);
+  // Save an array of folders to state
+  const [folders, setFolders] = useState(foldersDummyData);
   // Get user input from the text area
   const [textInput, setTextInput] = useState("");
   // Currently selected note
@@ -54,6 +71,11 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem("notes", JSON.stringify(notes));
   }, [notes]);
+
+  // Transfer 'folders' state to local storage any time the state is changed
+  useEffect(() => {
+    localStorage.setItem("folders", JSON.stringify(notes));
+  }, [folders]);
 
   // Retrieve data from Textarea and save to state
   const handleUserInputText = (text) => {
@@ -204,6 +226,8 @@ export default function App() {
           selectedNote={selectedNote}
           deleteNote={deleteNote}
           openEditPage={openEditPage}
+          isIcon={true}
+          isColourBlock={false}
         />
         <MainTool
           icon={faPlus}
@@ -251,9 +275,16 @@ export default function App() {
         <Header title="folders" showListIcon={true} 
         listIcon={faListUl}
         onListClick={showNotesList} />
-        
+        <NotesList
+          notes={folders}
+          selectNote={selectNote}
+          selectedNote={selectedNote}
+          deleteNote={deleteNote}
+          openEditPage={openEditPage}
+          isIcon={false}
+          isColourBlock={true}
+        />
         <div>Add a folder +</div>
-
         <MainTool
           icon={faPlus}
           onMainToolClick={function () {

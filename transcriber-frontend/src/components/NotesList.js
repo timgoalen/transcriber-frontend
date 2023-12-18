@@ -16,6 +16,8 @@ export default function NotesList({
   selectedNote,
   deleteNote,
   openEditPage,
+  isIcon,
+  isColourBlock,
 }) {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
@@ -43,12 +45,17 @@ export default function NotesList({
           className="list-page-item"
           onClick={() => handleItemClick(note.id, note.text)}
         >
+          {isColourBlock && <div className="item-colour-clock"></div>}
+
           <div className="item-text">
             <p>{note.text}</p>
           </div>
-          <div className="item-tools">
-            <FontAwesomeIcon icon={faExpand} />
-          </div>
+
+          {isIcon && (
+            <div className="item-tools">
+              <FontAwesomeIcon icon={faExpand} />
+            </div>
+          )}
         </div>
       ))}
 
