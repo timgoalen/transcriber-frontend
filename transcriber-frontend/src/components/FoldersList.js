@@ -13,11 +13,12 @@ import NewFolderForm from "./NewFolderForm.js";
 
 // -- MAIN FUNCTION --
 
-export default function NotesList({
+export default function FoldersList({
   notes,
   selectNote,
   selectedNote,
   deleteNote,
+  deleteFolder,
   openEditPage,
   displayPageChoice,
   isColourBlock,
@@ -32,9 +33,22 @@ export default function NotesList({
     setIsDetailModalOpen(!isDetailModalOpen);
   }
 
-  function handleItemClick(id, text) {
-    selectNote(id, text);
-    toggleDetailModal();
+  function handleFolderClick(id) {
+    // selectNote(id, text);
+    // toggleDetailModal();
+    console.log("folder item clicked");
+  }
+
+  function handleFolderOptionsClick() {
+    console.log("folder optoions clicked");
+  }
+
+  function handleFolderEditClick() {
+    console.log("folder EDIT clicked");
+  }
+
+  function handleFolderDeleteClick(id) {
+    deleteFolder(id);
   }
 
   function handleDeleteBtnClick(id) {
@@ -47,30 +61,32 @@ export default function NotesList({
     // <main className="list-page-main">
     <>
       {notes.map((note) => (
-        <div
-          key={note.id}
-          id={note.id}
-          className="list-page-item"
-          onClick={() => handleItemClick(note.id, note.text)}
-        >
-          {isColourBlock && (
-            <div
-              className="item-colour-block"
-              style={{ backgroundColor: note.colour }}
-            ></div>
-          )}
+        <div key={note.id} id={note.id} className="list-page-item">
+          <div
+            className="item-colour-block"
+            style={{ backgroundColor: note.colour }}
+          ></div>
 
-          <div className="item-text">
+          <div
+            className="item-text"
+            onClick={() => handleFolderClick(note.id)}
+          >
             <p>{note.text}</p>
           </div>
 
           <div className="item-tools">
-            {displayPageChoice === "list" && (
-              <FontAwesomeIcon icon={faExpand} />
-            )}
-            {displayPageChoice === "folders" && (
-              <FontAwesomeIcon icon={faEllipsisVertical} />
-            )}
+            <div onClick={handleFolderOptionsClick}>
+                <FontAwesomeIcon icon={faEllipsisVertical} />
+            </div>
+
+            <div className="folder-options-container">
+              <div className="folder-options" onClick={() => handleFolderEditClick(note.id, note.text)}>
+                <FontAwesomeIcon icon={faPen} />
+              </div>
+              <div className="folder-options" onClick={() => handleFolderDeleteClick(note.id)}>
+                <FontAwesomeIcon icon={faTrashCan} />
+              </div>
+            </div>
           </div>
         </div>
       ))}
@@ -84,7 +100,7 @@ export default function NotesList({
       )}
 
       {/*  -- MODAL */}
-      
+
       <section
         id="detail-view-modal-container"
         style={{ display: isDetailModalOpen ? "grid" : "none" }}

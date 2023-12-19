@@ -19,6 +19,7 @@ import {
 
 import Header from "./components/Header.js";
 import NotesList from "./components/NotesList.js";
+import FoldersList from "./components/FoldersList.js";
 import TextArea from "./components/TextArea.js";
 import MainTool from "./components/MainTool.js";
 import Toolbar from "./components/Toolbar.js";
@@ -66,6 +67,7 @@ export default function App() {
   // Get user input from the text area
   const [textInput, setTextInput] = useState("");
   // Currently selected note
+  // **TODO: refactor into "selectItem"??? (to use for both notes and folders)
   const [selectedNote, setSelectedNote] = useState([]);
   // Microphone recording status
   const [isRecording, setIsRecording] = useState(false);
@@ -144,6 +146,16 @@ export default function App() {
     setNotes((prevNotes) => {
       return prevNotes.filter((note) => note.id !== id);
     });
+  }
+
+  function deleteFolder(id) {
+    setFolders((prevFolders) => {
+      return prevFolders.filter((folder) => folder.id !== id);
+    });
+  }
+
+  function cancelNewFolderForm() {
+    setShowNewFolderForm(false);
   }
 
   // EVENT HANDLERS
@@ -252,9 +264,9 @@ export default function App() {
           selectedNote={selectedNote}
           deleteNote={deleteNote}
           openEditPage={openEditPage}
-          isIcon={true}
           isColourBlock={false}
           showNewFolderForm={showNewFolderForm}
+          displayPageChoice={displayPageChoice}
         />
         <MainTool
           icon={faPlus}
@@ -306,17 +318,20 @@ export default function App() {
           onListClick={showNotesList}
         />
         <main className="list-page-main">
-          <NotesList
+          <FoldersList
             notes={folders}
             selectNote={selectNote}
             selectedNote={selectedNote}
             deleteNote={deleteNote}
             openEditPage={openEditPage}
-            isIcon={false}
+            displayPageChoice={displayPageChoice}
             isColourBlock={true}
+            // **TODO: change name of this to make it clear that it's state, not a function
             showNewFolderForm={showNewFolderForm}
             saveFolder={saveFolder}
             assembleFolder={assembleFolder}
+            cancelNewFolderForm={cancelNewFolderForm}
+            deleteFolder={deleteFolder}
           />
           {!showNewFolderForm && (
             <div className="new-folder-btn">

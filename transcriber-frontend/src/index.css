@@ -24,6 +24,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  /* outline: 1px solid red; */
 }
 
 /* reset default button styles */
@@ -256,6 +257,7 @@ canvas {
   margin-right: 0.3rem;
   border-radius: 7px 0 0 7px;
   z-index: -1;
+  opacity: 0.75;
 }
 
 .item-text {
@@ -281,20 +283,22 @@ canvas {
   line-height: 1.5;
   height: 2.2rem;
   border: none;
-  border-right: 1px solid var(--grey);
+  /* border-right: 1px solid var(--grey); */
 }
 
 .item-tools,
-.create-new-folder-btn {
+.crud-new-folder-btns,
+.folder-options {
   display: grid;
   place-items: center;
   padding: 2%;
   width: 2.3rem;
-}
-
-.item-tools .fa-expand {
   color: var(--grey);
 }
+
+/* .item-tools .fa-expand {
+  color: var(--grey);
+} */
 
 .new-folder-btn {
   display: grid;
@@ -302,10 +306,26 @@ canvas {
   height: 6rem;
 }
 
-.create-new-folder-btn {
+.crud-new-folder-btns {
   color: var(--orange);
   font-size: 1.2rem;
   border-radius: 0 7px 7px 0;
+  border-left: 1px solid var(--grey);
+}
+
+#new-folder-cancel-btn {
+  color: var(--grey);
+}
+
+.folder-options-container {
+  position: absolute;
+  right: 2.8rem;
+  display: flex;
+  height: 2.3rem;
+}
+
+.folder-options {
+
 }
 
 #detail-view-modal-container {

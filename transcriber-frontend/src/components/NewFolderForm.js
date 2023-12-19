@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 
-export default function NewFolderForm({ assembleFolder, saveFolder }) {
+export default function NewFolderForm({ assembleFolder, saveFolder, cancelNewFolderForm }) {
   const [folderName, setFolderName] = useState("");
   const textInputRef = useRef(null);
 
@@ -11,7 +11,6 @@ export default function NewFolderForm({ assembleFolder, saveFolder }) {
   useEffect(() => {
     textInputRef.current.focus();
   }, []);
-
 
   function updateFolderName(e) {
     setFolderName(e.target.value);
@@ -21,6 +20,11 @@ export default function NewFolderForm({ assembleFolder, saveFolder }) {
     const newFolder = assembleFolder(folderName);
     saveFolder(newFolder);
     setFolderName("");
+  }
+
+  function handleNewFolderFormCancel() {
+    setFolderName("");
+    cancelNewFolderForm();
   }
 
   return (
@@ -34,7 +38,14 @@ export default function NewFolderForm({ assembleFolder, saveFolder }) {
         ref={textInputRef}
       />
       <button
-        className="create-new-folder-btn"
+        className="crud-new-folder-btns"
+        onClick={handleNewFolderFormCancel}
+        id="new-folder-cancel-btn"
+      >
+        <FontAwesomeIcon icon={faXmark} />
+      </button>
+      <button
+        className="crud-new-folder-btns"
         onClick={handleNewFolderFormSubmit}
       >
         <FontAwesomeIcon icon={faCheck} />
