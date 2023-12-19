@@ -1,7 +1,17 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
 export default function NewFolderForm({ assembleFolder, saveFolder }) {
   const [folderName, setFolderName] = useState("");
+  const textInputRef = useRef(null);
+
+  // Set focus on the text input field when the component mounts
+  useEffect(() => {
+    textInputRef.current.focus();
+  }, []);
+
 
   function updateFolderName(e) {
     setFolderName(e.target.value);
@@ -20,8 +30,15 @@ export default function NewFolderForm({ assembleFolder, saveFolder }) {
         placeholder="Folder Name"
         value={folderName}
         onChange={updateFolderName}
+        className="item-text"
+        ref={textInputRef}
       />
-      <input type="submit" value="Create" onClick={handleNewFolderFormSubmit} />
+      <button
+        className="create-new-folder-btn"
+        onClick={handleNewFolderFormSubmit}
+      >
+        <FontAwesomeIcon icon={faCheck} />
+      </button>
     </div>
   );
 }

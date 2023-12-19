@@ -329,13 +329,13 @@ export default function App() {
             </div>
           )}
 
-          <MainTool
+          {/* <MainTool
             icon={faPlus}
             onMainToolClick={function () {
               setDisplayPageChoice("create");
               clearTextArea();
             }}
-          />
+          /> */}
         </main>
       </>
     );

@@ -273,7 +273,19 @@ canvas {
   text-overflow: ellipsis;
 }
 
-.item-tools {
+.list-page-item input[type="text"] {
+  border-radius: 8px 0 0 8px;
+  font-family: "Delius", sans-serif;
+  font-size: 1.2rem;
+  padding: 0.2rem 0.5rem 0.2rem 1.125rem;
+  line-height: 1.5;
+  height: 2.2rem;
+  border: none;
+  border-right: 1px solid var(--grey);
+}
+
+.item-tools,
+.create-new-folder-btn {
   display: grid;
   place-items: center;
   padding: 2%;
@@ -288,6 +300,12 @@ canvas {
   display: grid;
   place-items: center;
   height: 6rem;
+}
+
+.create-new-folder-btn {
+  color: var(--orange);
+  font-size: 1.2rem;
+  border-radius: 0 7px 7px 0;
 }
 
 #detail-view-modal-container {
