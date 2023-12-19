@@ -28,6 +28,7 @@ export default function FoldersList({
   cancelNewFolderForm,
 }) {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [foldersWithOpenToolList, setFoldersWithOpenToolList] = useState([]);
 
   function toggleDetailModal() {
     setIsDetailModalOpen(!isDetailModalOpen);
@@ -39,8 +40,12 @@ export default function FoldersList({
     console.log("folder item clicked");
   }
 
-  function handleFolderOptionsClick() {
-    console.log("folder optoions clicked");
+  function handleFolderOptionsClick(id) {
+    if (foldersWithOpenToolList === id) {
+      setFoldersWithOpenToolList("");
+    } else {
+      setFoldersWithOpenToolList(id);
+    }
   }
 
   function handleFolderEditClick() {
@@ -67,25 +72,30 @@ export default function FoldersList({
             style={{ backgroundColor: note.colour }}
           ></div>
 
-          <div
-            className="item-text"
-            onClick={() => handleFolderClick(note.id)}
-          >
+          <div className="item-text" onClick={() => handleFolderClick(note.id)}>
             <p>{note.text}</p>
           </div>
 
           <div className="item-tools">
-            <div onClick={handleFolderOptionsClick}>
-                <FontAwesomeIcon icon={faEllipsisVertical} />
-            </div>
-
-            <div className="folder-options-container">
-              <div className="folder-options" onClick={() => handleFolderEditClick(note.id, note.text)}>
-                <FontAwesomeIcon icon={faPen} />
+            {foldersWithOpenToolList.includes(note.id) && (
+              // **TODO: redo CSS to have tools as nomal flex, not absolute positioning
+              <div className="folder-options-container">
+                <div
+                  className="folder-options"
+                  onClick={() => handleFolderEditClick(note.id, note.text)}
+                >
+                  <FontAwesomeIcon icon={faPen} />
+                </div>
+                <div
+                  className="folder-options"
+                  onClick={() => handleFolderDeleteClick(note.id)}
+                >
+                  <FontAwesomeIcon icon={faTrashCan} />
+                </div>
               </div>
-              <div className="folder-options" onClick={() => handleFolderDeleteClick(note.id)}>
-                <FontAwesomeIcon icon={faTrashCan} />
-              </div>
+            )}
+            <div onClick={() => handleFolderOptionsClick(note.id)}>
+              <FontAwesomeIcon icon={faEllipsisVertical} />
             </div>
           </div>
         </div>
