@@ -50,16 +50,11 @@ export default function FoldersList({
     const selectedFolder = findFolderByID(id);
     // Get folder.notes array
     const { notes: folderNoteIDs } = selectedFolder;
-    console.log({ folderNoteIDs });
 
     const notesInFolder = folderNoteIDs.map((noteID) => {
       return findNoteByID(noteID);
     });
-    console.log({ notesInFolder });
 
-    // if (notesInFolder === []) {
-
-    // }
     setNotesInCurrentFolder(notesInFolder);
 
     if (showNotesInFolder === id) {
@@ -67,8 +62,6 @@ export default function FoldersList({
     } else {
       setShowNotesInFolder(id);
     }
-
-    console.log("folder item clicked");
   }
 
   function handleFolderOptionsClick(id) {
@@ -96,11 +89,6 @@ export default function FoldersList({
     const newFolder = assembleFolder(folderName);
     saveFolder(newFolder);
   }
-
-  // function handleDeleteBtnClick(id) {
-  //   deleteNote(id);
-  //   toggleDetailModal();
-  // }
 
   return (
     // refactor into <ListItem /> components
@@ -168,13 +156,15 @@ export default function FoldersList({
 
               if (isEmptyFolder) {
                 return (
-                  <div className="list-page-item notes-in-folder-dropdown">
-                    <div className="item-text">
-                      <p>
-                        <em>empty folder</em>
-                      </p>
+                  <section className="notes-in-folder-dropdown">
+                    <div className="list-page-item">
+                      <div className="item-text">
+                        <p>
+                          <em> - empty folder -</em>
+                        </p>
+                      </div>
                     </div>
-                  </div>
+                  </section>
                 );
               } else {
                 return (

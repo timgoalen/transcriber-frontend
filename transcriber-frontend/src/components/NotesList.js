@@ -6,15 +6,18 @@ import {
   faArrowLeft,
   faPen,
   faEllipsisVertical,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan, faFolder } from "@fortawesome/free-regular-svg-icons";
 
 import NewFolderForm from "./NewFolderForm.js";
+import FoldersList from "./FoldersList.js";
 
 // -- MAIN FUNCTION --
 
 export default function NotesList({
   notes,
+  folders,
   selectNote,
   selectedNote,
   deleteNote,
@@ -25,8 +28,11 @@ export default function NotesList({
   assembleFolder,
   saveFolder,
   cancelNewFolderForm,
+  handleAddNoteToFolder,
 }) {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [isModalForFolderSelection, setIsModalForFolderSelection] =
+    useState(false);
 
   function toggleDetailModal() {
     setIsDetailModalOpen(!isDetailModalOpen);
@@ -35,6 +41,10 @@ export default function NotesList({
   function handleItemClick(id, text) {
     selectNote(id, text);
     toggleDetailModal();
+  }
+
+  function handleFolderBtnClick() {
+    setIsModalForFolderSelection(true);
   }
 
   function handleDeleteBtnClick(id) {
@@ -69,7 +79,6 @@ export default function NotesList({
           </div>
         </div>
       ))}
-
       {showNewFolderForm && (
         <NewFolderForm
           assembleFolder={assembleFolder}
@@ -77,41 +86,78 @@ export default function NotesList({
           cancelNewFolderForm={cancelNewFolderForm}
         />
       )}
-
       {/*  -- MODAL **refactor into component */}
-
       <section
         id="detail-view-modal-container"
         style={{ display: isDetailModalOpen ? "grid" : "none" }}
       >
-        <div id="detail-view-modal-content">
-          <div id="detail-view-modal-text">{selectedNote.text}</div>
-          <div id="detail-view-modal-tools-container">
-            <div id="back-btn-modal" onClick={toggleDetailModal}>
-              {/* refactor to "Button" component */}
-              <FontAwesomeIcon icon={faArrowLeft} />
-              <div>Back</div>
-            </div>
-            <div id="edit-btn-modal" onClick={openEditPage}>
-              <FontAwesomeIcon icon={faPen} />
-              <div>Edit</div>
-            </div>
-            <div
-              id="folder-btn-modal"
-              onClick={() => alert("TODO: create folder selection function")}
-            >
-              <FontAwesomeIcon icon={faFolder} />
-              <div>Folder</div>
-            </div>
-            <div
-              id="delete-btn-modal"
-              onClick={() => handleDeleteBtnClick(selectedNote.id)}
-            >
-              <FontAwesomeIcon icon={faTrashCan} />
-              <div>Delete</div>
+        {!isModalForFolderSelection ? (
+          <div id="detail-view-modal-content">
+            <div id="detail-view-modal-text">{selectedNote.text}</div>
+            <div id="detail-view-modal-tools-container">
+              <div id="back-btn-modal" onClick={toggleDetailModal}>
+                {/* refactor to "Button" component */}
+                <FontAwesomeIcon icon={faArrowLeft} />
+                <div>Back</div>
+              </div>
+              <div id="edit-btn-modal" onClick={openEditPage}>
+                <FontAwesomeIcon icon={faPen} />
+                <div>Edit</div>
+              </div>
+              <div id="folder-btn-modal" onClick={handleFolderBtnClick}>
+                <FontAwesomeIcon icon={faFolder} />
+                <div>Folder</div>
+              </div>
+              <div
+                id="delete-btn-modal"
+                onClick={() => handleDeleteBtnClick(selectedNote.id)}
+              >
+                <FontAwesomeIcon icon={faTrashCan} />
+                <div>Delete</div>
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          // Add note to folder
+
+          <div id="detail-view-modal-content">
+            <div id="detail-view-modal-text">
+              <h2>add to folder</h2>
+              {folders.map((folder) => (
+                <div key={folder.id} id={folder.id} className="list-page-item">
+                  <div
+                    className="item-colour-block"
+                    style={{ backgroundColor: folder.colour, zIndex: 1 }}
+                  ></div>
+                  <div
+                    className="item-text"
+                    onClick={() => {
+                      handleAddNoteToFolder(folder.id);
+                      setIsDetailModalOpen(false);
+                      setIsModalForFolderSelection(false);
+                    }}
+                  >
+                    <p>{folder.text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div id="detail-view-modal-tools-container">
+              <div id="back-btn-modal" onClick={() => setIsModalForFolderSelection(false)}>
+                {/* refactor to "Button" component */}
+                <FontAwesomeIcon icon={faArrowLeft} />
+                <div>Back</div>
+              </div>
+              <div
+                id="delete-btn-modal"
+                onClick={toggleDetailModal}
+              >
+                <FontAwesomeIcon icon={faXmark} />
+                <div>Close</div>
+              </div>
+            </div>
+          </div>
+        )}
       </section>
     </>
   );

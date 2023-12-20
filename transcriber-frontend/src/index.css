@@ -71,6 +71,11 @@ h1 {
   color: var(--orange);
 }
 
+h2 {
+  text-align: center;
+  font-weight: 300;
+}
+
 #list-view-btn,
 #cancel-btn {
   font-size: 1.2rem;
@@ -413,6 +418,11 @@ canvas {
     margin: 1.5rem auto 0 auto;
     max-width: 600px;
   }
+
+  /* .notes-in-folder-dropdown {
+    max-width: 600px;
+    margin-left: calc(3% + 0.8rem);
+  } */
 
   #detail-view-modal-content {
     max-width: 600px;

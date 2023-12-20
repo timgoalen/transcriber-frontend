@@ -108,7 +108,7 @@ export default function App() {
 
       console.log(`textInput:${textInput}`);
       // Else if previous text in is the text area, get the last character
-      let lastCharacter = textInput.charAt(textInput.length - 2);
+      let lastCharacter = textInput.charAt(textInput.length - 1);
       console.log(`last char:${lastCharacter}`);
       const capitaliseAfterThese = [".", "!", "?"];
       // If the last character signal a new sentence, add a capital letter
@@ -214,12 +214,31 @@ export default function App() {
       id: id,
       text: name,
       colour: folderColour,
-      // notes: folderNotes,
-      notes: ["1703064474604"],
+      notes: folderNotes,
     };
-    console.log({ selectedFolder });
     deleteFolder(id);
-    console.log({ updatedFolder });
+    setFolders((prevFolders) => [...prevFolders, updatedFolder]);
+  }
+
+  function handleAddNoteToFolder(id) {
+    const selectedFolder = findFolderByID(id);
+    // Destructure the selectedFolder object
+    const { text: folderText, colour: folderColour, notes: folderNotes } = selectedFolder;
+    // Convert to set to prevent duplicate values (adding the same note ID more than once)
+    const folderNotesSet = new Set(folderNotes);
+    // Add the note ID to the set
+    folderNotesSet.add(selectedNote.id);
+    // Convert back into an array to add to the 'updatedFolder' object
+    const updatedFolderNotesArray = [...folderNotesSet];
+
+    deleteFolder(id);
+
+    const updatedFolder = {
+      id: id,
+      text: folderText,
+      colour: folderColour,
+      notes: updatedFolderNotesArray,
+    };
     setFolders((prevFolders) => [...prevFolders, updatedFolder]);
   }
 
@@ -284,6 +303,7 @@ export default function App() {
         />
         <NotesList
           notes={notes}
+          folders={folders}
           selectNote={selectNote}
           selectedNote={selectedNote}
           deleteNote={deleteNote}
@@ -291,6 +311,7 @@ export default function App() {
           isColourBlock={false}
           showNewFolderForm={showNewFolderForm}
           displayPageChoice={displayPageChoice}
+          handleAddNoteToFolder={handleAddNoteToFolder}
         />
         <MainTool
           icon={faPlus}
