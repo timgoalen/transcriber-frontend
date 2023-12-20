@@ -3,8 +3,18 @@ import { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 
-export default function NewFolderForm({ assembleFolder, saveFolder, cancelNewFolderForm }) {
-  const [folderName, setFolderName] = useState("");
+export default function NewFolderForm({
+  assembleFolder,
+  saveFolder,
+  cancelNewFolderForm,
+  initialFolderName,
+  handleFolderFormSubmit,
+  initialFolderID,
+}) {
+  // const [folderName, setFolderName] = useState(selectedFolderName);
+  const [folderName, setFolderName] = useState(initialFolderName);
+  const [folderID, setFolderID] = useState(initialFolderID);
+
   const textInputRef = useRef(null);
 
   // Set focus on the text input field when the component mounts
@@ -16,11 +26,11 @@ export default function NewFolderForm({ assembleFolder, saveFolder, cancelNewFol
     setFolderName(e.target.value);
   }
 
-  function handleNewFolderFormSubmit() {
-    const newFolder = assembleFolder(folderName);
-    saveFolder(newFolder);
-    setFolderName("");
-  }
+  // function handleNewFolderFormSubmit() {
+  //   const newFolder = assembleFolder(folderName);
+  //   saveFolder(newFolder);
+  //   setFolderName("");
+  // }
 
   function handleNewFolderFormCancel() {
     setFolderName("");
@@ -28,7 +38,7 @@ export default function NewFolderForm({ assembleFolder, saveFolder, cancelNewFol
   }
 
   return (
-    <div className="list-page-item">
+    <>
       <input
         type="text"
         placeholder="Folder Name"
@@ -46,10 +56,14 @@ export default function NewFolderForm({ assembleFolder, saveFolder, cancelNewFol
       </button>
       <button
         className="crud-new-folder-btns"
-        onClick={handleNewFolderFormSubmit}
+        onClick={() => {
+          handleFolderFormSubmit(folderName, folderID);
+          setFolderName("");
+          cancelNewFolderForm();
+        }}
       >
         <FontAwesomeIcon icon={faCheck} />
       </button>
-    </div>
+    </>
   );
 }

@@ -83,7 +83,7 @@ export default function NotesList({
         />
       )}
 
-      {/*  -- MODAL */}
+      {/*  -- MODAL **refactor into component */}
       
       <section
         id="detail-view-modal-container"

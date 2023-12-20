@@ -291,7 +291,7 @@ canvas {
 .folder-options {
   display: grid;
   place-items: center;
-  padding: 2%;
+  /* padding: 2%; */
   width: 2.3rem;
   color: var(--grey);
 }
@@ -317,16 +317,18 @@ canvas {
   color: var(--grey);
 }
 
+.folder-toolbar {
+  display: flex;
+}
+
 .folder-options-container {
-  position: absolute;
+  /* position: absolute;
   right: 2.8rem;
   display: flex;
-  height: 2.3rem;
+  height: 2.3rem; */
 }
 
-.folder-options {
-
-}
+.folder-options {}
 
 #detail-view-modal-container {
   display: none;

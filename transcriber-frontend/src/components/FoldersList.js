@@ -10,11 +10,12 @@ import {
 import { faTrashCan, faFolder } from "@fortawesome/free-regular-svg-icons";
 
 import NewFolderForm from "./NewFolderForm.js";
+import NotesList from "./NotesList.js";
 
 // -- MAIN FUNCTION --
 
 export default function FoldersList({
-  notes,
+  folders,
   selectNote,
   selectedNote,
   deleteNote,
@@ -26,9 +27,12 @@ export default function FoldersList({
   assembleFolder,
   saveFolder,
   cancelNewFolderForm,
+  handleUpdateFolderFormSubmit,
 }) {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [foldersWithOpenToolList, setFoldersWithOpenToolList] = useState([]);
+  const [foldersWithEditTitle, setFoldersWithEditTitle] = useState([]);
+  const [showNotesInFolder, setShowNotesInFolder] = useState([]);
 
   function toggleDetailModal() {
     setIsDetailModalOpen(!isDetailModalOpen);
@@ -48,102 +52,102 @@ export default function FoldersList({
     }
   }
 
-  function handleFolderEditClick() {
-    console.log("folder EDIT clicked");
+  function handleFolderEditClick(id) {
+    setFoldersWithEditTitle(id);
   }
 
   function handleFolderDeleteClick(id) {
     deleteFolder(id);
   }
 
-  function handleDeleteBtnClick(id) {
-    deleteNote(id);
-    toggleDetailModal();
+  function handleFolderEditCancelBtnClick() {
+    setFoldersWithEditTitle("");
+    setFoldersWithOpenToolList("");
   }
+
+  function handleNewFolderFormSubmit(folderName) {
+    const newFolder = assembleFolder(folderName);
+    saveFolder(newFolder);
+  }
+
+  // function handleDeleteBtnClick(id) {
+  //   deleteNote(id);
+  //   toggleDetailModal();
+  // }
 
   return (
     // refactor into <ListItem /> components
     // <main className="list-page-main">
     <>
-      {notes.map((note) => (
-        <div key={note.id} id={note.id} className="list-page-item">
-          <div
-            className="item-colour-block"
-            style={{ backgroundColor: note.colour }}
-          ></div>
+      {folders.map((folder) => (
+        <div key={folder.id} id={folder.id} className="list-page-item">
+          {/* Replace normal div with a text input form when user clicks on edit icon */}
+          {foldersWithEditTitle.includes(folder.id) ? (
+            <NewFolderForm
+              initialFolderName={folder.text}
+              assembleFolder={assembleFolder}
+              saveFolder={saveFolder}
+              cancelNewFolderForm={handleFolderEditCancelBtnClick}
+              selectedFolderName={folder.text}
+              handleFolderFormSubmit={handleUpdateFolderFormSubmit}
+              initialFolderID={folder.id}
+            />
+          ) : (
+            <>
+              <div
+                className="item-colour-block"
+                style={{ backgroundColor: folder.colour }}
+              ></div>
 
-          <div className="item-text" onClick={() => handleFolderClick(note.id)}>
-            <p>{note.text}</p>
-          </div>
+              <div
+                className="item-text"
+                onClick={() => handleFolderClick(folder.id)}
+              >
+                <p>{folder.text}</p>
+              </div>
 
-          <div className="item-tools">
-            {foldersWithOpenToolList.includes(note.id) && (
-              // **TODO: redo CSS to have tools as nomal flex, not absolute positioning
-              <div className="folder-options-container">
-                <div
-                  className="folder-options"
-                  onClick={() => handleFolderEditClick(note.id, note.text)}
-                >
-                  <FontAwesomeIcon icon={faPen} />
-                </div>
-                <div
-                  className="folder-options"
-                  onClick={() => handleFolderDeleteClick(note.id)}
-                >
-                  <FontAwesomeIcon icon={faTrashCan} />
+              <div className="folder-toolbar">
+                {/* Display extra tools when user clicks on ellipsis */}
+                {foldersWithOpenToolList.includes(folder.id) && (
+                  <>
+                    <div
+                      className="folder-options"
+                      onClick={() => handleFolderEditClick(folder.id)}
+                    >
+                      <FontAwesomeIcon icon={faPen} />
+                    </div>
+                    <div
+                      className="folder-options"
+                      onClick={() => handleFolderDeleteClick(folder.id)}
+                    >
+                      <FontAwesomeIcon icon={faTrashCan} />
+                    </div>
+                  </>
+                )}
+                <div className="item-tools">
+                  <div onClick={() => handleFolderOptionsClick(folder.id)}>
+                    <FontAwesomeIcon icon={faEllipsisVertical} />
+                  </div>
                 </div>
               </div>
-            )}
-            <div onClick={() => handleFolderOptionsClick(note.id)}>
-              <FontAwesomeIcon icon={faEllipsisVertical} />
-            </div>
-          </div>
+            </>
+          )}
         </div>
       ))}
 
+      {/* CREATE NEW FOLDER FORM */}
+
       {showNewFolderForm && (
-        <NewFolderForm
-          assembleFolder={assembleFolder}
-          saveFolder={saveFolder}
-          cancelNewFolderForm={cancelNewFolderForm}
-        />
-      )}
-
-      {/*  -- MODAL */}
-
-      <section
-        id="detail-view-modal-container"
-        style={{ display: isDetailModalOpen ? "grid" : "none" }}
-      >
-        <div id="detail-view-modal-content">
-          <div id="detail-view-modal-text">{selectedNote.text}</div>
-          <div id="detail-view-modal-tools-container">
-            <div id="back-btn-modal" onClick={toggleDetailModal}>
-              {/* refactor to "Button" component */}
-              <FontAwesomeIcon icon={faArrowLeft} />
-              <div>Back</div>
-            </div>
-            <div id="edit-btn-modal" onClick={openEditPage}>
-              <FontAwesomeIcon icon={faPen} />
-              <div>Edit</div>
-            </div>
-            <div
-              id="folder-btn-modal"
-              onClick={() => alert("TODO: create folder selection function")}
-            >
-              <FontAwesomeIcon icon={faFolder} />
-              <div>Folder</div>
-            </div>
-            <div
-              id="delete-btn-modal"
-              onClick={() => handleDeleteBtnClick(selectedNote.id)}
-            >
-              <FontAwesomeIcon icon={faTrashCan} />
-              <div>Delete</div>
-            </div>
-          </div>
+        <div className="list-page-item">
+          <NewFolderForm
+            initialFolderName=""
+            assembleFolder={assembleFolder}
+            saveFolder={saveFolder}
+            cancelNewFolderForm={cancelNewFolderForm}
+            handleFolderFormSubmit={handleNewFolderFormSubmit}
+          />
         </div>
-      </section>
+      )}
     </>
   );
 }

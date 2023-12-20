@@ -198,6 +198,21 @@ export default function App() {
     saveNote(updatedNote);
     showNotesList();
   }
+    
+  function findFolderByID(id) {
+    return folders.find((folder) => folder.id === id);
+  }  
+
+  function handleUpdateFolderFormSubmit(name, id) {
+    const selectedFolder = findFolderByID(id)
+    // Destructure the selectedFolder object
+    const { colour: folderColour, notes: folderNotes } = selectedFolder;
+    const updatedFolder = { id: id, text: name, colour: folderColour, notes: folderNotes }
+    console.log({selectedFolder});
+    deleteFolder(id);
+    console.log({updatedFolder});
+    setFolders((prevFolders) => [...prevFolders, updatedFolder]);
+  }
 
   function handleMicrophoneClick() {
     if (!isRecording) {
@@ -319,7 +334,7 @@ export default function App() {
         />
         <main className="list-page-main">
           <FoldersList
-            notes={folders}
+            folders={folders}
             selectNote={selectNote}
             selectedNote={selectedNote}
             deleteNote={deleteNote}
@@ -332,6 +347,7 @@ export default function App() {
             assembleFolder={assembleFolder}
             cancelNewFolderForm={cancelNewFolderForm}
             deleteFolder={deleteFolder}
+            handleUpdateFolderFormSubmit={handleUpdateFolderFormSubmit}
           />
           {!showNewFolderForm && (
             <div className="new-folder-btn">
