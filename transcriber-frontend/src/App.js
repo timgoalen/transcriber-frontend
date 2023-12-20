@@ -24,7 +24,10 @@ import TextArea from "./components/TextArea.js";
 import MainTool from "./components/MainTool.js";
 import Toolbar from "./components/Toolbar.js";
 import SpeechRecognition from "./components/SpeechRecognition.js";
-import { generateTimestamp, generateRandomColour } from "./utils/utils.js";
+import {
+  generateTimestamp,
+  generateRandomColour,
+} from "./utils/utils.js";
 import {
   capitalise,
   capitaliseNewSentence,
@@ -198,19 +201,25 @@ export default function App() {
     saveNote(updatedNote);
     showNotesList();
   }
-    
+
   function findFolderByID(id) {
     return folders.find((folder) => folder.id === id);
-  }  
+  }
 
   function handleUpdateFolderFormSubmit(name, id) {
-    const selectedFolder = findFolderByID(id)
+    const selectedFolder = findFolderByID(id);
     // Destructure the selectedFolder object
     const { colour: folderColour, notes: folderNotes } = selectedFolder;
-    const updatedFolder = { id: id, text: name, colour: folderColour, notes: folderNotes }
-    console.log({selectedFolder});
+    const updatedFolder = {
+      id: id,
+      text: name,
+      colour: folderColour,
+      // notes: folderNotes,
+      notes: ["1703064474604"],
+    };
+    console.log({ selectedFolder });
     deleteFolder(id);
-    console.log({updatedFolder});
+    console.log({ updatedFolder });
     setFolders((prevFolders) => [...prevFolders, updatedFolder]);
   }
 
@@ -348,6 +357,8 @@ export default function App() {
             cancelNewFolderForm={cancelNewFolderForm}
             deleteFolder={deleteFolder}
             handleUpdateFolderFormSubmit={handleUpdateFolderFormSubmit}
+            findFolderByID={findFolderByID}
+            notes={notes}
           />
           {!showNewFolderForm && (
             <div className="new-folder-btn">

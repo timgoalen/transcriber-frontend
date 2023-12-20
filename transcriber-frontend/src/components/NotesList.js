@@ -65,12 +65,7 @@ export default function NotesList({
           </div>
 
           <div className="item-tools">
-            {displayPageChoice === "list" && (
-              <FontAwesomeIcon icon={faExpand} />
-            )}
-            {displayPageChoice === "folders" && (
-              <FontAwesomeIcon icon={faEllipsisVertical} />
-            )}
+            <FontAwesomeIcon icon={faExpand} />
           </div>
         </div>
       ))}
@@ -84,7 +79,7 @@ export default function NotesList({
       )}
 
       {/*  -- MODAL **refactor into component */}
-      
+
       <section
         id="detail-view-modal-container"
         style={{ display: isDetailModalOpen ? "grid" : "none" }}

@@ -28,19 +28,46 @@ export default function FoldersList({
   saveFolder,
   cancelNewFolderForm,
   handleUpdateFolderFormSubmit,
+  findFolderByID,
+  notes,
 }) {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [foldersWithOpenToolList, setFoldersWithOpenToolList] = useState([]);
   const [foldersWithEditTitle, setFoldersWithEditTitle] = useState([]);
-  const [showNotesInFolder, setShowNotesInFolder] = useState([]);
+  const [showNotesInFolder, setShowNotesInFolder] = useState("");
+  const [notesInCurrentFolder, setNotesInCurrentFolder] = useState([]);
 
   function toggleDetailModal() {
     setIsDetailModalOpen(!isDetailModalOpen);
   }
 
+  function findNoteByID(id) {
+    return notes.find((note) => note.id === id);
+  }
+
   function handleFolderClick(id) {
-    // selectNote(id, text);
-    // toggleDetailModal();
+    // Find folder with 'id'
+    const selectedFolder = findFolderByID(id);
+    // Get folder.notes array
+    const { notes: folderNoteIDs } = selectedFolder;
+    console.log({ folderNoteIDs });
+
+    const notesInFolder = folderNoteIDs.map((noteID) => {
+      return findNoteByID(noteID);
+    });
+    console.log({ notesInFolder });
+
+    // if (notesInFolder === []) {
+
+    // }
+    setNotesInCurrentFolder(notesInFolder);
+
+    if (showNotesInFolder === id) {
+      setShowNotesInFolder("");
+    } else {
+      setShowNotesInFolder(id);
+    }
+
     console.log("folder item clicked");
   }
 
@@ -80,59 +107,93 @@ export default function FoldersList({
     // <main className="list-page-main">
     <>
       {folders.map((folder) => (
-        <div key={folder.id} id={folder.id} className="list-page-item">
-          {/* Replace normal div with a text input form when user clicks on edit icon */}
-          {foldersWithEditTitle.includes(folder.id) ? (
-            <NewFolderForm
-              initialFolderName={folder.text}
-              assembleFolder={assembleFolder}
-              saveFolder={saveFolder}
-              cancelNewFolderForm={handleFolderEditCancelBtnClick}
-              selectedFolderName={folder.text}
-              handleFolderFormSubmit={handleUpdateFolderFormSubmit}
-              initialFolderID={folder.id}
-            />
-          ) : (
-            <>
-              <div
-                className="item-colour-block"
-                style={{ backgroundColor: folder.colour }}
-              ></div>
+        <>
+          <div key={folder.id} id={folder.id} className="list-page-item">
+            {/* Replace normal div with a text input form when user clicks on edit icon */}
+            {foldersWithEditTitle.includes(folder.id) ? (
+              <NewFolderForm
+                initialFolderName={folder.text}
+                assembleFolder={assembleFolder}
+                saveFolder={saveFolder}
+                cancelNewFolderForm={handleFolderEditCancelBtnClick}
+                selectedFolderName={folder.text}
+                handleFolderFormSubmit={handleUpdateFolderFormSubmit}
+                initialFolderID={folder.id}
+              />
+            ) : (
+              <>
+                <div
+                  className="item-colour-block"
+                  style={{ backgroundColor: folder.colour }}
+                ></div>
 
-              <div
-                className="item-text"
-                onClick={() => handleFolderClick(folder.id)}
-              >
-                <p>{folder.text}</p>
-              </div>
+                <div
+                  className="item-text"
+                  onClick={() => handleFolderClick(folder.id)}
+                >
+                  <p>{folder.text}</p>
+                </div>
 
-              <div className="folder-toolbar">
-                {/* Display extra tools when user clicks on ellipsis */}
-                {foldersWithOpenToolList.includes(folder.id) && (
-                  <>
-                    <div
-                      className="folder-options"
-                      onClick={() => handleFolderEditClick(folder.id)}
-                    >
-                      <FontAwesomeIcon icon={faPen} />
+                <div className="folder-toolbar">
+                  {/* Display extra tools when user clicks on ellipsis */}
+                  {foldersWithOpenToolList.includes(folder.id) && (
+                    <>
+                      <div
+                        className="folder-options"
+                        onClick={() => handleFolderEditClick(folder.id)}
+                      >
+                        <FontAwesomeIcon icon={faPen} />
+                      </div>
+                      <div
+                        className="folder-options"
+                        onClick={() => handleFolderDeleteClick(folder.id)}
+                      >
+                        <FontAwesomeIcon icon={faTrashCan} />
+                      </div>
+                    </>
+                  )}
+                  <div className="item-tools">
+                    <div onClick={() => handleFolderOptionsClick(folder.id)}>
+                      <FontAwesomeIcon icon={faEllipsisVertical} />
                     </div>
-                    <div
-                      className="folder-options"
-                      onClick={() => handleFolderDeleteClick(folder.id)}
-                    >
-                      <FontAwesomeIcon icon={faTrashCan} />
-                    </div>
-                  </>
-                )}
-                <div className="item-tools">
-                  <div onClick={() => handleFolderOptionsClick(folder.id)}>
-                    <FontAwesomeIcon icon={faEllipsisVertical} />
                   </div>
                 </div>
-              </div>
-            </>
-          )}
-        </div>
+              </>
+            )}
+          </div>
+
+          {showNotesInFolder.includes(folder.id) &&
+            (() => {
+              const isEmptyFolder = !notesInCurrentFolder.length;
+
+              if (isEmptyFolder) {
+                return (
+                  <div className="list-page-item notes-in-folder-dropdown">
+                    <div className="item-text">
+                      <p>
+                        <em>empty folder</em>
+                      </p>
+                    </div>
+                  </div>
+                );
+              } else {
+                return (
+                  <section className="notes-in-folder-dropdown">
+                    <NotesList
+                      notes={notesInCurrentFolder}
+                      selectNote={selectNote}
+                      selectedNote={selectedNote}
+                      deleteNote={deleteNote}
+                      openEditPage={openEditPage}
+                      isColourBlock={false}
+                      // showNewFolderForm={showNewFolderForm}
+                      displayPageChoice={displayPageChoice}
+                    />
+                  </section>
+                );
+              }
+            })()}
+        </>
       ))}
 
       {/* CREATE NEW FOLDER FORM */}

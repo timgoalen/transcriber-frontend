@@ -328,7 +328,12 @@ canvas {
   height: 2.3rem; */
 }
 
-.folder-options {}
+.folder-options {
+}
+
+.notes-in-folder-dropdown {
+  margin-left: calc(3% + 0.8rem);
+}
 
 #detail-view-modal-container {
   display: none;
