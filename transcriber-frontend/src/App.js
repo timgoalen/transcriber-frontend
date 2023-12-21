@@ -125,7 +125,7 @@ export default function App() {
 
   function assembleNote(text) {
     const id = generateTimestamp();
-    const newNote = { id: id, text: text };
+    const newNote = { id: id, text: text, folderId: 0 };
     return newNote;
   }
 
@@ -194,7 +194,8 @@ export default function App() {
     // *TODO: break down into seperate functions:
     // Assemble the new note
     const id = selectedNote.id;
-    const updatedNote = { id: id, text: textInput };
+    const folderId = selectedNote.folderId;
+    const updatedNote = { id: id, text: textInput, folderId: folderId };
     // Delete the old version
     deleteNote(id);
     // Save the updated version (with the original timestamp ID)
@@ -296,7 +297,7 @@ export default function App() {
     return (
       <>
         <Header
-          title="notes"
+          title="inbox"
           showListIcon={true}
           listIcon={faFolder}
           onListClick={showFoldersList}
