@@ -132,7 +132,7 @@ export default function App() {
   function assembleFolder(text) {
     const id = generateTimestamp();
     const colour = generateRandomColour();
-    const newFolder = { id: id, text: text, colour: colour, notes: [] };
+    const newFolder = { id: id, text: text, colour: colour };
     return newFolder;
   }
 
@@ -142,7 +142,7 @@ export default function App() {
 
   function saveFolder(folderName) {
     setFolders((prevFolders) => [...prevFolders, folderName]);
-    setShowNewFolderForm(false);
+    cancelNewFolderForm();
   }
 
   function deleteNote(id) {
@@ -164,7 +164,7 @@ export default function App() {
   // EVENT HANDLERS
 
   function showNotesList() {
-    setDisplayPageChoice("list");
+    setDisplayPageChoice("inbox");
   }
 
   function showFoldersList() {
@@ -181,8 +181,8 @@ export default function App() {
     setTextInput("");
   };
 
-  function selectNote(id, text) {
-    setSelectedNote({ id, text });
+  function selectNote(id, text, folderId) {
+    setSelectedNote({ id, text, folderId });
   }
 
   function openEditPage() {
@@ -210,37 +210,26 @@ export default function App() {
   function handleUpdateFolderFormSubmit(name, id) {
     const selectedFolder = findFolderByID(id);
     // Destructure the selectedFolder object
-    const { colour: folderColour, notes: folderNotes } = selectedFolder;
+    const { colour: folderColour } = selectedFolder;
     const updatedFolder = {
       id: id,
       text: name,
       colour: folderColour,
-      notes: folderNotes,
     };
     deleteFolder(id);
     setFolders((prevFolders) => [...prevFolders, updatedFolder]);
   }
 
-  function handleAddNoteToFolder(id) {
-    const selectedFolder = findFolderByID(id);
-    // Destructure the selectedFolder object
-    const { text: folderText, colour: folderColour, notes: folderNotes } = selectedFolder;
-    // Convert to set to prevent duplicate values (adding the same note ID more than once)
-    const folderNotesSet = new Set(folderNotes);
-    // Add the note ID to the set
-    folderNotesSet.add(selectedNote.id);
-    // Convert back into an array to add to the 'updatedFolder' object
-    const updatedFolderNotesArray = [...folderNotesSet];
-
-    deleteFolder(id);
-
-    const updatedFolder = {
-      id: id,
-      text: folderText,
-      colour: folderColour,
-      notes: updatedFolderNotesArray,
-    };
-    setFolders((prevFolders) => [...prevFolders, updatedFolder]);
+  function handleAddNoteToFolder(targetFolderId) {
+    // *TODO: break down into seperate functions:
+    // Assemble the new note
+    const { id, text } = selectedNote;
+    const updatedNote = { id: id, text: text, folderId: targetFolderId };
+    // Delete the old version
+    deleteNote(id);
+    // Save the updated version (with the original timestamp ID)
+    saveNote(updatedNote);
+    showFoldersList();
   }
 
   function handleMicrophoneClick() {
@@ -292,8 +281,8 @@ export default function App() {
         />
       </>
     );
-  } else if (displayPageChoice === "list") {
-    // Display notes list
+  } else if (displayPageChoice === "inbox") {
+    // Display notes inbox
     return (
       <>
         <Header
@@ -309,8 +298,6 @@ export default function App() {
           selectedNote={selectedNote}
           deleteNote={deleteNote}
           openEditPage={openEditPage}
-          isColourBlock={false}
-          showNewFolderForm={showNewFolderForm}
           displayPageChoice={displayPageChoice}
           handleAddNoteToFolder={handleAddNoteToFolder}
         />

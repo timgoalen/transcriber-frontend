@@ -29,6 +29,7 @@ export default function NotesList({
   saveFolder,
   cancelNewFolderForm,
   handleAddNoteToFolder,
+  inboxNotes,
 }) {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [isModalForFolderSelection, setIsModalForFolderSelection] =
@@ -38,8 +39,8 @@ export default function NotesList({
     setIsDetailModalOpen(!isDetailModalOpen);
   }
 
-  function handleItemClick(id, text) {
-    selectNote(id, text);
+  function handleItemClick(id, text, folderId) {
+    selectNote(id, text, folderId);
     toggleDetailModal();
   }
 
@@ -57,35 +58,18 @@ export default function NotesList({
     // <main className="list-page-main">
     <>
       {notes.map((note) => (
-        <div
-          key={note.id}
-          id={note.id}
-          className="list-page-item"
-          onClick={() => handleItemClick(note.id, note.text)}
-        >
-          {isColourBlock && (
-            <div
-              className="item-colour-block"
-              style={{ backgroundColor: note.colour }}
-            ></div>
-          )}
-
-          <div className="item-text">
-            <p>{note.text}</p>
-          </div>
-
-          <div className="item-tools">
-            <FontAwesomeIcon icon={faExpand} />
-          </div>
-        </div>
-      ))}
-      {showNewFolderForm && (
-        <NewFolderForm
-          assembleFolder={assembleFolder}
-          saveFolder={saveFolder}
-          cancelNewFolderForm={cancelNewFolderForm}
-        />
-      )}
+  note.folderId == "0" && (
+    <div key={note.id} id={note.id} className="list-page-item" onClick={() => handleItemClick(note.id, note.text, note.folderId)}>
+      <div className="item-text">
+        <p>{note.text}</p>
+      </div>
+      <div className="item-tools">
+        <FontAwesomeIcon icon={faExpand} />
+      </div>
+    </div>
+  )
+))}
+        
       {/*  -- MODAL **refactor into component */}
       <section
         id="detail-view-modal-container"
@@ -119,10 +103,9 @@ export default function NotesList({
           </div>
         ) : (
           // Add note to folder
-
           <div id="detail-view-modal-content">
             <div id="detail-view-modal-text">
-              <h2>add to folder</h2>
+              <h2>move to folder</h2>
               {folders.map((folder) => (
                 <div key={folder.id} id={folder.id} className="list-page-item">
                   <div
