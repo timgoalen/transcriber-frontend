@@ -30,6 +30,7 @@ export default function NotesList({
   cancelNewFolderForm,
   handleAddNoteToFolder,
   inboxNotes,
+  folderChoice,
 }) {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [isModalForFolderSelection, setIsModalForFolderSelection] =
@@ -53,23 +54,31 @@ export default function NotesList({
     toggleDetailModal();
   }
 
+  console.log({folderChoice});
+
   return (
     // refactor into <ListItem /> components
     // <main className="list-page-main">
     <>
-      {notes.map((note) => (
-  note.folderId == "0" && (
-    <div key={note.id} id={note.id} className="list-page-item" onClick={() => handleItemClick(note.id, note.text, note.folderId)}>
-      <div className="item-text">
-        <p>{note.text}</p>
-      </div>
-      <div className="item-tools">
-        <FontAwesomeIcon icon={faExpand} />
-      </div>
-    </div>
-  )
-))}
-        
+      {notes.map(
+        (note) =>
+          note.folderId == folderChoice && (
+            <div
+              key={note.id}
+              id={note.id}
+              className="list-page-item"
+              onClick={() => handleItemClick(note.id, note.text, note.folderId)}
+            >
+              <div className="item-text">
+                <p>{note.text}</p>
+              </div>
+              <div className="item-tools">
+                <FontAwesomeIcon icon={faExpand} />
+              </div>
+            </div>
+          )
+      )}
+
       {/*  -- MODAL **refactor into component */}
       <section
         id="detail-view-modal-container"
@@ -126,15 +135,15 @@ export default function NotesList({
               ))}
             </div>
             <div id="detail-view-modal-tools-container">
-              <div id="back-btn-modal" onClick={() => setIsModalForFolderSelection(false)}>
+              <div
+                id="back-btn-modal"
+                onClick={() => setIsModalForFolderSelection(false)}
+              >
                 {/* refactor to "Button" component */}
                 <FontAwesomeIcon icon={faArrowLeft} />
                 <div>Back</div>
               </div>
-              <div
-                id="delete-btn-modal"
-                onClick={toggleDetailModal}
-              >
+              <div id="delete-btn-modal" onClick={toggleDetailModal}>
                 <FontAwesomeIcon icon={faXmark} />
                 <div>Close</div>
               </div>

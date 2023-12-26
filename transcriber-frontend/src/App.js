@@ -79,6 +79,8 @@ export default function App() {
   // Show Add Folder form
   const [showNewFolderForm, setShowNewFolderForm] = useState(false);
 
+  // const [folderChoice, setFolderChoice] = useState(0);
+
   // Transfer 'notes' state to local storage any time the state is changed
   useEffect(() => {
     localStorage.setItem("notes", JSON.stringify(notes));
@@ -300,6 +302,7 @@ export default function App() {
           openEditPage={openEditPage}
           displayPageChoice={displayPageChoice}
           handleAddNoteToFolder={handleAddNoteToFolder}
+          folderChoice="0"
         />
         <MainTool
           icon={faPlus}

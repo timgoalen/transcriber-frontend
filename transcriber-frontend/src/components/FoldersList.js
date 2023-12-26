@@ -6,11 +6,13 @@ import {
   faArrowLeft,
   faPen,
   faEllipsisVertical,
+  faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan, faFolder } from "@fortawesome/free-regular-svg-icons";
 
 import NewFolderForm from "./NewFolderForm.js";
 import NotesList from "./NotesList.js";
+import Button from "./Button.js";
 
 // -- MAIN FUNCTION --
 
@@ -47,15 +49,15 @@ export default function FoldersList({
 
   function handleFolderClick(id) {
     // Find folder with 'id'
-    const selectedFolder = findFolderByID(id);
+    // const selectedFolder = findFolderByID(id);
     // Get folder.notes array
-    const { notes: folderNoteIDs } = selectedFolder;
+    // const { notes: folderNoteIDs } = selectedFolder;
 
-    const notesInFolder = folderNoteIDs.map((noteID) => {
-      return findNoteByID(noteID);
-    });
+    // const notesInFolder = folderNoteIDs.map((noteID) => {
+    //   return findNoteByID(noteID);
+    // });
 
-    setNotesInCurrentFolder(notesInFolder);
+    // setNotesInCurrentFolder(notesInFolder);
 
     if (showNotesInFolder === id) {
       setShowNotesInFolder("");
@@ -89,6 +91,8 @@ export default function FoldersList({
     const newFolder = assembleFolder(folderName);
     saveFolder(newFolder);
   }
+
+  console.log({ notes });
 
   return (
     // refactor into <ListItem /> components
@@ -150,7 +154,26 @@ export default function FoldersList({
             )}
           </div>
 
-          {showNotesInFolder.includes(folder.id) &&
+          {showNotesInFolder.includes(folder.id) && (
+            <>
+              <section className="notes-in-folder-dropdown">
+                <NotesList
+                  selectNote={selectNote}
+                  selectedNote={selectedNote}
+                  deleteNote={deleteNote}
+                  openEditPage={openEditPage}
+                  isColourBlock={false}
+                  // showNewFolderForm={showNewFolderForm}
+                  displayPageChoice={displayPageChoice}
+                  folderChoice={folder.id}
+                  notes={notes}
+                />
+              </section>
+              <Button name="New Note" icon={faPlus} onClick={() => alert("TODO: add note with folderID")} />
+            </>
+          )}
+
+          {/* {notes.folderId.includes(folder.id) &&
             (() => {
               const isEmptyFolder = !notesInCurrentFolder.length;
 
@@ -170,7 +193,6 @@ export default function FoldersList({
                 return (
                   <section className="notes-in-folder-dropdown">
                     <NotesList
-                      notes={notesInCurrentFolder}
                       selectNote={selectNote}
                       selectedNote={selectedNote}
                       deleteNote={deleteNote}
@@ -178,11 +200,12 @@ export default function FoldersList({
                       isColourBlock={false}
                       // showNewFolderForm={showNewFolderForm}
                       displayPageChoice={displayPageChoice}
+                      folderChoice={folder.id}
                     />
                   </section>
                 );
               }
-            })()}
+            })()} */}
         </>
       ))}
 
