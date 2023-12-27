@@ -55,11 +55,6 @@ const getInitialFoldersData = () => {
   }
 };
 
-// const foldersDummyData = [
-//   { id: 1, text: "App ideas", colour: "#81E071", notes: [] },
-//   { id: 2, text: "Misc Notes", colour: "#71E0D9", notes: [] },
-// ];
-
 // -- APP --
 
 export default function App() {

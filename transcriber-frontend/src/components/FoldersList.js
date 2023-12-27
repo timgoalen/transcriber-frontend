@@ -168,8 +168,11 @@ export default function FoldersList({
                   folderChoice={folder.id}
                   notes={notes}
                 />
+
+                <div onClick={() => alert("TODO: add note function")} class="list-page-item add-note-to-folder-btn">
+                  <FontAwesomeIcon icon={faPlus} />
+                </div>
               </section>
-              <Button name="New Note" icon={faPlus} onClick={() => alert("TODO: add note with folderID")} />
             </>
           )}
 

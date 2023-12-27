@@ -381,6 +381,18 @@ canvas {
   color: var(--blue);
 }
 
+.add-note-to-folder-btn {
+    display: grid;
+    color: var(--orange);
+    font-size: 1.2rem;
+    padding: 0.2rem 0.5rem;
+    line-height: 1.5;
+    height: 2.2rem;
+    align-content: center;
+    justify-content: center;
+    border-style: dashed;
+}
+
 /* MEDIA QUERIES */
 
 @media screen and (min-width: 800px) {
