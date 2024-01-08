@@ -366,6 +366,7 @@ export default function App() {
             handleUpdateFolderFormSubmit={handleUpdateFolderFormSubmit}
             findFolderByID={findFolderByID}
             notes={notes}
+            handleAddNoteToFolder={handleAddNoteToFolder}
           />
           {!showNewFolderForm && (
             <div className="new-folder-btn">

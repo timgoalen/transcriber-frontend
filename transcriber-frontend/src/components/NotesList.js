@@ -7,6 +7,7 @@ import {
   faPen,
   faEllipsisVertical,
   faXmark,
+  faCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan, faFolder } from "@fortawesome/free-regular-svg-icons";
 
@@ -22,9 +23,9 @@ export default function NotesList({
   selectedNote,
   deleteNote,
   openEditPage,
-  displayPageChoice,
-  isColourBlock,
-  showNewFolderForm,
+  // displayPageChoice,
+  // isColourBlock,
+  // showNewFolderForm,
   assembleFolder,
   saveFolder,
   cancelNewFolderForm,
@@ -53,8 +54,6 @@ export default function NotesList({
     deleteNote(id);
     toggleDetailModal();
   }
-
-  console.log({folderChoice});
 
   return (
     // refactor into <ListItem /> components
@@ -130,6 +129,11 @@ export default function NotesList({
                     }}
                   >
                     <p>{folder.text}</p>
+
+                    {selectedNote.folderId === folder.id && (
+                      <FontAwesomeIcon icon={faCheck} />
+                    )}
+                    
                   </div>
                 </div>
               ))}

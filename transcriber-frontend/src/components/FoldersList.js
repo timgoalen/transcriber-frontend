@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -32,6 +32,7 @@ export default function FoldersList({
   handleUpdateFolderFormSubmit,
   findFolderByID,
   notes,
+  handleAddNoteToFolder,
 }) {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [foldersWithOpenToolList, setFoldersWithOpenToolList] = useState([]);
@@ -92,15 +93,13 @@ export default function FoldersList({
     saveFolder(newFolder);
   }
 
-  console.log({ notes });
-
   return (
     // refactor into <ListItem /> components
     // <main className="list-page-main">
     <>
       {folders.map((folder) => (
-        <>
-          <div key={folder.id} id={folder.id} className="list-page-item">
+        <Fragment key={folder.id}>
+          <div id={folder.id} className="list-page-item">
             {/* Replace normal div with a text input form when user clicks on edit icon */}
             {foldersWithEditTitle.includes(folder.id) ? (
               <NewFolderForm
@@ -155,25 +154,28 @@ export default function FoldersList({
           </div>
 
           {showNotesInFolder.includes(folder.id) && (
-            <>
-              <section className="notes-in-folder-dropdown">
-                <NotesList
-                  selectNote={selectNote}
-                  selectedNote={selectedNote}
-                  deleteNote={deleteNote}
-                  openEditPage={openEditPage}
-                  isColourBlock={false}
-                  // showNewFolderForm={showNewFolderForm}
-                  displayPageChoice={displayPageChoice}
-                  folderChoice={folder.id}
-                  notes={notes}
-                />
+            <section className="notes-in-folder-dropdown">
+              <NotesList
+                selectNote={selectNote}
+                selectedNote={selectedNote}
+                deleteNote={deleteNote}
+                openEditPage={openEditPage}
+                // isColourBlock={false}
+                // showNewFolderForm={showNewFolderForm}
+                // displayPageChoice={displayPageChoice}
+                folderChoice={folder.id}
+                notes={notes}
+                folders={folders}
+                handleAddNoteToFolder={handleAddNoteToFolder}
+              />
 
-                <div onClick={() => alert("TODO: add note function")} class="list-page-item add-note-to-folder-btn">
-                  <FontAwesomeIcon icon={faPlus} />
-                </div>
-              </section>
-            </>
+              <div
+                onClick={() => alert("TODO: add note function")}
+                className="list-page-item add-note-to-folder-btn"
+              >
+                <FontAwesomeIcon icon={faPlus} />
+              </div>
+            </section>
           )}
 
           {/* {notes.folderId.includes(folder.id) &&
@@ -209,7 +211,7 @@ export default function FoldersList({
                 );
               }
             })()} */}
-        </>
+        </Fragment>
       ))}
 
       {/* CREATE NEW FOLDER FORM */}
