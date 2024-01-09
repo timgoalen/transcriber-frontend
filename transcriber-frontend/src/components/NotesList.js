@@ -13,6 +13,7 @@ import { faTrashCan, faFolder } from "@fortawesome/free-regular-svg-icons";
 
 import NewFolderForm from "./NewFolderForm.js";
 import FoldersList from "./FoldersList.js";
+import EmptyPlaceholderGraphics from "./EmptyPlaceholderGraphics.js";
 
 // -- MAIN FUNCTION --
 
@@ -55,28 +56,42 @@ export default function NotesList({
     toggleDetailModal();
   }
 
+  const notesInCurrentFolder = notes.filter(
+    (note) => note.folderId === folderChoice
+  );
+
   return (
     // refactor into <ListItem /> components
     // <main className="list-page-main">
     <>
-      {notes.map(
-        (note) =>
-          note.folderId == folderChoice && (
-            <div
-              key={note.id}
-              id={note.id}
-              className="list-page-item"
-              onClick={() => handleItemClick(note.id, note.text, note.folderId)}
-            >
-              <div className="item-text">
-                <p>{note.text}</p>
-              </div>
-              <div className="item-tools">
-                <FontAwesomeIcon icon={faExpand} />
-              </div>
-            </div>
+      {notesInCurrentFolder.length > 0
+        ? notes.map(
+            (note) =>
+              note.folderId == folderChoice && (
+                <div
+                  key={note.id}
+                  id={note.id}
+                  className="list-page-item"
+                  onClick={() =>
+                    handleItemClick(note.id, note.text, note.folderId)
+                  }
+                >
+                  <div className="item-text">
+                    <p>{note.text}</p>
+                  </div>
+                  <div className="item-tools">
+                    <FontAwesomeIcon icon={faExpand} />
+                  </div>
+                </div>
+              )
           )
-      )}
+          // Only show placeholder SVG in "inbox"
+        : folderChoice === "inbox" && (
+            <EmptyPlaceholderGraphics
+              primaryColour="#f28c26"
+              secondaryColour="#268cf2"
+            />
+          )}
 
       {/*  -- MODAL **refactor into component */}
       <section
@@ -114,29 +129,36 @@ export default function NotesList({
           <div id="detail-view-modal-content">
             <div id="detail-view-modal-text">
               <h2>move to folder</h2>
-              {folders.map((folder) => (
-                <div key={folder.id} id={folder.id} className="list-page-item">
+              {folders && folders.length > 0 ? (
+                folders.map((folder) => (
                   <div
-                    className="item-colour-block"
-                    style={{ backgroundColor: folder.colour, zIndex: 1 }}
-                  ></div>
-                  <div
-                    className="item-text"
-                    onClick={() => {
-                      handleAddNoteToFolder(folder.id);
-                      setIsDetailModalOpen(false);
-                      setIsModalForFolderSelection(false);
-                    }}
+                    key={folder.id}
+                    id={folder.id}
+                    className="list-page-item"
                   >
-                    <p>{folder.text}</p>
+                    <div
+                      className="item-colour-block"
+                      style={{ backgroundColor: folder.colour, zIndex: 1 }}
+                    ></div>
+                    <div
+                      className="item-text"
+                      onClick={() => {
+                        handleAddNoteToFolder(folder.id);
+                        setIsDetailModalOpen(false);
+                        setIsModalForFolderSelection(false);
+                      }}
+                    >
+                      <p>{folder.text}</p>
 
-                    {selectedNote.folderId === folder.id && (
-                      <FontAwesomeIcon icon={faCheck} />
-                    )}
-                    
+                      {selectedNote.folderId === folder.id && (
+                        <FontAwesomeIcon icon={faCheck} />
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              ) : (
+                <h2>TODO: create new folder function</h2>
+              )}
             </div>
             <div id="detail-view-modal-tools-container">
               <div

@@ -382,15 +382,33 @@ canvas {
 }
 
 .add-note-to-folder-btn {
-    display: grid;
-    color: var(--orange);
-    font-size: 1.2rem;
-    padding: 0.2rem 0.5rem;
-    line-height: 1.5;
-    height: 2.2rem;
-    align-content: center;
-    justify-content: center;
-    border-style: dashed;
+  display: grid;
+  color: var(--orange);
+  font-size: 1.2rem;
+  padding: 0.2rem 0.5rem;
+  line-height: 1.5;
+  height: 2.2rem;
+  align-content: center;
+  justify-content: center;
+  border-style: dashed;
+}
+
+/* PLACEHOLDER SVG */
+
+.placeholder-svg {
+  display: grid;
+  place-items: center;
+  /* max-height: 200px; */
+  height: 75vh;
+  height: 75dvh;
+}
+
+.placeholder-svg svg {
+  height: 100%;
+  width: 100%;
+  max-width: 600px;
+  opacity: 0.6;
+  /* margin: auto; */
 }
 
 /* MEDIA QUERIES */

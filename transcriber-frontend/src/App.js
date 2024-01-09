@@ -24,16 +24,15 @@ import TextArea from "./components/TextArea.js";
 import MainTool from "./components/MainTool.js";
 import Toolbar from "./components/Toolbar.js";
 import SpeechRecognition from "./components/SpeechRecognition.js";
-import {
-  generateTimestamp,
-  generateRandomColour,
-} from "./utils/utils.js";
+import Button from "./components/Button.js";
+import EmptyPlaceholderGraphics from "./components/EmptyPlaceholderGraphics.js";
+
+import { generateTimestamp, generateRandomColour } from "./utils/utils.js";
 import {
   capitalise,
   capitaliseNewSentence,
   punctuate,
 } from "./utils/speechRecognitionUtils.js";
-import Button from "./components/Button.js";
 
 // Get any existing notes from local storage
 const getInitialData = () => {
