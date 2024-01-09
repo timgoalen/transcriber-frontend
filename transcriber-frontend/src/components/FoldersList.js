@@ -33,6 +33,7 @@ export default function FoldersList({
   findFolderByID,
   notes,
   handleAddNoteToFolder,
+  handleCreateNewNoteinFolderClick,
 }) {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [foldersWithOpenToolList, setFoldersWithOpenToolList] = useState([]);
@@ -170,7 +171,7 @@ export default function FoldersList({
               />
 
               <div
-                onClick={() => alert("TODO: add note function")}
+                onClick={() => handleCreateNewNoteinFolderClick(folder.id)}
                 className="list-page-item add-note-to-folder-btn"
               >
                 <FontAwesomeIcon icon={faPlus} />

@@ -73,6 +73,8 @@ export default function App() {
   const [displayPageChoice, setDisplayPageChoice] = useState("create");
   // Show Add Folder form
   const [showNewFolderForm, setShowNewFolderForm] = useState(false);
+  // Set folder to save notes into
+  const [targetFolder, setTargetFolder] = useState("inbox");
 
   // const [folderChoice, setFolderChoice] = useState(0);
 
@@ -122,7 +124,7 @@ export default function App() {
 
   function assembleNote(text) {
     const id = generateTimestamp();
-    const newNote = { id: id, text: text, folderId: 0 };
+    const newNote = { id: id, text: text, folderId: targetFolder };
     return newNote;
   }
 
@@ -241,6 +243,12 @@ export default function App() {
     setShowNewFolderForm(true);
   }
 
+  function handleCreateNewNoteinFolderClick(folderId) {
+    setTargetFolder(folderId);
+    setDisplayPageChoice("create");
+    clearTextArea();
+  }
+
   // -- RENDER ELEMENTS --
 
   if (displayPageChoice === "create") {
@@ -297,12 +305,14 @@ export default function App() {
           openEditPage={openEditPage}
           displayPageChoice={displayPageChoice}
           handleAddNoteToFolder={handleAddNoteToFolder}
-          folderChoice="0"
+          folderChoice="inbox"
         />
         <MainTool
           icon={faPlus}
           onMainToolClick={function () {
+            // TODO: refactor into separate function
             setDisplayPageChoice("create");
+            setTargetFolder("inbox");
             clearTextArea();
           }}
         />
@@ -367,6 +377,7 @@ export default function App() {
             findFolderByID={findFolderByID}
             notes={notes}
             handleAddNoteToFolder={handleAddNoteToFolder}
+            handleCreateNewNoteinFolderClick={handleCreateNewNoteinFolderClick}
           />
           {!showNewFolderForm && (
             <div className="new-folder-btn">
