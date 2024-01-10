@@ -248,6 +248,11 @@ export default function App() {
     clearTextArea();
   }
 
+  function handleNewFolderFormSubmit(folderName) {
+    const newFolder = assembleFolder(folderName);
+    saveFolder(newFolder);
+  }
+
   // -- RENDER ELEMENTS --
 
   if (displayPageChoice === "create") {
@@ -305,6 +310,10 @@ export default function App() {
           displayPageChoice={displayPageChoice}
           handleAddNoteToFolder={handleAddNoteToFolder}
           folderChoice="inbox"
+          handleNewFolderFormSubmit={handleNewFolderFormSubmit}
+          cancelNewFolderForm={cancelNewFolderForm}
+          handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
+          showNewFolderForm={showNewFolderForm}
         />
         <MainTool
           icon={faPlus}
@@ -376,8 +385,11 @@ export default function App() {
             findFolderByID={findFolderByID}
             notes={notes}
             handleAddNoteToFolder={handleAddNoteToFolder}
+            handleNewFolderFormSubmit={handleNewFolderFormSubmit}
             handleCreateNewNoteinFolderClick={handleCreateNewNoteinFolderClick}
+            handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
           />
+          {/* TODO: refactor into component */}
           {!showNewFolderForm && (
             <div className="new-folder-btn">
               <Button

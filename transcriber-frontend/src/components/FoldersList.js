@@ -34,7 +34,9 @@ export default function FoldersList({
   findFolderByID,
   notes,
   handleAddNoteToFolder,
+  handleNewFolderFormSubmit,
   handleCreateNewNoteinFolderClick,
+  handleShowNewFolderBtnClick,
 }) {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [foldersWithOpenToolList, setFoldersWithOpenToolList] = useState([]);
@@ -90,10 +92,11 @@ export default function FoldersList({
     setFoldersWithOpenToolList("");
   }
 
-  function handleNewFolderFormSubmit(folderName) {
-    const newFolder = assembleFolder(folderName);
-    saveFolder(newFolder);
-  }
+  // MOVED TO APP:
+  // function handleNewFolderFormSubmit(folderName) {
+  //   const newFolder = assembleFolder(folderName);
+  //   saveFolder(newFolder);
+  // }
 
   return (
     // refactor into <ListItem /> components
@@ -160,17 +163,19 @@ export default function FoldersList({
             {showNotesInFolder.includes(folder.id) && (
               <section className="notes-in-folder-dropdown">
                 <NotesList
+                  notes={notes}
+                  folders={folders}
                   selectNote={selectNote}
                   selectedNote={selectedNote}
                   deleteNote={deleteNote}
                   openEditPage={openEditPage}
-                  // isColourBlock={false}
-                  // showNewFolderForm={showNewFolderForm}
-                  // displayPageChoice={displayPageChoice}
-                  folderChoice={folder.id}
-                  notes={notes}
-                  folders={folders}
+                  displayPageChoice={displayPageChoice}
                   handleAddNoteToFolder={handleAddNoteToFolder}
+                  folderChoice={folder.id}
+                  handleNewFolderFormSubmit={handleNewFolderFormSubmit}
+                  cancelNewFolderForm={cancelNewFolderForm}
+                  handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
+                  showNewFolderForm={showNewFolderForm}
                 />
 
                 <div
