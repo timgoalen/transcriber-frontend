@@ -4788,7 +4788,7 @@ export default function EmptyPlaceholderGraphics({
           x2="807.88"
           y2="636.67"
           fill="none"
-          stroke="#002346"
+          stroke="#989898"
           strokeMiterlimit="10"
           strokeWidth="2"
         ></line>
