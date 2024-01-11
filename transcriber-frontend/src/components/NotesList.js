@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -13,6 +13,7 @@ import { faTrashCan, faFolder } from "@fortawesome/free-regular-svg-icons";
 
 import NewFolderForm from "./NewFolderForm.js";
 import EmptyPlaceholderGraphics from "./EmptyPlaceholderGraphics.js";
+import NoteListItem from "./NoteListItem.js";
 
 // -- MAIN FUNCTION --
 
@@ -36,11 +37,15 @@ export default function NotesList({
   const [isModalForFolderSelection, setIsModalForFolderSelection] =
     useState(false);
 
+  const notesInCurrentFolder = notes.filter(
+    (note) => note.folderId === folderChoice
+  );
+
   function toggleDetailModal() {
     setIsDetailModalOpen(!isDetailModalOpen);
   }
 
-  function handleItemClick(id, text, folderId) {
+  function handleNoteItemClick(id, text, folderId) {
     selectNote(id, text, folderId);
     toggleDetailModal();
   }
@@ -54,32 +59,18 @@ export default function NotesList({
     toggleDetailModal();
   }
 
-  const notesInCurrentFolder = notes.filter(
-    (note) => note.folderId === folderChoice
-  );
-
   return (
-    // refactor into <ListItem /> components
     <>
       {notesInCurrentFolder.length > 0
         ? notes.map(
             (note) =>
               note.folderId == folderChoice && (
-                <div
-                  key={note.id}
+                <NoteListItem
                   id={note.id}
-                  className="list-page-item"
-                  onClick={() =>
-                    handleItemClick(note.id, note.text, note.folderId)
-                  }
-                >
-                  <div className="item-text">
-                    <p>{note.text}</p>
-                  </div>
-                  <div className="item-tools">
-                    <FontAwesomeIcon icon={faExpand} />
-                  </div>
-                </div>
+                  text={note.text}
+                  folderId={note.folderId}
+                  handleNoteItemClick={handleNoteItemClick}
+                />
               )
           )
         : // Only show placeholder SVG in "inbox"

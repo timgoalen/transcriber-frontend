@@ -4,14 +4,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 export default function NewFolderForm({
-  assembleFolder,
-  saveFolder,
   cancelNewFolderForm,
   initialFolderName,
   handleFolderFormSubmit,
   initialFolderID,
 }) {
-  // const [folderName, setFolderName] = useState(selectedFolderName);
   const [folderName, setFolderName] = useState(initialFolderName);
   const [folderID, setFolderID] = useState(initialFolderID);
 
@@ -25,12 +22,6 @@ export default function NewFolderForm({
   function updateFolderName(e) {
     setFolderName(e.target.value);
   }
-
-  // function handleNewFolderFormSubmit() {
-  //   const newFolder = assembleFolder(folderName);
-  //   saveFolder(newFolder);
-  //   setFolderName("");
-  // }
 
   function handleNewFolderFormCancel() {
     setFolderName("");

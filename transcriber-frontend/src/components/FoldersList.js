@@ -8,6 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
+import NewFolderBtn from "./NewFolderBtn.js";
 import NewFolderForm from "./NewFolderForm.js";
 import NotesList from "./NotesList.js";
 import EmptyPlaceholderGraphics from "./EmptyPlaceholderGraphics.js";
@@ -36,6 +37,8 @@ export default function FoldersList({
   const [foldersWithOpenToolList, setFoldersWithOpenToolList] = useState([]);
   const [foldersWithEditTitle, setFoldersWithEditTitle] = useState([]);
   const [showNotesInFolder, setShowNotesInFolder] = useState("");
+
+  // -- EVENT HANDLERS --
 
   function handleFolderClick(id) {
     if (showNotesInFolder === id) {
@@ -117,10 +120,11 @@ export default function FoldersList({
                         </div>
                       </>
                     )}
-                    <div className="item-tools">
-                      <div onClick={() => handleFolderOptionsClick(folder.id)}>
-                        <FontAwesomeIcon icon={faEllipsisVertical} />
-                      </div>
+                    <div
+                      className="item-tools"
+                      onClick={() => handleFolderOptionsClick(folder.id)}
+                    >
+                      <FontAwesomeIcon icon={faEllipsisVertical} />
                     </div>
                   </div>
                 </>
@@ -136,7 +140,6 @@ export default function FoldersList({
                   selectedNote={selectedNote}
                   deleteNote={deleteNote}
                   openEditPage={openEditPage}
-                  displayPageChoice={displayPageChoice}
                   handleAddNoteToFolder={handleAddNoteToFolder}
                   folderChoice={folder.id}
                   handleNewFolderFormSubmit={handleNewFolderFormSubmit}
@@ -198,9 +201,9 @@ export default function FoldersList({
         />
       )}
 
-      {/* CREATE NEW FOLDER FORM */}
+      {/* NEW FOLDER FORM OR BUTTON */}
 
-      {showNewFolderForm && (
+      {showNewFolderForm ? (
         <div className="list-page-item">
           <NewFolderForm
             initialFolderName=""
@@ -210,6 +213,10 @@ export default function FoldersList({
             handleFolderFormSubmit={handleNewFolderFormSubmit}
           />
         </div>
+      ) : (
+        <NewFolderBtn
+          handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
+        />
       )}
     </>
   );
