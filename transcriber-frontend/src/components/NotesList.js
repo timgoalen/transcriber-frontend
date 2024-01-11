@@ -7,11 +7,19 @@ import {
   faPen,
   faEllipsisVertical,
   faXmark,
+  faCheck,
+  faPlus,
 } from "@fortawesome/free-solid-svg-icons";
-import { faTrashCan, faFolder } from "@fortawesome/free-regular-svg-icons";
+import {
+  faTrashCan,
+  faFolder,
+  faSquarePlus,
+} from "@fortawesome/free-regular-svg-icons";
 
 import NewFolderForm from "./NewFolderForm.js";
 import FoldersList from "./FoldersList.js";
+import Button from "./Button.js";
+import EmptyPlaceholderGraphics from "./EmptyPlaceholderGraphics.js";
 
 // -- MAIN FUNCTION --
 
@@ -22,13 +30,17 @@ export default function NotesList({
   selectedNote,
   deleteNote,
   openEditPage,
-  displayPageChoice,
-  isColourBlock,
+  // displayPageChoice,
+  // isColourBlock,
   showNewFolderForm,
   assembleFolder,
   saveFolder,
   cancelNewFolderForm,
   handleAddNoteToFolder,
+  inboxNotes,
+  folderChoice,
+  handleNewFolderFormSubmit,
+  handleShowNewFolderBtnClick,
 }) {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [isModalForFolderSelection, setIsModalForFolderSelection] =
@@ -38,8 +50,8 @@ export default function NotesList({
     setIsDetailModalOpen(!isDetailModalOpen);
   }
 
-  function handleItemClick(id, text) {
-    selectNote(id, text);
+  function handleItemClick(id, text, folderId) {
+    selectNote(id, text, folderId);
     toggleDetailModal();
   }
 
@@ -52,46 +64,50 @@ export default function NotesList({
     toggleDetailModal();
   }
 
+  const notesInCurrentFolder = notes.filter(
+    (note) => note.folderId === folderChoice
+  );
+
   return (
     // refactor into <ListItem /> components
     // <main className="list-page-main">
     <>
-      {notes.map((note) => (
-        <div
-          key={note.id}
-          id={note.id}
-          className="list-page-item"
-          onClick={() => handleItemClick(note.id, note.text)}
-        >
-          {isColourBlock && (
-            <div
-              className="item-colour-block"
-              style={{ backgroundColor: note.colour }}
-            ></div>
+      {notesInCurrentFolder.length > 0
+        ? notes.map(
+            (note) =>
+              note.folderId == folderChoice && (
+                <div
+                  key={note.id}
+                  id={note.id}
+                  className="list-page-item"
+                  onClick={() =>
+                    handleItemClick(note.id, note.text, note.folderId)
+                  }
+                >
+                  <div className="item-text">
+                    <p>{note.text}</p>
+                  </div>
+                  <div className="item-tools">
+                    <FontAwesomeIcon icon={faExpand} />
+                  </div>
+                </div>
+              )
+          )
+        : // Only show placeholder SVG in "inbox"
+          folderChoice === "inbox" && (
+            <EmptyPlaceholderGraphics
+              primaryColour="#f28c26"
+              secondaryColour="#268cf2"
+            />
           )}
 
-          <div className="item-text">
-            <p>{note.text}</p>
-          </div>
-
-          <div className="item-tools">
-            <FontAwesomeIcon icon={faExpand} />
-          </div>
-        </div>
-      ))}
-      {showNewFolderForm && (
-        <NewFolderForm
-          assembleFolder={assembleFolder}
-          saveFolder={saveFolder}
-          cancelNewFolderForm={cancelNewFolderForm}
-        />
-      )}
       {/*  -- MODAL **refactor into component */}
       <section
         id="detail-view-modal-container"
         style={{ display: isDetailModalOpen ? "grid" : "none" }}
       >
         {!isModalForFolderSelection ? (
+          // Modal handles note detail view
           <div id="detail-view-modal-content">
             <div id="detail-view-modal-text">{selectedNote.text}</div>
             <div id="detail-view-modal-tools-container">
@@ -118,11 +134,35 @@ export default function NotesList({
             </div>
           </div>
         ) : (
-          // Add note to folder
-
+          // Modal handles adding note to a folder
           <div id="detail-view-modal-content">
             <div id="detail-view-modal-text">
-              <h2>add to folder</h2>
+              <h2>move to folder</h2>
+              {/* Inbox */}
+              <div key="1" className="list-page-item">
+                <div
+                  className="item-colour-block"
+                  style={{ backgroundColor: "var(--orange)", zIndex: 1 }}
+                ></div>
+                <div
+                  className="item-text"
+                  onClick={() => {
+                    handleAddNoteToFolder("inbox");
+                    setIsDetailModalOpen(false);
+                    setIsModalForFolderSelection(false);
+                  }}
+                >
+                  <p>inbox</p>
+                </div>
+                {/* Show tick for conaining folder */}
+                {/* TODO: REFACTOR INTO COMPONENT, USED 20ish LINES BELOW TOO */}
+                {selectedNote.folderId === "inbox" && (
+                  <div className="item-tools">
+                    <FontAwesomeIcon icon={faCheck} />
+                  </div>
+                )}
+              </div>
+              {/* Other folders */}
               {folders.map((folder) => (
                 <div key={folder.id} id={folder.id} className="list-page-item">
                   <div
@@ -139,19 +179,47 @@ export default function NotesList({
                   >
                     <p>{folder.text}</p>
                   </div>
+                  {/* Show tick for conaining folder */}
+                  {selectedNote.folderId === folder.id && (
+                    <div className="item-tools">
+                      <FontAwesomeIcon icon={faCheck} />
+                    </div>
+                  )}
                 </div>
               ))}
+
+              {showNewFolderForm ? (
+                /* New folder form */
+                <div className="list-page-item">
+                  <NewFolderForm
+                    initialFolderName=""
+                    assembleFolder={assembleFolder}
+                    saveFolder={saveFolder}
+                    cancelNewFolderForm={cancelNewFolderForm}
+                    handleFolderFormSubmit={handleNewFolderFormSubmit}
+                  />
+                </div>
+              ) : (
+                /* Create new folder */
+                <div
+                  onClick={handleShowNewFolderBtnClick}
+                  className="list-page-item add-note-to-folder-btn"
+                >
+                  <FontAwesomeIcon icon={faPlus} />
+                </div>
+              )}
             </div>
+            {/* Modal tools */}
             <div id="detail-view-modal-tools-container">
-              <div id="back-btn-modal" onClick={() => setIsModalForFolderSelection(false)}>
+              <div
+                id="back-btn-modal"
+                onClick={() => setIsModalForFolderSelection(false)}
+              >
                 {/* refactor to "Button" component */}
                 <FontAwesomeIcon icon={faArrowLeft} />
                 <div>Back</div>
               </div>
-              <div
-                id="delete-btn-modal"
-                onClick={toggleDetailModal}
-              >
+              <div id="delete-btn-modal" onClick={toggleDetailModal}>
                 <FontAwesomeIcon icon={faXmark} />
                 <div>Close</div>
               </div>

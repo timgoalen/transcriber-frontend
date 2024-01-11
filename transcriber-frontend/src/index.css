@@ -7,6 +7,7 @@
   --white: #fff;
   --black: #212121;
   --red: #f22626;
+  --folder-dropdown-offset: calc(3% + 0.8rem);
   /* Google Material Design box shadows: */
   --m3-elevation-light-1: 0px 1px 2px 0px rgba(0, 0, 0, 0.3),
     0px 1px 3px 1px rgba(0, 0, 0, 0.15);
@@ -147,7 +148,9 @@ canvas {
 .list-page-main {
   height: 91vh;
   height: 91dvh;
-  overflow: scroll;
+  /* overflow: scroll; */
+  max-width: 600px;
+  margin: auto;
 }
 
 /* -- FOOTER -- */
@@ -333,11 +336,14 @@ canvas {
   height: 2.3rem; */
 }
 
+/* delete from FolderList.js if not used */
 .folder-options {
 }
 
 .notes-in-folder-dropdown {
-  margin-left: calc(3% + 0.8rem);
+  /* max-width: 600px; */
+  /* margin: auto; */
+  padding-left: var(--folder-dropdown-offset);
 }
 
 #detail-view-modal-container {
@@ -381,6 +387,40 @@ canvas {
   color: var(--blue);
 }
 
+.add-note-to-folder-btn {
+  display: grid;
+  color: var(--orange);
+  font-size: 1.2rem;
+  padding: 0.2rem 0.5rem;
+  line-height: 1.5;
+  height: 2.2rem;
+  align-content: center;
+  justify-content: center;
+  border-style: dashed;
+}
+
+.add-note-to-folder-btn svg {
+  padding-right: 1.85rem;
+}
+
+/* PLACEHOLDER SVG */
+
+.placeholder-svg {
+  display: grid;
+  place-items: center;
+  /* max-height: 200px; */
+  height: 75vh;
+  height: 75dvh;
+}
+
+.placeholder-svg svg {
+  height: 100%;
+  width: 100%;
+  max-width: 600px;
+  opacity: 0.6;
+  /* margin: auto; */
+}
+
 /* MEDIA QUERIES */
 
 @media screen and (min-width: 800px) {
@@ -416,7 +456,7 @@ canvas {
 
   .list-page-item {
     margin: 1.5rem auto 0 auto;
-    max-width: 600px;
+    /* max-width: 600px; */
   }
 
   /* .notes-in-folder-dropdown {
