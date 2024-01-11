@@ -153,11 +153,14 @@ export default function NotesList({
                   }}
                 >
                   <p>inbox</p>
-
-                  {selectedNote.folderId === "inbox" && (
-                    <FontAwesomeIcon icon={faCheck} />
-                  )}
                 </div>
+                {/* Show tick for conaining folder */}
+                {/* TODO: REFACTOR INTO COMPONENT, USED 20ish LINES BELOW TOO */}
+                {selectedNote.folderId === "inbox" && (
+                  <div className="item-tools">
+                    <FontAwesomeIcon icon={faCheck} />
+                  </div>
+                )}
               </div>
               {/* Other folders */}
               {folders.map((folder) => (
@@ -175,11 +178,13 @@ export default function NotesList({
                     }}
                   >
                     <p>{folder.text}</p>
-
-                    {selectedNote.folderId === folder.id && (
-                      <FontAwesomeIcon icon={faCheck} />
-                    )}
                   </div>
+                  {/* Show tick for conaining folder */}
+                  {selectedNote.folderId === folder.id && (
+                    <div className="item-tools">
+                      <FontAwesomeIcon icon={faCheck} />
+                    </div>
+                  )}
                 </div>
               ))}
 

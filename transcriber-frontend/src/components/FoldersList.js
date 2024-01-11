@@ -178,6 +178,7 @@ export default function FoldersList({
                   showNewFolderForm={showNewFolderForm}
                 />
 
+                {/* Create new note in folder */}
                 <div
                   onClick={() => handleCreateNewNoteinFolderClick(folder.id)}
                   className="list-page-item add-note-to-folder-btn"

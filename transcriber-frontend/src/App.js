@@ -300,30 +300,32 @@ export default function App() {
           listIcon={faFolder}
           onListClick={showFoldersList}
         />
-        <NotesList
-          notes={notes}
-          folders={folders}
-          selectNote={selectNote}
-          selectedNote={selectedNote}
-          deleteNote={deleteNote}
-          openEditPage={openEditPage}
-          displayPageChoice={displayPageChoice}
-          handleAddNoteToFolder={handleAddNoteToFolder}
-          folderChoice="inbox"
-          handleNewFolderFormSubmit={handleNewFolderFormSubmit}
-          cancelNewFolderForm={cancelNewFolderForm}
-          handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
-          showNewFolderForm={showNewFolderForm}
-        />
-        <MainTool
-          icon={faPlus}
-          onMainToolClick={function () {
-            // TODO: refactor into separate function
-            setDisplayPageChoice("create");
-            setTargetFolder("inbox");
-            clearTextArea();
-          }}
-        />
+        <main className="list-page-main">
+          <NotesList
+            notes={notes}
+            folders={folders}
+            selectNote={selectNote}
+            selectedNote={selectedNote}
+            deleteNote={deleteNote}
+            openEditPage={openEditPage}
+            displayPageChoice={displayPageChoice}
+            handleAddNoteToFolder={handleAddNoteToFolder}
+            folderChoice="inbox"
+            handleNewFolderFormSubmit={handleNewFolderFormSubmit}
+            cancelNewFolderForm={cancelNewFolderForm}
+            handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
+            showNewFolderForm={showNewFolderForm}
+          />
+          <MainTool
+            icon={faPlus}
+            onMainToolClick={function () {
+              // TODO: refactor into separate function
+              setDisplayPageChoice("create");
+              setTargetFolder("inbox");
+              clearTextArea();
+            }}
+          />
+        </main>
       </>
     );
   } else if (displayPageChoice === "update") {
