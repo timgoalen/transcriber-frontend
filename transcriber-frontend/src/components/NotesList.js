@@ -1,24 +1,17 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faExpand,
   faArrowLeft,
   faPen,
-  faEllipsisVertical,
   faXmark,
   faCheck,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  faTrashCan,
-  faFolder,
-  faSquarePlus,
-} from "@fortawesome/free-regular-svg-icons";
+import { faTrashCan, faFolder } from "@fortawesome/free-regular-svg-icons";
 
 import NewFolderForm from "./NewFolderForm.js";
-import FoldersList from "./FoldersList.js";
-import Button from "./Button.js";
 import EmptyPlaceholderGraphics from "./EmptyPlaceholderGraphics.js";
 
 // -- MAIN FUNCTION --
@@ -30,14 +23,11 @@ export default function NotesList({
   selectedNote,
   deleteNote,
   openEditPage,
-  // displayPageChoice,
-  // isColourBlock,
   showNewFolderForm,
   assembleFolder,
   saveFolder,
   cancelNewFolderForm,
   handleAddNoteToFolder,
-  inboxNotes,
   folderChoice,
   handleNewFolderFormSubmit,
   handleShowNewFolderBtnClick,
@@ -70,7 +60,6 @@ export default function NotesList({
 
   return (
     // refactor into <ListItem /> components
-    // <main className="list-page-main">
     <>
       {notesInCurrentFolder.length > 0
         ? notes.map(

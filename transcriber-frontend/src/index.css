@@ -1,5 +1,3 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Delius&display=swap'); */
-
 :root {
   --orange: #f28c26;
   --blue: #268cf2;
@@ -234,8 +232,6 @@ canvas {
 
 .recording-on:hover {
   cursor: pointer;
-  /* color: #d72323; */
-  /* border-color: #d72323; */
 }
 
 .recording-off {
@@ -291,7 +287,6 @@ canvas {
   line-height: 1.5;
   height: 2.2rem;
   border: none;
-  /* border-right: 1px solid var(--grey); */
 }
 
 .item-tools,
@@ -299,14 +294,9 @@ canvas {
 .folder-options {
   display: grid;
   place-items: center;
-  /* padding: 2%; */
   width: 2.3rem;
   color: var(--grey);
 }
-
-/* .item-tools .fa-expand {
-  color: var(--grey);
-} */
 
 .new-folder-btn {
   display: grid;
@@ -341,8 +331,6 @@ canvas {
 }
 
 .notes-in-folder-dropdown {
-  /* max-width: 600px; */
-  /* margin: auto; */
   padding-left: var(--folder-dropdown-offset);
 }
 
@@ -408,7 +396,6 @@ canvas {
 .placeholder-svg {
   display: grid;
   place-items: center;
-  /* max-height: 200px; */
   height: 75vh;
   height: 75dvh;
 }
@@ -418,7 +405,6 @@ canvas {
   width: 100%;
   max-width: 600px;
   opacity: 0.6;
-  /* margin: auto; */
 }
 
 /* MEDIA QUERIES */
@@ -456,13 +442,7 @@ canvas {
 
   .list-page-item {
     margin: 1.5rem auto 0 auto;
-    /* max-width: 600px; */
   }
-
-  /* .notes-in-folder-dropdown {
-    max-width: 600px;
-    margin-left: calc(3% + 0.8rem);
-  } */
 
   #detail-view-modal-content {
     max-width: 600px;

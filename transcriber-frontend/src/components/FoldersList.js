@@ -1,18 +1,15 @@
-import { useEffect, useState, Fragment } from "react";
+import { useState, Fragment } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faExpand,
-  faArrowLeft,
   faPen,
   faEllipsisVertical,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
-import { faTrashCan, faFolder } from "@fortawesome/free-regular-svg-icons";
+import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
 import NewFolderForm from "./NewFolderForm.js";
 import NotesList from "./NotesList.js";
-import Button from "./Button.js";
 import EmptyPlaceholderGraphics from "./EmptyPlaceholderGraphics.js";
 
 // -- MAIN FUNCTION --
@@ -25,45 +22,22 @@ export default function FoldersList({
   deleteFolder,
   openEditPage,
   displayPageChoice,
-  isColourBlock,
   showNewFolderForm,
   assembleFolder,
   saveFolder,
   cancelNewFolderForm,
   handleUpdateFolderFormSubmit,
-  findFolderByID,
   notes,
   handleAddNoteToFolder,
   handleNewFolderFormSubmit,
   handleCreateNewNoteinFolderClick,
   handleShowNewFolderBtnClick,
 }) {
-  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [foldersWithOpenToolList, setFoldersWithOpenToolList] = useState([]);
   const [foldersWithEditTitle, setFoldersWithEditTitle] = useState([]);
   const [showNotesInFolder, setShowNotesInFolder] = useState("");
-  // const [notesInCurrentFolder, setNotesInCurrentFolder] = useState([]);
-
-  function toggleDetailModal() {
-    setIsDetailModalOpen(!isDetailModalOpen);
-  }
-
-  function findNoteByID(id) {
-    return notes.find((note) => note.id === id);
-  }
 
   function handleFolderClick(id) {
-    // Find folder with 'id'
-    // const selectedFolder = findFolderByID(id);
-    // Get folder.notes array
-    // const { notes: folderNoteIDs } = selectedFolder;
-
-    // const notesInFolder = folderNoteIDs.map((noteID) => {
-    //   return findNoteByID(noteID);
-    // });
-
-    // setNotesInCurrentFolder(notesInFolder);
-
     if (showNotesInFolder === id) {
       setShowNotesInFolder("");
     } else {
@@ -92,15 +66,8 @@ export default function FoldersList({
     setFoldersWithOpenToolList("");
   }
 
-  // MOVED TO APP:
-  // function handleNewFolderFormSubmit(folderName) {
-  //   const newFolder = assembleFolder(folderName);
-  //   saveFolder(newFolder);
-  // }
-
   return (
     // refactor into <ListItem /> components
-    // <main className="list-page-main">
     <>
       {folders && folders.length > 0 ? (
         /* Folders list */

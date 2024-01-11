@@ -75,8 +75,6 @@ export default function App() {
   // Set folder to save notes into
   const [targetFolder, setTargetFolder] = useState("inbox");
 
-  // const [folderChoice, setFolderChoice] = useState(0);
-
   // Transfer 'notes' state to local storage any time the state is changed
   useEffect(() => {
     localStorage.setItem("notes", JSON.stringify(notes));
@@ -402,14 +400,6 @@ export default function App() {
               />
             </div>
           )}
-
-          {/* <MainTool
-            icon={faPlus}
-            onMainToolClick={function () {
-              setDisplayPageChoice("create");
-              clearTextArea();
-            }}
-          /> */}
         </main>
       </>
     );
