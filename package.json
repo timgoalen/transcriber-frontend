@@ -6,6 +6,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "font-awesome": "^4.7.0",
+    "openai": "^4.24.4",
     "react-speech-recognition": "^3.10.0"
   }
 }

@@ -59,7 +59,6 @@ export default function App() {
   const [targetFolder, setTargetFolder] = useState("inbox");
   const [showNewFolderForm, setShowNewFolderForm] = useState(false);
 
-
   // Synchronize data between state & local storage
 
   useEffect(() => {
