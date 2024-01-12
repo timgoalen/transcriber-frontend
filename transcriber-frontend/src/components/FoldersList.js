@@ -22,7 +22,6 @@ export default function FoldersList({
   deleteNote,
   deleteFolder,
   openEditPage,
-  displayPageChoice,
   showNewFolderForm,
   assembleFolder,
   saveFolder,
@@ -157,40 +156,6 @@ export default function FoldersList({
                 </div>
               </section>
             )}
-
-            {/* {notes.folderId.includes(folder.id) &&
-              (() => {
-                const isEmptyFolder = !notesInCurrentFolder.length;
-  
-                if (isEmptyFolder) {
-                  return (
-                    <section className="notes-in-folder-dropdown">
-                      <div className="list-page-item">
-                        <div className="item-text">
-                          <p>
-                            <em> - empty folder -</em>
-                          </p>
-                        </div>
-                      </div>
-                    </section>
-                  );
-                } else {
-                  return (
-                    <section className="notes-in-folder-dropdown">
-                      <NotesList
-                        selectNote={selectNote}
-                        selectedNote={selectedNote}
-                        deleteNote={deleteNote}
-                        openEditPage={openEditPage}
-                        isColourBlock={false}
-                        // showNewFolderForm={showNewFolderForm}
-                        displayPageChoice={displayPageChoice}
-                        folderChoice={folder.id}
-                      />
-                    </section>
-                  );
-                }
-              })()} */}
           </Fragment>
         ))
       ) : (
@@ -201,7 +166,7 @@ export default function FoldersList({
         />
       )}
 
-      {/* NEW FOLDER FORM OR BUTTON */}
+      {/* SHOW NEW FOLDER FORM OR BUTTON */}
 
       {showNewFolderForm ? (
         <div className="list-page-item">

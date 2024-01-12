@@ -56,8 +56,9 @@ export default function App() {
   const [selectedNote, setSelectedNote] = useState([]);
   const [isRecording, setIsRecording] = useState(false);
   const [displayPageChoice, setDisplayPageChoice] = useState("create");
-  const [showNewFolderForm, setShowNewFolderForm] = useState(false);
   const [targetFolder, setTargetFolder] = useState("inbox");
+  const [showNewFolderForm, setShowNewFolderForm] = useState(false);
+
 
   // Synchronize data between state & local storage
 

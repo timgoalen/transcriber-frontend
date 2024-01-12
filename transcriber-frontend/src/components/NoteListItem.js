@@ -10,7 +10,6 @@ export default function NoteListItem({
   return (
     <div
       key={id}
-      id={id}
       className="list-page-item"
       onClick={() => handleNoteItemClick(id, text, folderId)}
     >
