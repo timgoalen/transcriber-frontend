@@ -158,6 +158,15 @@ canvas {
   font-size: 1rem;
 }
 
+#ai-btn {
+  position: absolute;
+  bottom: 5;
+  right: 5;
+  bottom: 13vh;
+  bottom: 13dvh;
+  right: 6vw;
+}
+
 .toolbar {
   height: 9vh;
   height: 9dvh;
