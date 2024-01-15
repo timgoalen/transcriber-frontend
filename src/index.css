@@ -160,8 +160,6 @@ canvas {
 
 #ai-btn {
   position: absolute;
-  bottom: 5;
-  right: 5;
   bottom: 13vh;
   bottom: 13dvh;
   right: 6vw;
@@ -424,6 +422,12 @@ canvas {
     margin: 0 8%;
   }
 
+  #ai-btn {
+    bottom: 12vh;
+    bottom: 12dvh;
+    right: 12vw;
+  }
+
   .footer-left {
     margin-left: 16%;
   }
@@ -455,6 +459,10 @@ canvas {
 
   #detail-view-modal-content {
     max-width: 600px;
+  }
+
+  #ai-btn {
+    right: 17.5vw;
   }
 
   .footer-left {
