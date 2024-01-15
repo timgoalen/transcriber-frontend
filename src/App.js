@@ -7,10 +7,7 @@ import {
   faPlus,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  faTrashCan,
-  faFolder,
-} from "@fortawesome/free-regular-svg-icons";
+import { faTrashCan, faFolder } from "@fortawesome/free-regular-svg-icons";
 
 import Header from "./components/Header.js";
 import NotesList from "./components/NotesList.js";
@@ -19,6 +16,7 @@ import TextArea from "./components/TextArea.js";
 import MainTool from "./components/MainTool.js";
 import Toolbar from "./components/Toolbar.js";
 import SpeechRecognition from "./components/SpeechRecognition.js";
+import OpenAiApi from "./components/OpenAiApi.js";
 
 import { generateTimestamp, generateRandomColour } from "./utils/utils.js";
 import {
@@ -58,7 +56,6 @@ export default function App() {
   const [displayPageChoice, setDisplayPageChoice] = useState("create");
   const [targetFolder, setTargetFolder] = useState("inbox");
   const [showNewFolderForm, setShowNewFolderForm] = useState(false);
-
 
   // Synchronize data between state & local storage
 
@@ -278,6 +275,7 @@ export default function App() {
           onMainToolClick={handleMicrophoneClick}
           isRecording={isRecording}
         />
+        <OpenAiApi textAreaInput={textAreaInput} handleTextAreaUserInput={handleTextAreaUserInput} />
         <Toolbar
           tool1Name="Save"
           tool1Icon={faArrowUpFromBracket}
