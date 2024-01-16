@@ -253,15 +253,41 @@ export default function App() {
     clearTextArea();
   }
 
-  function handleUpdateNoteBtnClick() {
+  // function handleUpdateNoteBtnClick() {
+  //   // Assemble the updated note
+  //   const id = selectedNote.id;
+  //   const folderId = selectedNote.folderId;
+  //   const updatedNote = { id: id, text: textAreaInput, folderId: folderId };
+  //   // Delete the old version
+  //   deleteNote(id);
+  //   // Save the updated version (with the original timestamp ID)
+  //   saveNote(updatedNote);
+  //   showNotesList();
+  // }
+
+  async function handleUpdateNoteBtnClick() {
     // Assemble the updated note
     const id = selectedNote.id;
     const folderId = selectedNote.folderId;
-    const updatedNote = { id: id, text: textAreaInput, folderId: folderId };
+    // const updatedNote = { id: id, text: textAreaInput, folder_id: folderId };
+    // const updatedNote = { id: id, text: textAreaInput, folder_id: folderId };
+    const updatedNote = { text: textAreaInput };
+    try {
+      await axios.patch(
+        `https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/notes/${id}/`,
+        updatedNote
+      );
+      // TODO: check if the line below actually checks the request status
+      console.log("Note updated successfully.");
+    } catch (error) {
+      console.error("Error updating note:", error.message);
+    }
+    // TODO: move this into click handler (handleDeleteBtnClick) in NotesList.js?
+    getInitialNotesDataFromApi();
     // Delete the old version
-    deleteNote(id);
+    // deleteNote(id);
     // Save the updated version (with the original timestamp ID)
-    saveNote(updatedNote);
+    // saveNote(updatedNote);
     showNotesList();
   }
 
