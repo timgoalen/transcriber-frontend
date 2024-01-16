@@ -60,15 +60,17 @@ export default function App() {
   const [targetFolder, setTargetFolder] = useState("inbox");
   const [showNewFolderForm, setShowNewFolderForm] = useState(false);
 
+  async function getInitialNotesDataFromApi() {
+    const response = await axios.get(
+      "https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/notes/"
+    );
+    const notesData = await response.data;
+    console.log("API CALLED");
+    setNotes(notesData);
+  }
+
   useEffect(() => {
-    async function getInitialNotesDataFromApi() {
-      const response = await axios.get(
-        "https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/notes/"
-      );
-      const notesData = await response.data;
-      console.log("API CALLED");
-      setNotes(notesData);
-    }
+    // TODO: re-write as try/catch
     getInitialNotesDataFromApi();
   }, []);
 
@@ -116,9 +118,14 @@ export default function App() {
 
   // -- CRUD FUNCTIONS --
 
+  // function assembleNote(text) {
+  //   const id = generateTimestamp();
+  //   const newNote = { id: id, text: text, folderId: targetFolder };
+  //   return newNote;
+  // }
+
   function assembleNote(text) {
-    const id = generateTimestamp();
-    const newNote = { id: id, text: text, folderId: targetFolder };
+    const newNote = { text: text, folder_id: targetFolder };
     return newNote;
   }
 
@@ -129,8 +136,20 @@ export default function App() {
     return newFolder;
   }
 
-  function saveNote(newNote) {
-    setNotes((prevNotes) => [...prevNotes, newNote]);
+  // function saveNote(newNote) {
+  //   setNotes((prevNotes) => [...prevNotes, newNote]);
+  // }
+
+  async function saveNote(newNote) {
+    try {
+      const response = await axios.post(
+        "https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/notes/",
+        newNote
+      );
+      console.log("Note saved:", response.data);
+    } catch (error) {
+      console.error("Error saving note:", error.message);
+    }
   }
 
   function saveFolder(folderName) {
@@ -210,6 +229,7 @@ export default function App() {
   function handleSaveNoteBtnClick() {
     const newNote = assembleNote(textAreaInput);
     saveNote(newNote);
+    getInitialNotesDataFromApi();
     showNotesList();
   }
 
