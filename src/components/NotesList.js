@@ -37,6 +37,8 @@ export default function NotesList({
   }
 
   function handleDeleteBtnClick(id) {
+    console.log("NotesList id:")
+    console.log(id)
     deleteNote(id);
     toggleModalVisibility();
   }

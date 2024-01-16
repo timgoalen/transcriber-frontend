@@ -61,6 +61,7 @@ export default function App() {
   const [showNewFolderForm, setShowNewFolderForm] = useState(false);
 
   async function getInitialNotesDataFromApi() {
+    // TODO: re-write as try/catch
     const response = await axios.get(
       "https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/notes/"
     );
@@ -70,7 +71,6 @@ export default function App() {
   }
 
   useEffect(() => {
-    // TODO: re-write as try/catch
     getInitialNotesDataFromApi();
   }, []);
 
@@ -157,10 +157,24 @@ export default function App() {
     cancelNewFolderForm();
   }
 
-  function deleteNote(id) {
-    setNotes((prevNotes) => {
-      return prevNotes.filter((note) => note.id !== id);
-    });
+  // function deleteNote(id) {
+  //   setNotes((prevNotes) => {
+  //     return prevNotes.filter((note) => note.id !== id);
+  //   });
+  // }
+
+  async function deleteNote(id) {
+    console.log({ id });
+    try {
+      await axios.delete(
+        `https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/notes/${id}/`
+      );
+      console.log("Note deleted successfully.");
+    } catch (error) {
+      console.error("Error deleting note:", error.message);
+    }
+    // TODO: move this into click handler (handleDeleteBtnClick) in NotesList.js?
+    getInitialNotesDataFromApi();
   }
 
   function deleteFolder(id) {
