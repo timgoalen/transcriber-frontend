@@ -24,7 +24,7 @@ export default function NotesList({
   const [isNotesListModalOpen, setIsNotesListModalOpen] = useState(false);
 
   const notesInCurrentFolder = notes.filter(
-    (note) => note.folderId === folderChoice
+    (note) => note.folder_id === folderChoice
   );
 
   function toggleModalVisibility() {
@@ -46,11 +46,11 @@ export default function NotesList({
       {notesInCurrentFolder.length > 0
         ? notes.map(
             (note) =>
-              note.folderId == folderChoice && (
+              note.folder_id == folderChoice && (
                 <NoteListItem
                   id={note.id}
                   text={note.text}
-                  folderId={note.folderId}
+                  folderId={note.folder_id}
                   handleNoteItemClick={handleNoteItemClick}
                 />
               )

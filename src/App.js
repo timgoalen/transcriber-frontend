@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 
+import axios from "axios";
 import {
   faMicrophone,
   faArrowUpFromBracket,
@@ -27,14 +28,14 @@ import {
 
 // Get existing data from local storage
 
-const getInitialNotesData = () => {
-  const initialNotesData = JSON.parse(localStorage.getItem("notes"));
-  if (!initialNotesData) {
-    return [];
-  } else {
-    return initialNotesData;
-  }
-};
+// const getInitialNotesData = () => {
+//   const initialNotesData = JSON.parse(localStorage.getItem("notes"));
+//   if (!initialNotesData) {
+//     return [];
+//   } else {
+//     return initialNotesData;
+//   }
+// };
 
 const getInitialFoldersData = () => {
   const initialFoldersData = JSON.parse(localStorage.getItem("folders"));
@@ -48,8 +49,10 @@ const getInitialFoldersData = () => {
 // -- APP --
 
 export default function App() {
-  const [notes, setNotes] = useState(getInitialNotesData);
+  const [notes, setNotes] = useState([]);
+  // const [notes, setNotes] = useState(getInitialNotesData);
   const [folders, setFolders] = useState(getInitialFoldersData);
+  // const [folders, setFolders] = useState(getInitialFoldersData);
   const [textAreaInput, setTextAreaInput] = useState("");
   const [selectedNote, setSelectedNote] = useState([]);
   const [isRecording, setIsRecording] = useState(false);
@@ -57,15 +60,27 @@ export default function App() {
   const [targetFolder, setTargetFolder] = useState("inbox");
   const [showNewFolderForm, setShowNewFolderForm] = useState(false);
 
+  useEffect(() => {
+    async function getInitialNotesDataFromApi() {
+      const response = await axios.get(
+        "https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/notes/"
+      );
+      const notesData = await response.data;
+      console.log("API CALLED");
+      setNotes(notesData);
+    }
+    getInitialNotesDataFromApi();
+  }, []);
+
   // Synchronize data between state & local storage
 
-  useEffect(() => {
-    localStorage.setItem("notes", JSON.stringify(notes));
-  }, [notes]);
+  // useEffect(() => {
+  //   localStorage.setItem("notes", JSON.stringify(notes));
+  // }, [notes]);
 
-  useEffect(() => {
-    localStorage.setItem("folders", JSON.stringify(folders));
-  }, [folders]);
+  // useEffect(() => {
+  //   localStorage.setItem("folders", JSON.stringify(folders));
+  // }, [folders]);
 
   // Speech recognition handler
 
@@ -275,7 +290,10 @@ export default function App() {
           onMainToolClick={handleMicrophoneClick}
           isRecording={isRecording}
         />
-        <OpenAiApi textAreaInput={textAreaInput} handleTextAreaUserInput={handleTextAreaUserInput} />
+        <OpenAiApi
+          textAreaInput={textAreaInput}
+          handleTextAreaUserInput={handleTextAreaUserInput}
+        />
         <Toolbar
           tool1Name="Save"
           tool1Icon={faArrowUpFromBracket}
