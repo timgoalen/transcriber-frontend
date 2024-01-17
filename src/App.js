@@ -129,10 +129,10 @@ export default function App() {
     return newNote;
   }
 
-  function assembleFolder(text) {
-    const id = generateTimestamp();
+  function assembleFolder(title) {
+    // const id = generateTimestamp();
     const colour = generateRandomColour();
-    const newFolder = { id: id, text: text, colour: colour };
+    const newFolder = { title: title, colour: colour };
     return newFolder;
   }
 
@@ -152,8 +152,21 @@ export default function App() {
     }
   }
 
-  function saveFolder(folderName) {
-    setFolders((prevFolders) => [...prevFolders, folderName]);
+  // function saveFolder(folderName) {
+  //   setFolders((prevFolders) => [...prevFolders, folderName]);
+  //   cancelNewFolderForm();
+  // }
+
+  async function saveFolder(newFolder) {
+    try {
+      const response = await axios.post(
+        "https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/folders/",
+        newFolder
+      );
+      console.log("Folder saved:", response.data);
+    } catch (error) {
+      console.error("Error saving folder:", error.message);
+    }
     cancelNewFolderForm();
   }
 
@@ -302,8 +315,8 @@ export default function App() {
     showFoldersList();
   }
 
-  function handleNewFolderFormSubmit(folderName) {
-    const newFolder = assembleFolder(folderName);
+  function handleNewFolderFormSubmit(title) {
+    const newFolder = assembleFolder(title);
     saveFolder(newFolder);
   }
 
