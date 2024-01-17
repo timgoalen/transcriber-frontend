@@ -121,6 +121,7 @@ export default function App() {
     const newFolder = { title: title, colour: colour };
     return newFolder;
   }
+
   async function saveNote(newNote) {
     try {
       const response = await axios.post(NOTES_API_URL, newNote);
@@ -223,11 +224,16 @@ export default function App() {
     const newNote = assembleNote(textAreaInput);
     saveNote(newNote);
     getInitialNotesDataFromApi();
-    showNotesList();
+    if (targetFolder === null) {
+      showNotesList();
+    } else {
+      // Navigate to folders list is note has been created into a folder
+      showFoldersList();
+    }
   }
 
   function handleCreateNewNoteinFolderClick(folderId) {
-    setTargetFolder(folderId);
+    setTargetFolder(FOLDERS_API_URL_NO_HTTPS + `${folderId}/`);
     setDisplayPageChoice("create");
     clearTextArea();
   }
