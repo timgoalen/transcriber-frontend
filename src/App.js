@@ -158,6 +158,7 @@ export default function App() {
         newNote
       );
       console.log("Note saved:", response.data);
+      getInitialNotesDataFromApi();
     } catch (error) {
       console.error("Error saving note:", error.message);
     }
@@ -175,6 +176,7 @@ export default function App() {
         newFolder
       );
       console.log("Folder saved:", response.data);
+      getInitialFoldersDataFromApi();
     } catch (error) {
       console.error("Error saving folder:", error.message);
     }
@@ -317,16 +319,12 @@ export default function App() {
       );
       // TODO: check if the line below actually checks the request status
       console.log("Note updated successfully.");
+      // TODO: move this into click handler (handleDeleteBtnClick) in NotesList.js???
+      getInitialNotesDataFromApi();
+      showNotesList();
     } catch (error) {
       console.error("Error updating note:", error.message);
     }
-    // TODO: move this into click handler (handleDeleteBtnClick) in NotesList.js?
-    getInitialNotesDataFromApi();
-    // Delete the old version
-    // deleteNote(id);
-    // Save the updated version (with the original timestamp ID)
-    // saveNote(updatedNote);
-    showNotesList();
   }
 
   function handleAddNoteToFolder(targetFolderId) {
@@ -370,11 +368,11 @@ export default function App() {
       );
       // TODO: check if the line below actually checks the request status
       console.log("Folder updated successfully.");
+      // TODO: move this into click handler (handleDeleteBtnClick) in NotesList.js???mayne not
+      getInitialFoldersDataFromApi();
     } catch (error) {
       console.error("Error updating folder:", error.message);
     }
-    // TODO: move this into click handler (handleDeleteBtnClick) in NotesList.js?
-    getInitialFoldersDataFromApi();
   }
 
   // -- RENDER ELEMENTS --

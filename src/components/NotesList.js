@@ -48,7 +48,7 @@ export default function NotesList({
       {notesInCurrentFolder.length > 0
         ? notes.map(
             (note) =>
-              note.folder_id == folderChoice && (
+              note.folder_id === folderChoice && (
                 <NoteListItem
                   id={note.id}
                   text={note.text}
