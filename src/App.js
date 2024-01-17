@@ -201,11 +201,25 @@ export default function App() {
     getInitialNotesDataFromApi();
   }
 
-  function deleteFolder(id) {
-    setFolders((prevFolders) => {
-      return prevFolders.filter((folder) => folder.id !== id);
-    });
+  async function deleteFolder(id) {
+    console.log({ id });
+    try {
+      await axios.delete(
+        `https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/folders/${id}/`
+      );
+      console.log("Folder deleted successfully.");
+    } catch (error) {
+      console.error("Error deleting folder:", error.message);
+    }
+    // TODO: move this into click handler (handleDeleteBtnClick) in NotesList.js?
+    getInitialFoldersDataFromApi();
   }
+
+  // function deleteFolder(id) {
+  //   setFolders((prevFolders) => {
+  //     return prevFolders.filter((folder) => folder.id !== id);
+  //   });
+  // }
 
   // DISPLAY FUNCTIONS
 

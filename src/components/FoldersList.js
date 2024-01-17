@@ -33,32 +33,31 @@ export default function FoldersList({
   handleCreateNewNoteinFolderClick,
   handleShowNewFolderBtnClick,
 }) {
-  const [foldersWithOpenToolList, setFoldersWithOpenToolList] = useState([]);
-  const [foldersWithEditTitle, setFoldersWithEditTitle] = useState([]);
-  const [showNotesInFolder, setShowNotesInFolder] = useState("");
-
-  console.log(folders);
+  const [openToolList, setOpenToolList] = useState(0);
+  const [editTitle, setEditTitle] = useState(0)
+  const [showNotesInFolder, setShowNotesInFolder] = useState(0);
 
   // -- EVENT HANDLERS --
 
   function handleFolderClick(id) {
     if (showNotesInFolder === id) {
-      setShowNotesInFolder("");
+      setShowNotesInFolder(0);
     } else {
       setShowNotesInFolder(id);
     }
   }
 
   function handleFolderOptionsClick(id) {
-    if (foldersWithOpenToolList === id) {
-      setFoldersWithOpenToolList("");
+    if (openToolList === id) {
+      // Close tool list if already open
+      setOpenToolList(0);
     } else {
-      setFoldersWithOpenToolList(id);
+      setOpenToolList(id);
     }
   }
 
   function handleFolderEditClick(id) {
-    setFoldersWithEditTitle(id);
+    setEditTitle(id);
   }
 
   function handleFolderDeleteClick(id) {
@@ -66,8 +65,8 @@ export default function FoldersList({
   }
 
   function handleFolderEditCancelBtnClick() {
-    setFoldersWithEditTitle("");
-    setFoldersWithOpenToolList("");
+    setEditTitle(0);
+    setOpenToolList(0);
   }
 
   return (
@@ -79,7 +78,7 @@ export default function FoldersList({
           <Fragment key={folder.id}>
             <div id={folder.id} className="list-page-item">
               {/* Replace normal div with a text input form when user clicks on edit icon */}
-              {foldersWithEditTitle.includes(folder.id) ? (
+              {editTitle === folder.id ? (
                 <NewFolderForm
                   initialFolderName={folder.title}
                   assembleFolder={assembleFolder}
@@ -105,7 +104,7 @@ export default function FoldersList({
 
                   <div className="folder-toolbar">
                     {/* Display extra tools when user clicks on ellipsis */}
-                    {foldersWithOpenToolList.includes(folder.id) && (
+                    {openToolList === folder.id && (
                       <>
                         <div
                           className="folder-options"
@@ -132,7 +131,7 @@ export default function FoldersList({
               )}
             </div>
 
-            {showNotesInFolder.includes(folder.id) && (
+            {showNotesInFolder === folder.id && (
               <section className="notes-in-folder-dropdown">
                 <NotesList
                   notes={notes}
