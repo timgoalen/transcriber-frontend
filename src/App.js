@@ -327,15 +327,22 @@ export default function App() {
     }
   }
 
-  function handleAddNoteToFolder(targetFolderId) {
-    // Assemble the new note
-    const { id, text } = selectedNote;
-    const updatedNote = { id: id, text: text, folderId: targetFolderId };
-    // Delete the old version
-    deleteNote(id);
-    // Save the updated version (with the original timestamp ID)
-    saveNote(updatedNote);
-    showFoldersList();
+  async function handleAddNoteToFolder(targetFolderId) {
+    const id = selectedNote.id;
+    const updatedNote = { folder_id: targetFolderId };
+    try {
+      await axios.patch(
+        `https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/notes/${id}/`,
+        updatedNote
+      );
+      // TODO: check if the line below actually checks the request status
+      console.log("Note updated successfully.");
+      // TODO: move this into click handler (handleDeleteBtnClick) in NotesList.js???
+      getInitialNotesDataFromApi();
+      showFoldersList();
+    } catch (error) {
+      console.error("Error updating note:", error.message);
+    }
   }
 
   function handleNewFolderFormSubmit(title) {

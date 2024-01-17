@@ -24,7 +24,8 @@ export default function NotesList({
   const [isNotesListModalOpen, setIsNotesListModalOpen] = useState(false);
 
   const notesInCurrentFolder = notes.filter(
-    (note) => note.folder_id === folderChoice
+    // The type coercion is needed, as folder_id contains numbers and "inbox" string (could change):
+    (note) => note.folder_id == folderChoice
   );
 
   function toggleModalVisibility() {
@@ -37,8 +38,8 @@ export default function NotesList({
   }
 
   function handleDeleteBtnClick(id) {
-    console.log("NotesList id:")
-    console.log(id)
+    console.log("NotesList id:");
+    console.log(id);
     deleteNote(id);
     toggleModalVisibility();
   }
@@ -48,7 +49,8 @@ export default function NotesList({
       {notesInCurrentFolder.length > 0
         ? notes.map(
             (note) =>
-              note.folder_id === folderChoice && (
+              // The type coercion is needed, as folder_id contains numbers and "inbox" string (could change):
+              note.folder_id == folderChoice && (
                 <NoteListItem
                   id={note.id}
                   text={note.text}
