@@ -369,6 +369,10 @@ export default function App() {
           setTextFromSpeechRecognition={setTextFromSpeechRecognition}
           textAreaInput={textAreaInput}
         />
+        <OpenAiApi
+          textAreaInput={textAreaInput}
+          handleTextAreaUserInput={handleTextAreaUserInput}
+        />
         <Toolbar
           tool1Name="Update"
           tool1Icon={faArrowUpFromBracket}
