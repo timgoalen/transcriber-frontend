@@ -37,13 +37,16 @@ export default function App() {
   const [selectedNote, setSelectedNote] = useState([]);
   const [isRecording, setIsRecording] = useState(false);
   const [displayPageChoice, setDisplayPageChoice] = useState("create");
-  const [targetFolder, setTargetFolder] = useState("inbox");
+  const [targetFolder, setTargetFolder] = useState(null);
   const [showNewFolderForm, setShowNewFolderForm] = useState(false);
 
   const NOTES_API_URL =
     "https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/notes/";
   const FOLDERS_API_URL =
     "https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/folders/";
+  // TODO: change this when the deployed URL is confirmed...
+  const FOLDERS_API_URL_NO_HTTPS =
+    "http://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/folders/";
 
   // Get data from API on page load
 
@@ -212,7 +215,7 @@ export default function App() {
 
   function handleNewNoteClick() {
     setDisplayPageChoice("create");
-    setTargetFolder("inbox");
+    setTargetFolder(null);
     clearTextArea();
   }
 
@@ -245,10 +248,10 @@ export default function App() {
   }
 
   async function handleAddNoteToFolder(targetFolderId) {
-    const id = selectedNote.id;
-    const updatedNote = { folder_id: targetFolderId };
+    const noteId = selectedNote.id;
+    const updatedNote = { folder_id: FOLDERS_API_URL + `${targetFolderId}/` };
     try {
-      await axios.patch(NOTES_API_URL + `${id}/`, updatedNote);
+      await axios.patch(NOTES_API_URL + `${noteId}/`, updatedNote);
       // TODO: check if the line below actually checks the request status
       console.log("Note updated successfully.");
       getInitialNotesDataFromApi();
@@ -335,11 +338,12 @@ export default function App() {
             deleteNote={deleteNote}
             openEditPage={openEditPage}
             handleAddNoteToFolder={handleAddNoteToFolder}
-            folderChoice="inbox"
+            folderChoice={null}
             handleNewFolderFormSubmit={handleNewFolderFormSubmit}
             cancelNewFolderForm={cancelNewFolderForm}
             handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
             showNewFolderForm={showNewFolderForm}
+            FOLDERS_API_URL_NO_HTTPS={FOLDERS_API_URL_NO_HTTPS}
           />
           <MainTool icon={faPlus} onMainToolClick={handleNewNoteClick} />
         </main>
@@ -406,6 +410,7 @@ export default function App() {
             handleNewFolderFormSubmit={handleNewFolderFormSubmit}
             handleCreateNewNoteinFolderClick={handleCreateNewNoteinFolderClick}
             handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
+            FOLDERS_API_URL_NO_HTTPS={FOLDERS_API_URL_NO_HTTPS}
           />
         </main>
       </>

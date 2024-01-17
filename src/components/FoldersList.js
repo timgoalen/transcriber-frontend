@@ -32,6 +32,7 @@ export default function FoldersList({
   handleNewFolderFormSubmit,
   handleCreateNewNoteinFolderClick,
   handleShowNewFolderBtnClick,
+  FOLDERS_API_URL_NO_HTTPS,
 }) {
   const [openToolList, setOpenToolList] = useState(0);
   const [editTitle, setEditTitle] = useState(0)
@@ -141,11 +142,12 @@ export default function FoldersList({
                   deleteNote={deleteNote}
                   openEditPage={openEditPage}
                   handleAddNoteToFolder={handleAddNoteToFolder}
-                  folderChoice={folder.id}
+                  folderChoice={FOLDERS_API_URL_NO_HTTPS + `${folder.id}/`}
                   handleNewFolderFormSubmit={handleNewFolderFormSubmit}
                   cancelNewFolderForm={cancelNewFolderForm}
                   handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
                   showNewFolderForm={showNewFolderForm}
+                  FOLDERS_API_URL_NO_HTTPS={FOLDERS_API_URL_NO_HTTPS}
                 />
 
                 {/* Create new note in folder */}
