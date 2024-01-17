@@ -117,7 +117,7 @@ export default function NotesListModal({
                     setModalContentChoice("note detail view");
                   }}
                 >
-                  <p>{folder.text}</p>
+                  <p>{folder.title}</p>
                 </div>
                 {/* Show tick for conaining folder */}
                 {selectedNote.folderId === folder.id && (
