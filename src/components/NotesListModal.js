@@ -96,7 +96,8 @@ export default function NotesListModal({
               </div>
               {/* Show tick for conaining folder */}
               {/* TODO: REFACTOR INTO COMPONENT, USED 20ish LINES BELOW TOO */}
-              {selectedNote.folderId === "inbox" && (
+              {/* // The type coercion is needed, as folder_id contains numbers and "inbox" string (could change): */}
+              {selectedNote.folderId == "inbox" && (
                 <div className="item-tools">
                   <FontAwesomeIcon icon={faCheck} />
                 </div>
@@ -120,7 +121,7 @@ export default function NotesListModal({
                   <p>{folder.title}</p>
                 </div>
                 {/* Show tick for conaining folder */}
-                {selectedNote.folderId === folder.id && (
+                {selectedNote.folderId == folder.id && (
                   <div className="item-tools">
                     <FontAwesomeIcon icon={faCheck} />
                   </div>
