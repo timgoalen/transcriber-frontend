@@ -60,11 +60,14 @@ export default function App() {
   const [targetFolder, setTargetFolder] = useState("inbox");
   const [showNewFolderForm, setShowNewFolderForm] = useState(false);
 
+  const NOTES_API_URL =
+    "https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/notes/";
+  const FOLDERS_API_URL =
+    "https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/folders/";
+
   async function getInitialNotesDataFromApi() {
     // TODO: re-write as try/catch
-    const response = await axios.get(
-      "https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/notes/"
-    );
+    const response = await axios.get(NOTES_API_URL);
     const notesData = await response.data;
     console.log("API CALLED: get notes");
     setNotes(notesData);
@@ -72,9 +75,7 @@ export default function App() {
 
   async function getInitialFoldersDataFromApi() {
     // TODO: re-write as try/catch
-    const response = await axios.get(
-      "https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/folders/"
-    );
+    const response = await axios.get(FOLDERS_API_URL);
     const foldersData = await response.data;
     console.log("API CALLED: get folders");
     setFolders(foldersData);
@@ -153,10 +154,7 @@ export default function App() {
 
   async function saveNote(newNote) {
     try {
-      const response = await axios.post(
-        "https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/notes/",
-        newNote
-      );
+      const response = await axios.post(NOTES_API_URL, newNote);
       console.log("Note saved:", response.data);
       getInitialNotesDataFromApi();
     } catch (error) {
@@ -171,10 +169,7 @@ export default function App() {
 
   async function saveFolder(newFolder) {
     try {
-      const response = await axios.post(
-        "https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/folders/",
-        newFolder
-      );
+      const response = await axios.post(FOLDERS_API_URL, newFolder);
       console.log("Folder saved:", response.data);
       getInitialFoldersDataFromApi();
     } catch (error) {
@@ -192,9 +187,7 @@ export default function App() {
   async function deleteNote(id) {
     console.log({ id });
     try {
-      await axios.delete(
-        `https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/notes/${id}/`
-      );
+      await axios.delete(NOTES_API_URL + `${id}/`);
       console.log("Note deleted successfully.");
     } catch (error) {
       console.error("Error deleting note:", error.message);
@@ -206,9 +199,7 @@ export default function App() {
   async function deleteFolder(id) {
     console.log({ id });
     try {
-      await axios.delete(
-        `https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/folders/${id}/`
-      );
+      await axios.delete(FOLDERS_API_URL + `${id}/`);
       console.log("Folder deleted successfully.");
     } catch (error) {
       console.error("Error deleting folder:", error.message);
@@ -313,10 +304,7 @@ export default function App() {
     // const updatedNote = { id: id, text: textAreaInput, folder_id: folderId };
     const updatedNote = { text: textAreaInput };
     try {
-      await axios.patch(
-        `https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/notes/${id}/`,
-        updatedNote
-      );
+      await axios.patch(NOTES_API_URL + `${id}/`, updatedNote);
       // TODO: check if the line below actually checks the request status
       console.log("Note updated successfully.");
       // TODO: move this into click handler (handleDeleteBtnClick) in NotesList.js???
@@ -331,10 +319,7 @@ export default function App() {
     const id = selectedNote.id;
     const updatedNote = { folder_id: targetFolderId };
     try {
-      await axios.patch(
-        `https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/notes/${id}/`,
-        updatedNote
-      );
+      await axios.patch(NOTES_API_URL + `${id}/`, updatedNote);
       // TODO: check if the line below actually checks the request status
       console.log("Note updated successfully.");
       // TODO: move this into click handler (handleDeleteBtnClick) in NotesList.js???
@@ -369,10 +354,7 @@ export default function App() {
   async function handleUpdateFolderFormSubmit(name, id) {
     const updatedFolder = { title: name };
     try {
-      await axios.patch(
-        `https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/folders/${id}/`,
-        updatedFolder
-      );
+      await axios.patch(FOLDERS_API_URL + `${id}/`, updatedFolder);
       // TODO: check if the line below actually checks the request status
       console.log("Folder updated successfully.");
       // TODO: move this into click handler (handleDeleteBtnClick) in NotesList.js???mayne not
