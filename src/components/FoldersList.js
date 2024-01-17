@@ -37,6 +37,8 @@ export default function FoldersList({
   const [foldersWithEditTitle, setFoldersWithEditTitle] = useState([]);
   const [showNotesInFolder, setShowNotesInFolder] = useState("");
 
+  console.log(folders);
+
   // -- EVENT HANDLERS --
 
   function handleFolderClick(id) {
@@ -79,11 +81,11 @@ export default function FoldersList({
               {/* Replace normal div with a text input form when user clicks on edit icon */}
               {foldersWithEditTitle.includes(folder.id) ? (
                 <NewFolderForm
-                  initialFolderName={folder.text}
+                  initialFolderName={folder.title}
                   assembleFolder={assembleFolder}
                   saveFolder={saveFolder}
                   cancelNewFolderForm={handleFolderEditCancelBtnClick}
-                  selectedFolderName={folder.text}
+                  selectedFolderName={folder.title}
                   handleFolderFormSubmit={handleUpdateFolderFormSubmit}
                   initialFolderID={folder.id}
                 />
@@ -98,7 +100,7 @@ export default function FoldersList({
                     className="item-text"
                     onClick={() => handleFolderClick(folder.id)}
                   >
-                    <p>{folder.text}</p>
+                    <p>{folder.title}</p>
                   </div>
 
                   <div className="folder-toolbar">

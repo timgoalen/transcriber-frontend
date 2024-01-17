@@ -37,21 +37,21 @@ import {
 //   }
 // };
 
-const getInitialFoldersData = () => {
-  const initialFoldersData = JSON.parse(localStorage.getItem("folders"));
-  if (!initialFoldersData) {
-    return [];
-  } else {
-    return initialFoldersData;
-  }
-};
+// const getInitialFoldersData = () => {
+//   const initialFoldersData = JSON.parse(localStorage.getItem("folders"));
+//   if (!initialFoldersData) {
+//     return [];
+//   } else {
+//     return initialFoldersData;
+//   }
+// };
 
 // -- APP --
 
 export default function App() {
   const [notes, setNotes] = useState([]);
   // const [notes, setNotes] = useState(getInitialNotesData);
-  const [folders, setFolders] = useState(getInitialFoldersData);
+  const [folders, setFolders] = useState([]);
   // const [folders, setFolders] = useState(getInitialFoldersData);
   const [textAreaInput, setTextAreaInput] = useState("");
   const [selectedNote, setSelectedNote] = useState([]);
@@ -66,12 +66,23 @@ export default function App() {
       "https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/notes/"
     );
     const notesData = await response.data;
-    console.log("API CALLED");
+    console.log("API CALLED: get notes");
     setNotes(notesData);
+  }
+
+  async function getInitialFoldersDataFromApi() {
+    // TODO: re-write as try/catch
+    const response = await axios.get(
+      "https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/folders/"
+    );
+    const foldersData = await response.data;
+    console.log("API CALLED: get folders");
+    setFolders(foldersData);
   }
 
   useEffect(() => {
     getInitialNotesDataFromApi();
+    getInitialFoldersDataFromApi();
   }, []);
 
   // Synchronize data between state & local storage
