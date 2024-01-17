@@ -345,20 +345,36 @@ export default function App() {
     saveFolder(newFolder);
   }
 
-  function handleUpdateFolderFormSubmit(name, id) {
-    const selectedFolder = findFolderByID(id);
-    // Destructure the selectedFolder object
-    const { colour: folderColour } = selectedFolder;
-    // Assemble the updated folder
-    const updatedFolder = {
-      id: id,
-      text: name,
-      colour: folderColour,
-    };
-    // Delete the old version
-    deleteFolder(id);
-    // Save the updated version (with the original timestamp ID)
-    setFolders((prevFolders) => [...prevFolders, updatedFolder]);
+  // function handleUpdateFolderFormSubmit(name, id) {
+  //   const selectedFolder = findFolderByID(id);
+  //   // Destructure the selectedFolder object
+  //   const { colour: folderColour } = selectedFolder;
+  //   // Assemble the updated folder
+  //   const updatedFolder = {
+  //     id: id,
+  //     text: name,
+  //     colour: folderColour,
+  //   };
+  //   // Delete the old version
+  //   deleteFolder(id);
+  //   // Save the updated version (with the original timestamp ID)
+  //   setFolders((prevFolders) => [...prevFolders, updatedFolder]);
+  // }
+
+  async function handleUpdateFolderFormSubmit(name, id) {
+    const updatedFolder = { title: name };
+    try {
+      await axios.patch(
+        `https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/folders/${id}/`,
+        updatedFolder
+      );
+      // TODO: check if the line below actually checks the request status
+      console.log("Folder updated successfully.");
+    } catch (error) {
+      console.error("Error updating folder:", error.message);
+    }
+    // TODO: move this into click handler (handleDeleteBtnClick) in NotesList.js?
+    getInitialFoldersDataFromApi();
   }
 
   // -- RENDER ELEMENTS --

@@ -10,7 +10,7 @@ export default function NewFolderForm({
   initialFolderID,
 }) {
   const [folderName, setFolderName] = useState(initialFolderName);
-  // const [folderID, setFolderID] = useState(initialFolderID);
+  const [folderID, setFolderID] = useState(initialFolderID);
 
   const textInputRef = useRef(null);
 
@@ -48,8 +48,7 @@ export default function NewFolderForm({
       <button
         className="crud-new-folder-btns"
         onClick={() => {
-          // handleFolderFormSubmit(folderName, folderID);
-          handleFolderFormSubmit(folderName);
+          handleFolderFormSubmit(folderName, folderID);
           setFolderName("");
           cancelNewFolderForm();
         }}
