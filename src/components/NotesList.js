@@ -20,12 +20,22 @@ export default function NotesList({
   folderChoice,
   handleNewFolderFormSubmit,
   handleShowNewFolderBtnClick,
+  FOLDERS_API_URL_NO_HTTPS,
 }) {
   const [isNotesListModalOpen, setIsNotesListModalOpen] = useState(false);
 
+  // Create an array of notes in selected folder, only used to check if folder is empty
   const notesInCurrentFolder = notes.filter(
-    (note) => note.folderId === folderChoice
+    (note) => note.folder_id === folderChoice
   );
+
+  let isEmptyFolder;
+
+  if (notesInCurrentFolder.length > 0) {
+    isEmptyFolder = false;
+  } else {
+    isEmptyFolder = true;
+  }
 
   function toggleModalVisibility() {
     setIsNotesListModalOpen(!isNotesListModalOpen);
@@ -37,26 +47,28 @@ export default function NotesList({
   }
 
   function handleDeleteBtnClick(id) {
+    console.log("NotesList id:");
+    console.log(id);
     deleteNote(id);
     toggleModalVisibility();
   }
 
   return (
     <>
-      {notesInCurrentFolder.length > 0
+      {!isEmptyFolder
         ? notes.map(
             (note) =>
-              note.folderId == folderChoice && (
+              note.folder_id === folderChoice && (
                 <NoteListItem
                   id={note.id}
                   text={note.text}
-                  folderId={note.folderId}
+                  folderId={note.folder_id}
                   handleNoteItemClick={handleNoteItemClick}
                 />
               )
           )
         : // Only show placeholder SVG in "inbox"
-          folderChoice === "inbox" && (
+          folderChoice === null && (
             <EmptyPlaceholderGraphics
               primaryColour="#f28c26"
               secondaryColour="#268cf2"
@@ -77,6 +89,7 @@ export default function NotesList({
         cancelNewFolderForm={cancelNewFolderForm}
         showNewFolderForm={showNewFolderForm}
         handleNewFolderFormSubmit={handleNewFolderFormSubmit}
+        FOLDERS_API_URL_NO_HTTPS={FOLDERS_API_URL_NO_HTTPS}
       />
     </>
   );

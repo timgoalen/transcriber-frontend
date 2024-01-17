@@ -32,31 +32,33 @@ export default function FoldersList({
   handleNewFolderFormSubmit,
   handleCreateNewNoteinFolderClick,
   handleShowNewFolderBtnClick,
+  FOLDERS_API_URL_NO_HTTPS,
 }) {
-  const [foldersWithOpenToolList, setFoldersWithOpenToolList] = useState([]);
-  const [foldersWithEditTitle, setFoldersWithEditTitle] = useState([]);
-  const [showNotesInFolder, setShowNotesInFolder] = useState("");
+  const [openToolList, setOpenToolList] = useState(0);
+  const [editTitle, setEditTitle] = useState(0)
+  const [showNotesInFolder, setShowNotesInFolder] = useState(0);
 
   // -- EVENT HANDLERS --
 
   function handleFolderClick(id) {
     if (showNotesInFolder === id) {
-      setShowNotesInFolder("");
+      setShowNotesInFolder(0);
     } else {
       setShowNotesInFolder(id);
     }
   }
 
   function handleFolderOptionsClick(id) {
-    if (foldersWithOpenToolList === id) {
-      setFoldersWithOpenToolList("");
+    if (openToolList === id) {
+      // Close tool list if already open
+      setOpenToolList(0);
     } else {
-      setFoldersWithOpenToolList(id);
+      setOpenToolList(id);
     }
   }
 
   function handleFolderEditClick(id) {
-    setFoldersWithEditTitle(id);
+    setEditTitle(id);
   }
 
   function handleFolderDeleteClick(id) {
@@ -64,8 +66,8 @@ export default function FoldersList({
   }
 
   function handleFolderEditCancelBtnClick() {
-    setFoldersWithEditTitle("");
-    setFoldersWithOpenToolList("");
+    setEditTitle(0);
+    setOpenToolList(0);
   }
 
   return (
@@ -77,13 +79,13 @@ export default function FoldersList({
           <Fragment key={folder.id}>
             <div id={folder.id} className="list-page-item">
               {/* Replace normal div with a text input form when user clicks on edit icon */}
-              {foldersWithEditTitle.includes(folder.id) ? (
+              {editTitle === folder.id ? (
                 <NewFolderForm
-                  initialFolderName={folder.text}
+                  initialFolderName={folder.title}
                   assembleFolder={assembleFolder}
                   saveFolder={saveFolder}
                   cancelNewFolderForm={handleFolderEditCancelBtnClick}
-                  selectedFolderName={folder.text}
+                  selectedFolderName={folder.title}
                   handleFolderFormSubmit={handleUpdateFolderFormSubmit}
                   initialFolderID={folder.id}
                 />
@@ -98,12 +100,12 @@ export default function FoldersList({
                     className="item-text"
                     onClick={() => handleFolderClick(folder.id)}
                   >
-                    <p>{folder.text}</p>
+                    <p>{folder.title}</p>
                   </div>
 
                   <div className="folder-toolbar">
                     {/* Display extra tools when user clicks on ellipsis */}
-                    {foldersWithOpenToolList.includes(folder.id) && (
+                    {openToolList === folder.id && (
                       <>
                         <div
                           className="folder-options"
@@ -130,7 +132,7 @@ export default function FoldersList({
               )}
             </div>
 
-            {showNotesInFolder.includes(folder.id) && (
+            {showNotesInFolder === folder.id && (
               <section className="notes-in-folder-dropdown">
                 <NotesList
                   notes={notes}
@@ -140,11 +142,12 @@ export default function FoldersList({
                   deleteNote={deleteNote}
                   openEditPage={openEditPage}
                   handleAddNoteToFolder={handleAddNoteToFolder}
-                  folderChoice={folder.id}
+                  folderChoice={FOLDERS_API_URL_NO_HTTPS + `${folder.id}/`}
                   handleNewFolderFormSubmit={handleNewFolderFormSubmit}
                   cancelNewFolderForm={cancelNewFolderForm}
                   handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
                   showNewFolderForm={showNewFolderForm}
+                  FOLDERS_API_URL_NO_HTTPS={FOLDERS_API_URL_NO_HTTPS}
                 />
 
                 {/* Create new note in folder */}

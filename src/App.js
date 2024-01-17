@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 
+import axios from "axios";
 import {
   faMicrophone,
   faArrowUpFromBracket,
@@ -18,54 +19,63 @@ import Toolbar from "./components/Toolbar.js";
 import SpeechRecognition from "./components/SpeechRecognition.js";
 import OpenAiApi from "./components/OpenAiApi.js";
 
-import { generateTimestamp, generateRandomColour } from "./utils/utils.js";
+import { generateRandomColour } from "./utils/utils.js";
 import {
   capitalise,
   capitaliseNewSentence,
   punctuate,
 } from "./utils/speechRecognitionUtils.js";
 
-// Get existing data from local storage
-
-const getInitialNotesData = () => {
-  const initialNotesData = JSON.parse(localStorage.getItem("notes"));
-  if (!initialNotesData) {
-    return [];
-  } else {
-    return initialNotesData;
-  }
-};
-
-const getInitialFoldersData = () => {
-  const initialFoldersData = JSON.parse(localStorage.getItem("folders"));
-  if (!initialFoldersData) {
-    return [];
-  } else {
-    return initialFoldersData;
-  }
-};
-
 // -- APP --
 
 export default function App() {
-  const [notes, setNotes] = useState(getInitialNotesData);
-  const [folders, setFolders] = useState(getInitialFoldersData);
+  const [notes, setNotes] = useState([]);
+  // const [notes, setNotes] = useState(getInitialNotesData);
+  const [folders, setFolders] = useState([]);
+  // const [folders, setFolders] = useState(getInitialFoldersData);
   const [textAreaInput, setTextAreaInput] = useState("");
   const [selectedNote, setSelectedNote] = useState([]);
   const [isRecording, setIsRecording] = useState(false);
   const [displayPageChoice, setDisplayPageChoice] = useState("create");
-  const [targetFolder, setTargetFolder] = useState("inbox");
+  const [targetFolder, setTargetFolder] = useState(null);
   const [showNewFolderForm, setShowNewFolderForm] = useState(false);
 
-  // Synchronize data between state & local storage
+  const NOTES_API_URL =
+    "https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/notes/";
+  const FOLDERS_API_URL =
+    "https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/folders/";
+  // TODO: change this when the deployed URL is confirmed...
+  const FOLDERS_API_URL_NO_HTTPS =
+    "http://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/folders/";
+
+  // Get data from API on page load
+
+  async function getInitialNotesDataFromApi() {
+    try {
+      const response = await axios.get(NOTES_API_URL);
+      const notesData = await response.data;
+      console.log("API CALLED: get notes");
+      setNotes(notesData);
+    } catch (error) {
+      console.error("Error fetching notes data from API:", error.message);
+    }
+  }
+
+  async function getInitialFoldersDataFromApi() {
+    try {
+      const response = await axios.get(FOLDERS_API_URL);
+      const foldersData = await response.data;
+      console.log("API CALLED: get folders");
+      setFolders(foldersData);
+    } catch (error) {
+      console.error("Error fetching folders data from API:", error.message);
+    }
+  }
 
   useEffect(() => {
-    localStorage.setItem("notes", JSON.stringify(notes));
-  }, [notes]);
-
-  useEffect(() => {
-    localStorage.setItem("folders", JSON.stringify(folders));
-  }, [folders]);
+    getInitialNotesDataFromApi();
+    getInitialFoldersDataFromApi();
+  }, []);
 
   // Speech recognition handler
 
@@ -102,37 +112,55 @@ export default function App() {
   // -- CRUD FUNCTIONS --
 
   function assembleNote(text) {
-    const id = generateTimestamp();
-    const newNote = { id: id, text: text, folderId: targetFolder };
+    const newNote = { text: text, folder_id: targetFolder };
     return newNote;
   }
 
-  function assembleFolder(text) {
-    const id = generateTimestamp();
+  function assembleFolder(title) {
     const colour = generateRandomColour();
-    const newFolder = { id: id, text: text, colour: colour };
+    const newFolder = { title: title, colour: colour };
     return newFolder;
   }
 
-  function saveNote(newNote) {
-    setNotes((prevNotes) => [...prevNotes, newNote]);
+  async function saveNote(newNote) {
+    try {
+      const response = await axios.post(NOTES_API_URL, newNote);
+      console.log("Note saved:", response.data);
+      getInitialNotesDataFromApi();
+    } catch (error) {
+      console.error("Error saving note:", error.message);
+    }
   }
 
-  function saveFolder(folderName) {
-    setFolders((prevFolders) => [...prevFolders, folderName]);
-    cancelNewFolderForm();
+  async function saveFolder(newFolder) {
+    try {
+      const response = await axios.post(FOLDERS_API_URL, newFolder);
+      console.log("Folder saved:", response.data);
+      getInitialFoldersDataFromApi();
+      cancelNewFolderForm();
+    } catch (error) {
+      console.error("Error saving folder:", error.message);
+    }
   }
 
-  function deleteNote(id) {
-    setNotes((prevNotes) => {
-      return prevNotes.filter((note) => note.id !== id);
-    });
+  async function deleteNote(id) {
+    try {
+      await axios.delete(NOTES_API_URL + `${id}/`);
+      console.log("Note deleted successfully.");
+      getInitialNotesDataFromApi();
+    } catch (error) {
+      console.error("Error deleting note:", error.message);
+    }
   }
 
-  function deleteFolder(id) {
-    setFolders((prevFolders) => {
-      return prevFolders.filter((folder) => folder.id !== id);
-    });
+  async function deleteFolder(id) {
+    try {
+      await axios.delete(FOLDERS_API_URL + `${id}/`);
+      console.log("Folder deleted successfully.");
+      getInitialFoldersDataFromApi();
+    } catch (error) {
+      console.error("Error deleting folder:", error.message);
+    }
   }
 
   // DISPLAY FUNCTIONS
@@ -188,64 +216,72 @@ export default function App() {
 
   function handleNewNoteClick() {
     setDisplayPageChoice("create");
-    setTargetFolder("inbox");
+    setTargetFolder(null);
     clearTextArea();
   }
 
   function handleSaveNoteBtnClick() {
     const newNote = assembleNote(textAreaInput);
     saveNote(newNote);
-    showNotesList();
+    getInitialNotesDataFromApi();
+    if (targetFolder === null) {
+      showNotesList();
+    } else {
+      // Navigate to folders list is note has been created into a folder
+      showFoldersList();
+    }
   }
 
   function handleCreateNewNoteinFolderClick(folderId) {
-    setTargetFolder(folderId);
+    setTargetFolder(FOLDERS_API_URL_NO_HTTPS + `${folderId}/`);
     setDisplayPageChoice("create");
     clearTextArea();
   }
 
-  function handleUpdateNoteBtnClick() {
+  async function handleUpdateNoteBtnClick() {
     // Assemble the updated note
     const id = selectedNote.id;
-    const folderId = selectedNote.folderId;
-    const updatedNote = { id: id, text: textAreaInput, folderId: folderId };
-    // Delete the old version
-    deleteNote(id);
-    // Save the updated version (with the original timestamp ID)
-    saveNote(updatedNote);
-    showNotesList();
+    const updatedNote = { text: textAreaInput };
+    try {
+      await axios.patch(NOTES_API_URL + `${id}/`, updatedNote);
+      // TODO: check if the line below actually checks the request status
+      console.log("Note updated successfully.");
+      getInitialNotesDataFromApi();
+      showNotesList();
+    } catch (error) {
+      console.error("Error updating note:", error.message);
+    }
   }
 
-  function handleAddNoteToFolder(targetFolderId) {
-    // Assemble the new note
-    const { id, text } = selectedNote;
-    const updatedNote = { id: id, text: text, folderId: targetFolderId };
-    // Delete the old version
-    deleteNote(id);
-    // Save the updated version (with the original timestamp ID)
-    saveNote(updatedNote);
-    showFoldersList();
+  async function handleAddNoteToFolder(targetFolderId) {
+    const noteId = selectedNote.id;
+    const updatedNote = { folder_id: FOLDERS_API_URL + `${targetFolderId}/` };
+    try {
+      await axios.patch(NOTES_API_URL + `${noteId}/`, updatedNote);
+      // TODO: check if the line below actually checks the request status
+      console.log("Note updated successfully.");
+      getInitialNotesDataFromApi();
+      showFoldersList();
+    } catch (error) {
+      console.error("Error updating note:", error.message);
+    }
   }
 
-  function handleNewFolderFormSubmit(folderName) {
-    const newFolder = assembleFolder(folderName);
+  function handleNewFolderFormSubmit(title) {
+    const newFolder = assembleFolder(title);
     saveFolder(newFolder);
   }
 
-  function handleUpdateFolderFormSubmit(name, id) {
-    const selectedFolder = findFolderByID(id);
-    // Destructure the selectedFolder object
-    const { colour: folderColour } = selectedFolder;
-    // Assemble the updated folder
-    const updatedFolder = {
-      id: id,
-      text: name,
-      colour: folderColour,
-    };
-    // Delete the old version
-    deleteFolder(id);
-    // Save the updated version (with the original timestamp ID)
-    setFolders((prevFolders) => [...prevFolders, updatedFolder]);
+  async function handleUpdateFolderFormSubmit(name, id) {
+    const updatedFolder = { title: name };
+    try {
+      await axios.patch(FOLDERS_API_URL + `${id}/`, updatedFolder);
+      // TODO: check if the line below actually checks the request status
+      console.log("Folder updated successfully.");
+      getInitialFoldersDataFromApi();
+    } catch (error) {
+      console.error("Error updating folder:", error.message);
+    }
   }
 
   // -- RENDER ELEMENTS --
@@ -275,7 +311,10 @@ export default function App() {
           onMainToolClick={handleMicrophoneClick}
           isRecording={isRecording}
         />
-        <OpenAiApi textAreaInput={textAreaInput} handleTextAreaUserInput={handleTextAreaUserInput} />
+        <OpenAiApi
+          textAreaInput={textAreaInput}
+          handleTextAreaUserInput={handleTextAreaUserInput}
+        />
         <Toolbar
           tool1Name="Save"
           tool1Icon={faArrowUpFromBracket}
@@ -305,11 +344,12 @@ export default function App() {
             deleteNote={deleteNote}
             openEditPage={openEditPage}
             handleAddNoteToFolder={handleAddNoteToFolder}
-            folderChoice="inbox"
+            folderChoice={null}
             handleNewFolderFormSubmit={handleNewFolderFormSubmit}
             cancelNewFolderForm={cancelNewFolderForm}
             handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
             showNewFolderForm={showNewFolderForm}
+            FOLDERS_API_URL_NO_HTTPS={FOLDERS_API_URL_NO_HTTPS}
           />
           <MainTool icon={faPlus} onMainToolClick={handleNewNoteClick} />
         </main>
@@ -334,6 +374,10 @@ export default function App() {
           isRecording={isRecording}
           setTextFromSpeechRecognition={setTextFromSpeechRecognition}
           textAreaInput={textAreaInput}
+        />
+        <OpenAiApi
+          textAreaInput={textAreaInput}
+          handleTextAreaUserInput={handleTextAreaUserInput}
         />
         <Toolbar
           tool1Name="Update"
@@ -376,6 +420,7 @@ export default function App() {
             handleNewFolderFormSubmit={handleNewFolderFormSubmit}
             handleCreateNewNoteinFolderClick={handleCreateNewNoteinFolderClick}
             handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
+            FOLDERS_API_URL_NO_HTTPS={FOLDERS_API_URL_NO_HTTPS}
           />
         </main>
       </>
