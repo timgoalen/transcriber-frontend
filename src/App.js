@@ -27,6 +27,17 @@ import {
   punctuate,
 } from "./utils/speechRecognitionUtils.js";
 
+// Get user authorization token from local storage if one exists
+// (so login will persist after page reloads)
+const getInitialUserToken = () => {
+  const tokenFromLocalStorage = localStorage.getItem("userToken");
+  if (!tokenFromLocalStorage) {
+    return "";
+  } else {
+    return tokenFromLocalStorage;
+  }
+};
+
 // -- APP --
 
 export default function App() {
@@ -40,6 +51,19 @@ export default function App() {
   const [displayPageChoice, setDisplayPageChoice] = useState("create");
   const [targetFolder, setTargetFolder] = useState(null);
   const [showNewFolderForm, setShowNewFolderForm] = useState(false);
+  const [userToken, setUserToken] = useState(getInitialUserToken);
+  // const [userToken, setUserToken] = useState("");
+
+  // Sync the local storage copy of the user token when it changes in state
+  useEffect(() => {
+    localStorage.setItem("userToken", userToken);
+  }, [userToken]);
+
+  function saveUserToken(token) {
+    setUserToken(token);
+  }
+
+  console.log({userToken})
 
   const NOTES_API_URL =
     "https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/notes/";
@@ -289,7 +313,7 @@ export default function App() {
 
   if (displayPageChoice === "create") {
     return (
-      <SignUpForm />
+      <SignUpForm saveUserToken={saveUserToken} />
       // Display transcriber
       // <>
       //   <Header
