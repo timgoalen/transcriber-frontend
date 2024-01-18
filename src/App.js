@@ -19,6 +19,7 @@ import Toolbar from "./components/Toolbar.js";
 import SpeechRecognition from "./components/SpeechRecognition.js";
 import OpenAiApi from "./components/OpenAiApi.js";
 import SignUpForm from "./components/SignUpForm.js";
+import LogOutForm from "./components/LogOutForm.js";
 
 import { generateRandomColour } from "./utils/utils.js";
 import {
@@ -54,9 +55,9 @@ export default function App() {
   const [userToken, setUserToken] = useState(getInitialUserToken);
 
   // Sync the local storage copy of the user token when it changes in state
-  useEffect(() => {
-    localStorage.setItem("userToken", userToken);
-  }, [userToken]);
+  // useEffect(() => {
+  //   localStorage.setItem("userToken", userToken);
+  // }, [userToken]);
 
   function saveUserToken(token) {
     setUserToken(token);
@@ -337,6 +338,7 @@ export default function App() {
           getInitialNotesDataFromApi={getInitialNotesDataFromApi}
           getInitialFoldersDataFromApi={getInitialFoldersDataFromApi}
         />
+        <LogOutForm userToken={userToken} saveUserToken={saveUserToken} />
         <TextArea
           handleTextAreaUserInput={handleTextAreaUserInput}
           textAreaInput={textAreaInput}

@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useState } from "react";
+import axios from "axios";
 
 export default function SignUpForm({ saveUserToken, getInitialNotesDataFromApi, getInitialFoldersDataFromApi }) {
   const [signUpFormData, setSignUpFormData] = useState({
@@ -17,6 +17,10 @@ export default function SignUpForm({ saveUserToken, getInitialNotesDataFromApi, 
         [changedFormField]: newFieldValue,
       };
     });
+  }
+
+  function saveTokenToLocalStorage(token) {
+    localStorage.setItem("userToken", token);
   }
 
   async function submitSignUpForm(event) {
@@ -40,10 +44,11 @@ export default function SignUpForm({ saveUserToken, getInitialNotesDataFromApi, 
         console.log("Login successful:", logInResponse.data);
         const logInResponseToken = logInResponse.data.key;
         saveUserToken(logInResponseToken);
+        saveTokenToLocalStorage(logInResponseToken);
         getInitialNotesDataFromApi();
         getInitialFoldersDataFromApi();
       } catch (error) {
-        console.error("Error loggin in to retreive token:", error.message);
+        console.error("Error logging in to retreive token:", error.message);
       }
     } catch (error) {
       console.error("Error submitting Sign Up Form:", error.message);
