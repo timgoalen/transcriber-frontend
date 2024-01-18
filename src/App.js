@@ -54,6 +54,7 @@ export default function App() {
   const [targetFolder, setTargetFolder] = useState(null);
   const [showNewFolderForm, setShowNewFolderForm] = useState(false);
   const [userToken, setUserToken] = useState(getInitialUserToken);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // Sync the local storage copy of the user token when it changes in state
   // useEffect(() => {
@@ -70,6 +71,12 @@ export default function App() {
   }
 
   console.log({ userToken });
+
+  useEffect(() => {
+    setIsLoggedIn(userToken ? true : false);
+  }, []);
+
+  console.log({ isLoggedIn });
 
   const NOTES_API_URL =
     "https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/notes/";
@@ -339,19 +346,24 @@ export default function App() {
           navIcon={faListUl}
           onNavIconClick={showNotesList}
         />
-        <SignUpForm
-          saveUserToken={saveUserToken}
-          saveTokenToLocalStorage={saveTokenToLocalStorage}
-          getInitialNotesDataFromApi={getInitialNotesDataFromApi}
-          getInitialFoldersDataFromApi={getInitialFoldersDataFromApi}
-        />
-        <LogInForm
-          saveUserToken={saveUserToken}
-          saveTokenToLocalStorage={saveTokenToLocalStorage}
-          getInitialNotesDataFromApi={getInitialNotesDataFromApi}
-          getInitialFoldersDataFromApi={getInitialFoldersDataFromApi}
-        />
-        <LogOutForm userToken={userToken} saveUserToken={saveUserToken} />
+        {isLoggedIn ? (
+          <LogOutForm userToken={userToken} saveUserToken={saveUserToken} />
+        ) : (
+          <>
+            <SignUpForm
+              saveUserToken={saveUserToken}
+              saveTokenToLocalStorage={saveTokenToLocalStorage}
+              getInitialNotesDataFromApi={getInitialNotesDataFromApi}
+              getInitialFoldersDataFromApi={getInitialFoldersDataFromApi}
+            />
+            <LogInForm
+              saveUserToken={saveUserToken}
+              saveTokenToLocalStorage={saveTokenToLocalStorage}
+              getInitialNotesDataFromApi={getInitialNotesDataFromApi}
+              getInitialFoldersDataFromApi={getInitialFoldersDataFromApi}
+            />
+          </>
+        )}
         <TextArea
           handleTextAreaUserInput={handleTextAreaUserInput}
           textAreaInput={textAreaInput}

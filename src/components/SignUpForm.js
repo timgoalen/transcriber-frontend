@@ -46,8 +46,10 @@ export default function SignUpForm({
         const logInResponseToken = logInResponse.data.key;
         saveUserToken(logInResponseToken);
         saveTokenToLocalStorage(logInResponseToken);
-        getInitialNotesDataFromApi();
-        getInitialFoldersDataFromApi();
+        // getInitialNotesDataFromApi();
+        // getInitialFoldersDataFromApi();
+        // TODO: change this hack to get data to reload into state on log in****
+        window.location.reload();
       } catch (error) {
         console.error("Error logging in to retreive token:", error.message);
       }
