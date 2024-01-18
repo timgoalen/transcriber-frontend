@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 
-export default function SignUpForm({ saveUserToken }) {
+export default function SignUpForm({ saveUserToken, getInitialNotesDataFromApi, getInitialFoldersDataFromApi }) {
   const [signUpFormData, setSignUpFormData] = useState({
     username: "",
     password1: "",
@@ -40,6 +40,8 @@ export default function SignUpForm({ saveUserToken }) {
         console.log("Login successful:", logInResponse.data);
         const logInResponseToken = logInResponse.data.key;
         saveUserToken(logInResponseToken);
+        getInitialNotesDataFromApi();
+        getInitialFoldersDataFromApi();
       } catch (error) {
         console.error("Error loggin in to retreive token:", error.message);
       }

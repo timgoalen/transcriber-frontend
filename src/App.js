@@ -52,7 +52,6 @@ export default function App() {
   const [targetFolder, setTargetFolder] = useState(null);
   const [showNewFolderForm, setShowNewFolderForm] = useState(false);
   const [userToken, setUserToken] = useState(getInitialUserToken);
-  // const [userToken, setUserToken] = useState("");
 
   // Sync the local storage copy of the user token when it changes in state
   useEffect(() => {
@@ -63,7 +62,7 @@ export default function App() {
     setUserToken(token);
   }
 
-  console.log({userToken})
+  console.log({ userToken });
 
   const NOTES_API_URL =
     "https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/notes/";
@@ -77,29 +76,41 @@ export default function App() {
 
   async function getInitialNotesDataFromApi() {
     try {
-      const response = await axios.get(NOTES_API_URL);
+      const response = await axios.get(NOTES_API_URL, {
+        headers: {
+          Authorization: `Token ${userToken}`,
+        },
+      });
       const notesData = await response.data;
       console.log("API CALLED: get notes");
       setNotes(notesData);
     } catch (error) {
-      console.error("Error fetching notes data from API:", error.message);
+      console.error("Error fetching notes data from the API:", error.message);
     }
   }
 
   async function getInitialFoldersDataFromApi() {
     try {
-      const response = await axios.get(FOLDERS_API_URL);
+      const response = await axios.get(FOLDERS_API_URL, {
+        headers: {
+          Authorization: `Token ${userToken}`,
+        },
+      });
       const foldersData = await response.data;
       console.log("API CALLED: get folders");
       setFolders(foldersData);
     } catch (error) {
-      console.error("Error fetching folders data from API:", error.message);
+      console.error("Error fetching folders data from the API:", error.message);
     }
   }
 
   useEffect(() => {
-    getInitialNotesDataFromApi();
-    getInitialFoldersDataFromApi();
+    if (userToken) {
+      getInitialNotesDataFromApi();
+      getInitialFoldersDataFromApi();
+    } else {
+      return;
+    }
   }, []);
 
   // Speech recognition handler
@@ -313,43 +324,47 @@ export default function App() {
 
   if (displayPageChoice === "create") {
     return (
-      <SignUpForm saveUserToken={saveUserToken} />
       // Display transcriber
-      // <>
-      //   <Header
-      //     title="transcriber"
-      //     showNavIcon={true}
-      //     navIcon={faListUl}
-      //     onNavIconClick={showNotesList}
-      //   />
-      //   <TextArea
-      //     handleTextAreaUserInput={handleTextAreaUserInput}
-      //     textAreaInput={textAreaInput}
-      //     isRecording={isRecording}
-      //   />
-      //   <SpeechRecognition
-      //     isRecording={isRecording}
-      //     setTextFromSpeechRecognition={setTextFromSpeechRecognition}
-      //     textAreaInput={textAreaInput}
-      //   />
-      //   <MainTool
-      //     icon={faMicrophone}
-      //     onMainToolClick={handleMicrophoneClick}
-      //     isRecording={isRecording}
-      //   />
-      //   <OpenAiApi
-      //     textAreaInput={textAreaInput}
-      //     handleTextAreaUserInput={handleTextAreaUserInput}
-      //   />
-      //   <Toolbar
-      //     tool1Name="Save"
-      //     tool1Icon={faArrowUpFromBracket}
-      //     tool1OnClick={handleSaveNoteBtnClick}
-      //     tool2Name="Clear"
-      //     tool2Icon={faTrashCan}
-      //     tool2OnClick={clearTextArea}
-      //   />
-      // </>
+      <>
+        <Header
+          title="transcriber"
+          showNavIcon={true}
+          navIcon={faListUl}
+          onNavIconClick={showNotesList}
+        />
+        <SignUpForm
+          saveUserToken={saveUserToken}
+          getInitialNotesDataFromApi={getInitialNotesDataFromApi}
+          getInitialFoldersDataFromApi={getInitialFoldersDataFromApi}
+        />
+        <TextArea
+          handleTextAreaUserInput={handleTextAreaUserInput}
+          textAreaInput={textAreaInput}
+          isRecording={isRecording}
+        />
+        <SpeechRecognition
+          isRecording={isRecording}
+          setTextFromSpeechRecognition={setTextFromSpeechRecognition}
+          textAreaInput={textAreaInput}
+        />
+        <MainTool
+          icon={faMicrophone}
+          onMainToolClick={handleMicrophoneClick}
+          isRecording={isRecording}
+        />
+        <OpenAiApi
+          textAreaInput={textAreaInput}
+          handleTextAreaUserInput={handleTextAreaUserInput}
+        />
+        <Toolbar
+          tool1Name="Save"
+          tool1Icon={faArrowUpFromBracket}
+          tool1OnClick={handleSaveNoteBtnClick}
+          tool2Name="Clear"
+          tool2Icon={faTrashCan}
+          tool2OnClick={clearTextArea}
+        />
+      </>
     );
   } else if (displayPageChoice === "inbox") {
     // Display notes inbox
