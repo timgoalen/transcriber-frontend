@@ -19,6 +19,7 @@ import Toolbar from "./components/Toolbar.js";
 import SpeechRecognition from "./components/SpeechRecognition.js";
 import OpenAiApi from "./components/OpenAiApi.js";
 import SignUpForm from "./components/SignUpForm.js";
+import LogInForm from "./components/LogInForm.js";
 import LogOutForm from "./components/LogOutForm.js";
 
 import { generateRandomColour } from "./utils/utils.js";
@@ -59,8 +60,13 @@ export default function App() {
   //   localStorage.setItem("userToken", userToken);
   // }, [userToken]);
 
+  // TODO: rename to 'saveUserTokenToState'
   function saveUserToken(token) {
     setUserToken(token);
+  }
+
+  function saveTokenToLocalStorage(token) {
+    localStorage.setItem("userToken", token);
   }
 
   console.log({ userToken });
@@ -335,6 +341,13 @@ export default function App() {
         />
         <SignUpForm
           saveUserToken={saveUserToken}
+          saveTokenToLocalStorage={saveTokenToLocalStorage}
+          getInitialNotesDataFromApi={getInitialNotesDataFromApi}
+          getInitialFoldersDataFromApi={getInitialFoldersDataFromApi}
+        />
+        <LogInForm
+          saveUserToken={saveUserToken}
+          saveTokenToLocalStorage={saveTokenToLocalStorage}
           getInitialNotesDataFromApi={getInitialNotesDataFromApi}
           getInitialFoldersDataFromApi={getInitialFoldersDataFromApi}
         />

@@ -1,7 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
 
-export default function SignUpForm({ saveUserToken, getInitialNotesDataFromApi, getInitialFoldersDataFromApi }) {
+export default function SignUpForm({
+  saveUserToken,
+  saveTokenToLocalStorage,
+  getInitialNotesDataFromApi,
+  getInitialFoldersDataFromApi,
+}) {
   const [signUpFormData, setSignUpFormData] = useState({
     username: "",
     password1: "",
@@ -17,10 +22,6 @@ export default function SignUpForm({ saveUserToken, getInitialNotesDataFromApi, 
         [changedFormField]: newFieldValue,
       };
     });
-  }
-
-  function saveTokenToLocalStorage(token) {
-    localStorage.setItem("userToken", token);
   }
 
   async function submitSignUpForm(event) {

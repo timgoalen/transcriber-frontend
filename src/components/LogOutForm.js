@@ -15,7 +15,9 @@ export default function LogOutForm({ userToken, saveUserToken }) {
         }
       );
       console.info(logOutResponse.data);
+      //   Remove the token from local storage
       localStorage.removeItem("userToken");
+      //   Remove the token from state
       saveUserToken("");
       //   Refresh the page to clear the Notes and Folders data in state
       window.location.reload();
