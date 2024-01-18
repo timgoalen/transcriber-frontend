@@ -18,6 +18,7 @@ import MainTool from "./components/MainTool.js";
 import Toolbar from "./components/Toolbar.js";
 import SpeechRecognition from "./components/SpeechRecognition.js";
 import OpenAiApi from "./components/OpenAiApi.js";
+import SignUpForm from "./components/SignUpForm.js";
 
 import { generateRandomColour } from "./utils/utils.js";
 import {
@@ -288,42 +289,43 @@ export default function App() {
 
   if (displayPageChoice === "create") {
     return (
+      <SignUpForm />
       // Display transcriber
-      <>
-        <Header
-          title="transcriber"
-          showNavIcon={true}
-          navIcon={faListUl}
-          onNavIconClick={showNotesList}
-        />
-        <TextArea
-          handleTextAreaUserInput={handleTextAreaUserInput}
-          textAreaInput={textAreaInput}
-          isRecording={isRecording}
-        />
-        <SpeechRecognition
-          isRecording={isRecording}
-          setTextFromSpeechRecognition={setTextFromSpeechRecognition}
-          textAreaInput={textAreaInput}
-        />
-        <MainTool
-          icon={faMicrophone}
-          onMainToolClick={handleMicrophoneClick}
-          isRecording={isRecording}
-        />
-        <OpenAiApi
-          textAreaInput={textAreaInput}
-          handleTextAreaUserInput={handleTextAreaUserInput}
-        />
-        <Toolbar
-          tool1Name="Save"
-          tool1Icon={faArrowUpFromBracket}
-          tool1OnClick={handleSaveNoteBtnClick}
-          tool2Name="Clear"
-          tool2Icon={faTrashCan}
-          tool2OnClick={clearTextArea}
-        />
-      </>
+      // <>
+      //   <Header
+      //     title="transcriber"
+      //     showNavIcon={true}
+      //     navIcon={faListUl}
+      //     onNavIconClick={showNotesList}
+      //   />
+      //   <TextArea
+      //     handleTextAreaUserInput={handleTextAreaUserInput}
+      //     textAreaInput={textAreaInput}
+      //     isRecording={isRecording}
+      //   />
+      //   <SpeechRecognition
+      //     isRecording={isRecording}
+      //     setTextFromSpeechRecognition={setTextFromSpeechRecognition}
+      //     textAreaInput={textAreaInput}
+      //   />
+      //   <MainTool
+      //     icon={faMicrophone}
+      //     onMainToolClick={handleMicrophoneClick}
+      //     isRecording={isRecording}
+      //   />
+      //   <OpenAiApi
+      //     textAreaInput={textAreaInput}
+      //     handleTextAreaUserInput={handleTextAreaUserInput}
+      //   />
+      //   <Toolbar
+      //     tool1Name="Save"
+      //     tool1Icon={faArrowUpFromBracket}
+      //     tool1OnClick={handleSaveNoteBtnClick}
+      //     tool2Name="Clear"
+      //     tool2Icon={faTrashCan}
+      //     tool2OnClick={clearTextArea}
+      //   />
+      // </>
     );
   } else if (displayPageChoice === "inbox") {
     // Display notes inbox
