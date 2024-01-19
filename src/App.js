@@ -91,6 +91,7 @@ export default function App() {
   async function getInitialNotesDataFromApi() {
     try {
       const response = await axios.get(NOTES_API_URL, {
+        // TODO: reformat header into varaible or set global axios header
         headers: {
           Authorization: `Token ${userToken}`,
         },
@@ -174,7 +175,11 @@ export default function App() {
 
   async function saveNote(newNote) {
     try {
-      const response = await axios.post(NOTES_API_URL, newNote);
+      const response = await axios.post(NOTES_API_URL, newNote, {
+        headers: {
+          Authorization: `Token ${userToken}`,
+        },
+      });
       console.log("Note saved:", response.data);
       getInitialNotesDataFromApi();
     } catch (error) {
@@ -184,7 +189,11 @@ export default function App() {
 
   async function saveFolder(newFolder) {
     try {
-      const response = await axios.post(FOLDERS_API_URL, newFolder);
+      const response = await axios.post(FOLDERS_API_URL, newFolder, {
+        headers: {
+          Authorization: `Token ${userToken}`,
+        },
+      });
       console.log("Folder saved:", response.data);
       getInitialFoldersDataFromApi();
       cancelNewFolderForm();
@@ -195,7 +204,11 @@ export default function App() {
 
   async function deleteNote(id) {
     try {
-      await axios.delete(NOTES_API_URL + `${id}/`);
+      await axios.delete(NOTES_API_URL + `${id}/`, {
+        headers: {
+          Authorization: `Token ${userToken}`,
+        },
+      });
       console.log("Note deleted successfully.");
       getInitialNotesDataFromApi();
     } catch (error) {
@@ -205,7 +218,11 @@ export default function App() {
 
   async function deleteFolder(id) {
     try {
-      await axios.delete(FOLDERS_API_URL + `${id}/`);
+      await axios.delete(FOLDERS_API_URL + `${id}/`, {
+        headers: {
+          Authorization: `Token ${userToken}`,
+        },
+      });
       console.log("Folder deleted successfully.");
       getInitialFoldersDataFromApi();
     } catch (error) {
@@ -293,7 +310,11 @@ export default function App() {
     const id = selectedNote.id;
     const updatedNote = { text: textAreaInput };
     try {
-      await axios.patch(NOTES_API_URL + `${id}/`, updatedNote);
+      await axios.patch(NOTES_API_URL + `${id}/`, updatedNote, {
+        headers: {
+          Authorization: `Token ${userToken}`,
+        },
+      });
       // TODO: check if the line below actually checks the request status
       console.log("Note updated successfully.");
       getInitialNotesDataFromApi();
@@ -307,7 +328,11 @@ export default function App() {
     const noteId = selectedNote.id;
     const updatedNote = { folder_id: FOLDERS_API_URL + `${targetFolderId}/` };
     try {
-      await axios.patch(NOTES_API_URL + `${noteId}/`, updatedNote);
+      await axios.patch(NOTES_API_URL + `${noteId}/`, updatedNote, {
+        headers: {
+          Authorization: `Token ${userToken}`,
+        },
+      });
       // TODO: check if the line below actually checks the request status
       console.log("Note updated successfully.");
       getInitialNotesDataFromApi();
@@ -325,7 +350,11 @@ export default function App() {
   async function handleUpdateFolderFormSubmit(name, id) {
     const updatedFolder = { title: name };
     try {
-      await axios.patch(FOLDERS_API_URL + `${id}/`, updatedFolder);
+      await axios.patch(FOLDERS_API_URL + `${id}/`, updatedFolder, {
+        headers: {
+          Authorization: `Token ${userToken}`,
+        },
+      });
       // TODO: check if the line below actually checks the request status
       console.log("Folder updated successfully.");
       getInitialFoldersDataFromApi();
