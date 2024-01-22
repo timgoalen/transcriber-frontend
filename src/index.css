@@ -118,6 +118,10 @@ h2 {
   color: black;
 }
 
+#username {
+  justify-content: center;
+}
+
 .login-menu hr {
   margin: 12px 0;
 }

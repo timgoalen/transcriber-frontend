@@ -19,6 +19,8 @@ export default function Header({
   isLoggedIn,
   showLogInForm,
   showSignUpForm,
+  userToken,
+  saveUserToken,
 }) {
   const [showLogInMenu, setShowLogInMenu] = useState(false);
 
@@ -40,10 +42,13 @@ export default function Header({
           {/* Navigation */}
           {showNavIcon && (
             <div className="list-view-btn-container">
-              <Button icon={navIcon} onClick={() => {
-                onNavIconClick();
-                setShowLogInMenu(false);
-              }} />
+              <Button
+                icon={navIcon}
+                onClick={() => {
+                  onNavIconClick();
+                  setShowLogInMenu(false);
+                }}
+              />
             </div>
           )}
         </div>
@@ -53,7 +58,11 @@ export default function Header({
       {showLogInMenu && (
         <div className="login-menu">
           {isLoggedIn ? (
-            <LogOutBtn toggleLogInMenu={toggleLogInMenu} />
+            <LogOutBtn
+              toggleLogInMenu={toggleLogInMenu}
+              userToken={userToken}
+              saveUserToken={saveUserToken}
+            />
           ) : (
             <>
               <div

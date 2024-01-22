@@ -387,25 +387,9 @@ export default function App() {
           isLoggedIn={isLoggedIn}
           showLogInForm={showLogInForm}
           showSignUpForm={showSignUpForm}
+          userToken={userToken}
+          saveUserToken={saveUserToken}
         />
-        {/* {isLoggedIn ? (
-          <LogOutBtn userToken={userToken} saveUserToken={saveUserToken} />
-        ) : (
-          <>
-            <SignUpForm
-              saveUserToken={saveUserToken}
-              saveTokenToLocalStorage={saveTokenToLocalStorage}
-              getInitialNotesDataFromApi={getInitialNotesDataFromApi}
-              getInitialFoldersDataFromApi={getInitialFoldersDataFromApi}
-            />
-            <LogInForm
-              saveUserToken={saveUserToken}
-              saveTokenToLocalStorage={saveTokenToLocalStorage}
-              getInitialNotesDataFromApi={getInitialNotesDataFromApi}
-              getInitialFoldersDataFromApi={getInitialFoldersDataFromApi}
-            />
-          </>
-        )} */}
         <TextArea
           handleTextAreaUserInput={handleTextAreaUserInput}
           textAreaInput={textAreaInput}

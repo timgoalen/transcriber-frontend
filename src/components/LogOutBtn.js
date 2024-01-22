@@ -9,9 +9,30 @@ export default function LogOutBtn({
   saveUserToken,
   toggleLogInMenu,
 }) {
+  const [username, setUsername] = useState("");
+
+  async function getUsername() {
+    try {
+      const usernameResponse = await axios.get(
+        "https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/users/",
+        {
+          headers: {
+            Authorization: `Token ${userToken}`,
+          },
+        }
+      );
+      const username = await usernameResponse.data[0].username;
+      setUsername(username);
+    } catch (error) {
+      console.error("Error retrieving username:", error.message);
+    }
+  }
+
+  getUsername();
+
   async function submitLogOutRequest(event) {
     try {
-      event.preventDefault();
+      // event.preventDefault();
       // TODO: change URL to a variable
       const logOutResponse = await axios.post(
         "https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/api/auth/logout/",
@@ -34,15 +55,19 @@ export default function LogOutBtn({
   }
 
   return (
-    <div
-      className="login-menu-item"
-      onClick={() => {
-        submitLogOutRequest();
-        toggleLogInMenu();
-      }}
-    >
-      <FontAwesomeIcon icon={faArrowRightToBracket} />
-      <button>Log Out</button>
-    </div>
+    <>
+      <div className="login-menu-item" id="username">Hi, {username}!</div>
+      <hr></hr>
+      <div
+        className="login-menu-item"
+        onClick={() => {
+          submitLogOutRequest();
+          toggleLogInMenu();
+        }}
+      >
+        <FontAwesomeIcon icon={faArrowRightToBracket} />
+        <button>Log Out</button>
+      </div>
+    </>
   );
 }
