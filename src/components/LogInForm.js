@@ -1,11 +1,15 @@
 import { useState } from "react";
+
 import axios from "axios";
+
+import CloseAuthFormsBtn from "./CloseAuthFormsBtn.js";
 
 export default function LogInForm({
   saveUserToken,
   saveTokenToLocalStorage,
   getInitialNotesDataFromApi,
   getInitialFoldersDataFromApi,
+  setDisplayPageChoice,
 }) {
   const [logInFormData, setLogInFormData] = useState({
     username: "",
@@ -78,6 +82,8 @@ export default function LogInForm({
           <div className="auth-form-btn-container">
             <button onClick={submitLogInForm}>Log In</button>
           </div>
+
+          <CloseAuthFormsBtn onClick={() => setDisplayPageChoice("create")} />
         </form>
       </section>
     </main>

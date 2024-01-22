@@ -1,11 +1,15 @@
 import { useState } from "react";
+
 import axios from "axios";
+
+import CloseAuthFormsBtn from "./CloseAuthFormsBtn.js";
 
 export default function SignUpForm({
   saveUserToken,
   saveTokenToLocalStorage,
   getInitialNotesDataFromApi,
   getInitialFoldersDataFromApi,
+  setDisplayPageChoice,
 }) {
   const [signUpFormData, setSignUpFormData] = useState({
     username: "",
@@ -97,6 +101,8 @@ export default function SignUpForm({
           <div className="auth-form-btn-container">
             <button onClick={submitSignUpForm}>Sign Up</button>
           </div>
+
+          <CloseAuthFormsBtn onClick={() => setDisplayPageChoice("create")} />
         </form>
       </section>
     </main>

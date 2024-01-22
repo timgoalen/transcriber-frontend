@@ -7,6 +7,7 @@ import {
   faListUl,
   faPlus,
   faXmark,
+  faInbox,
 } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan, faFolder } from "@fortawesome/free-regular-svg-icons";
 
@@ -20,7 +21,7 @@ import SpeechRecognition from "./components/SpeechRecognition.js";
 import OpenAiApi from "./components/OpenAiApi.js";
 import SignUpForm from "./components/SignUpForm.js";
 import LogInForm from "./components/LogInForm.js";
-import LogOutForm from "./components/LogOutForm.js";
+import LogOutBtn from "./components/LogOutBtn.js";
 
 import { generateRandomColour } from "./utils/utils.js";
 import {
@@ -253,6 +254,14 @@ export default function App() {
     setShowNewFolderForm(false);
   }
 
+  function showLogInForm() {
+    setDisplayPageChoice("login");
+  }
+
+  function showSignUpForm() {
+    setDisplayPageChoice("signup");
+  }
+
   // UTILITY FUNCTIONS
 
   function clearTextArea() {
@@ -371,12 +380,16 @@ export default function App() {
       <>
         <Header
           title="transcriber"
+          showUserIcon={true}
           showNavIcon={true}
           navIcon={faListUl}
           onNavIconClick={showNotesList}
+          isLoggedIn={isLoggedIn}
+          showLogInForm={showLogInForm}
+          showSignUpForm={showSignUpForm}
         />
         {/* {isLoggedIn ? (
-          <LogOutForm userToken={userToken} saveUserToken={saveUserToken} />
+          <LogOutBtn userToken={userToken} saveUserToken={saveUserToken} />
         ) : (
           <>
             <SignUpForm
@@ -393,19 +406,7 @@ export default function App() {
             />
           </>
         )} */}
-        {/* <SignUpForm
-          saveUserToken={saveUserToken}
-          saveTokenToLocalStorage={saveTokenToLocalStorage}
-          getInitialNotesDataFromApi={getInitialNotesDataFromApi}
-          getInitialFoldersDataFromApi={getInitialFoldersDataFromApi}
-        /> */}
-        <LogInForm
-          saveUserToken={saveUserToken}
-          saveTokenToLocalStorage={saveTokenToLocalStorage}
-          getInitialNotesDataFromApi={getInitialNotesDataFromApi}
-          getInitialFoldersDataFromApi={getInitialFoldersDataFromApi}
-        />
-        {/* <TextArea
+        <TextArea
           handleTextAreaUserInput={handleTextAreaUserInput}
           textAreaInput={textAreaInput}
           isRecording={isRecording}
@@ -431,8 +432,52 @@ export default function App() {
           tool2Name="Clear"
           tool2Icon={faTrashCan}
           tool2OnClick={clearTextArea}
-        /> */}
+        />
       </>
+    );
+  } else if (displayPageChoice === "login") {
+    return (
+    <>
+      <Header
+        title="transcriber"
+        showUserIcon={true}
+        showNavIcon={true}
+        navIcon={faListUl}
+        onNavIconClick={showNotesList}
+        isLoggedIn={isLoggedIn}
+        showLogInForm={showLogInForm}
+        showSignUpForm={showSignUpForm}
+      />
+      <LogInForm
+        saveUserToken={saveUserToken}
+        saveTokenToLocalStorage={saveTokenToLocalStorage}
+        getInitialNotesDataFromApi={getInitialNotesDataFromApi}
+        getInitialFoldersDataFromApi={getInitialFoldersDataFromApi}
+        setDisplayPageChoice={setDisplayPageChoice}
+      />
+    </>
+    );
+  } else if (displayPageChoice === "signup") {
+    return (
+    <>
+      <Header
+        title="transcriber"
+        showUserIcon={true}
+        showNavIcon={true}
+        navIcon={faListUl}
+        onNavIconClick={showNotesList}
+        isLoggedIn={isLoggedIn}
+        showLogInForm={showLogInForm}
+        showSignUpForm={showSignUpForm}
+      />
+      <SignUpForm
+        saveUserToken={saveUserToken}
+        saveTokenToLocalStorage={saveTokenToLocalStorage}
+        getInitialNotesDataFromApi={getInitialNotesDataFromApi}
+        getInitialFoldersDataFromApi={getInitialFoldersDataFromApi}
+        setDisplayPageChoice={setDisplayPageChoice}
+      />
+    </>
     );
   } else if (displayPageChoice === "inbox") {
     // Display notes inbox

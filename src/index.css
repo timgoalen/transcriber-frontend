@@ -6,8 +6,8 @@
   --black: #212121;
   --red: #f22626;
   --folder-dropdown-offset: calc(3% + 0.8rem);
-  --subtle-box-shadow-1: 2px 2px 10px 4px rgba(152,152,152,0.08);
-  --subtle-box-shadow-2: 2px 2px 10px 4px rgba(152,152,152,0.15);
+  --subtle-box-shadow-1: 2px 2px 10px 4px rgba(152, 152, 152, 0.08);
+  --subtle-box-shadow-2: 2px 2px 10px 4px rgba(152, 152, 152, 0.15);
   /* Google Material Design box shadows: */
   --m3-elevation-light-1: 0px 1px 2px 0px rgba(0, 0, 0, 0.3),
     0px 1px 3px 1px rgba(0, 0, 0, 0.15);
@@ -67,6 +67,12 @@ header {
   justify-content: space-between;
 }
 
+.header-icons-container {
+  display: flex;
+  flex-direction: row;
+  gap: 5vw;
+}
+
 h1 {
   font-weight: 400;
   color: var(--orange);
@@ -80,6 +86,54 @@ h2 {
 #list-view-btn,
 #cancel-btn {
   font-size: 1.2rem;
+}
+
+.login-menu {
+  position: absolute;
+  z-index: 999;
+  top: 7%;
+  right: 5vw;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--grey);
+  border-radius: 8px;
+  background-color: #fff;
+  padding: 1rem;
+  box-shadow: var(--subtle-box-shadow-1);
+}
+
+.login-menu-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.login-menu-item:hover svg {
+  cursor: pointer;
+  color: var(--orange);
+}
+
+.login-menu-item button:hover {
+  cursor: pointer;
+  color: black;
+}
+
+.login-menu hr {
+  margin: 12px 0;
+}
+
+.login-menu svg {
+  color: var(--grey);
+  margin-right: 12px;
+}
+
+#cancel-btn.close-auth-form-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 1.5% 2.5%;
+  border: none;
+  box-shadow: none;
 }
 
 #text-container {
@@ -170,6 +224,7 @@ canvas {
   margin: auto;
   padding: 1.5% 2.5%;
   box-shadow: var(--subtle-box-shadow-2);
+  position: relative;
 }
 
 .auth-form-fields {
@@ -489,6 +544,10 @@ canvas {
     margin: 0 8%;
   }
 
+  .login-menu {
+    right: 13vw;
+  }
+
   #ai-btn {
     bottom: 12vh;
     bottom: 12dvh;
@@ -518,6 +577,10 @@ canvas {
   #main-container,
   header {
     margin: 0 15%;
+  }
+
+  .login-menu {
+    right: 20vw;
   }
 
   .list-page-item {

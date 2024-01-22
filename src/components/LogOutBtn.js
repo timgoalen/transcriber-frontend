@@ -1,7 +1,14 @@
 import { useState } from "react";
-import axios from "axios";
 
-export default function LogOutForm({ userToken, saveUserToken }) {
+import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons";
+
+export default function LogOutBtn({
+  userToken,
+  saveUserToken,
+  toggleLogInMenu,
+}) {
   async function submitLogOutRequest(event) {
     try {
       event.preventDefault();
@@ -26,5 +33,16 @@ export default function LogOutForm({ userToken, saveUserToken }) {
     }
   }
 
-  return <button onClick={submitLogOutRequest}>Log Out</button>;
+  return (
+    <div
+      className="login-menu-item"
+      onClick={() => {
+        submitLogOutRequest();
+        toggleLogInMenu();
+      }}
+    >
+      <FontAwesomeIcon icon={faArrowRightToBracket} />
+      <button>Log Out</button>
+    </div>
+  );
 }
