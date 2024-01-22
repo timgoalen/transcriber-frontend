@@ -31,14 +31,19 @@ export default function Header({
       <header>
         <h1>{title}</h1>
         <div className="header-icons-container">
+          {/* User log in menu */}
           {showUserIcon && (
             <div className="list-view-btn-container">
               <Button icon={faUser} onClick={toggleLogInMenu} />
             </div>
           )}
+          {/* Navigation */}
           {showNavIcon && (
             <div className="list-view-btn-container">
-              <Button icon={navIcon} onClick={onNavIconClick} />
+              <Button icon={navIcon} onClick={() => {
+                onNavIconClick();
+                setShowLogInMenu(false);
+              }} />
             </div>
           )}
         </div>
