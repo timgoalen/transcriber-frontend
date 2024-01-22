@@ -284,7 +284,7 @@ canvas {
   position: absolute;
   bottom: 13vh;
   bottom: 13dvh;
-  right: 6vw;
+  left: 5.5vw;
 }
 
 .toolbar {
