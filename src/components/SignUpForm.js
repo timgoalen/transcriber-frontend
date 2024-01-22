@@ -59,40 +59,46 @@ export default function SignUpForm({
   }
 
   return (
-    <form>
-      <h2>Sign Up</h2>
-      <label htmlFor="username">Username</label>
-      <input
-        type="text"
-        value={signUpFormData.username}
-        onChange={handleFormChange}
-        placeholder="username"
-        id="username"
-        name="username"
-        autoComplete="username"
-      ></input>
-      <label htmlFor="password1">Password</label>
-      <input
-        type="password"
-        value={signUpFormData.password1}
-        onChange={handleFormChange}
-        placeholder="password"
-        id="password1"
-        name="password1"
-        autoComplete="new-password"
-      ></input>
-      <label htmlFor="password2">Confirm Password</label>
-      <input
-        type="password"
-        value={signUpFormData.password2}
-        onChange={handleFormChange}
-        placeholder="confirm password"
-        id="password2"
-        name="password2"
-        autoComplete="new-password"
-      ></input>
+    <main id="main-container">
+      <section className="auth-form-container">
+        <form className="auth-form">
+          <h2>sign up</h2>
 
-      <button onClick={submitSignUpForm}>Sign Up</button>
-    </form>
+          <div className="auth-form-fields">
+            <label htmlFor="username">username</label>
+            <input
+              type="text"
+              value={signUpFormData.username}
+              onChange={handleFormChange}
+              id="username"
+              name="username"
+              autoComplete="username"
+            ></input>
+            <label htmlFor="password1">password</label>
+            <input
+              type="password"
+              value={signUpFormData.password1}
+              onChange={handleFormChange}
+              id="password1"
+              name="password1"
+              autoComplete="new-password"
+            ></input>
+            <label htmlFor="password2">confirm password</label>
+            <input
+              type="password"
+              value={signUpFormData.password2}
+              onChange={handleFormChange}
+              id="password2"
+              name="password2"
+              autoComplete="new-password"
+            ></input>
+          </div>
+
+          <div className="auth-form-btn-container">
+            <button onClick={submitSignUpForm}>Sign Up</button>
+          </div>
+        </form>
+      </section>
+    </main>
   );
 }

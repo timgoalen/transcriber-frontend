@@ -6,6 +6,8 @@
   --black: #212121;
   --red: #f22626;
   --folder-dropdown-offset: calc(3% + 0.8rem);
+  --subtle-box-shadow-1: 2px 2px 10px 4px rgba(152,152,152,0.08);
+  --subtle-box-shadow-2: 2px 2px 10px 4px rgba(152,152,152,0.15);
   /* Google Material Design box shadows: */
   --m3-elevation-light-1: 0px 1px 2px 0px rgba(0, 0, 0, 0.3),
     0px 1px 3px 1px rgba(0, 0, 0, 0.15);
@@ -149,6 +151,71 @@ canvas {
   /* overflow: scroll; */
   max-width: 600px;
   margin: auto;
+}
+
+/* -- AUTHENTICATION PAGES -- */
+
+.auth-form-container {
+  height: 80vh;
+  height: 80dvh;
+  display: grid;
+  place-items: center;
+}
+
+.auth-form {
+  border: 1px solid var(--grey);
+  border-radius: 8px;
+  width: 95%;
+  max-width: 390px;
+  margin: auto;
+  padding: 1.5% 2.5%;
+  box-shadow: var(--subtle-box-shadow-2);
+}
+
+.auth-form-fields {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5rem;
+}
+
+.auth-form label {
+  margin-top: 1rem;
+}
+
+.auth-form input {
+  border: 1px solid var(--grey);
+  border-radius: 6px;
+  font-size: 1rem;
+  padding: 4px;
+  font-family: "Delius", sans-serif;
+  box-shadow: var(--subtle-box-shadow-1);
+}
+
+.auth-form input:focus {
+  /* border-color: var(--blue); */
+}
+
+.auth-form h2 {
+  font-size: 2rem;
+}
+
+.auth-form-btn-container {
+  display: grid;
+  place-items: center;
+  margin: 2rem 0 1rem 0;
+}
+
+.auth-form button {
+  border: 1px solid var(--orange);
+  border-radius: 8px;
+  padding: 0.25rem 2rem;
+  box-shadow: var(--subtle-box-shadow-2);
+  color: black;
+}
+
+.auth-form button:hover {
+  cursor: pointer;
+  border: 1px dashed var(--orange);
 }
 
 /* -- FOOTER -- */

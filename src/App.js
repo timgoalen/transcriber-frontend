@@ -375,7 +375,7 @@ export default function App() {
           navIcon={faListUl}
           onNavIconClick={showNotesList}
         />
-        {isLoggedIn ? (
+        {/* {isLoggedIn ? (
           <LogOutForm userToken={userToken} saveUserToken={saveUserToken} />
         ) : (
           <>
@@ -392,8 +392,20 @@ export default function App() {
               getInitialFoldersDataFromApi={getInitialFoldersDataFromApi}
             />
           </>
-        )}
-        <TextArea
+        )} */}
+        {/* <SignUpForm
+          saveUserToken={saveUserToken}
+          saveTokenToLocalStorage={saveTokenToLocalStorage}
+          getInitialNotesDataFromApi={getInitialNotesDataFromApi}
+          getInitialFoldersDataFromApi={getInitialFoldersDataFromApi}
+        /> */}
+        <LogInForm
+          saveUserToken={saveUserToken}
+          saveTokenToLocalStorage={saveTokenToLocalStorage}
+          getInitialNotesDataFromApi={getInitialNotesDataFromApi}
+          getInitialFoldersDataFromApi={getInitialFoldersDataFromApi}
+        />
+        {/* <TextArea
           handleTextAreaUserInput={handleTextAreaUserInput}
           textAreaInput={textAreaInput}
           isRecording={isRecording}
@@ -419,7 +431,7 @@ export default function App() {
           tool2Name="Clear"
           tool2Icon={faTrashCan}
           tool2OnClick={clearTextArea}
-        />
+        /> */}
       </>
     );
   } else if (displayPageChoice === "inbox") {

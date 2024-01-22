@@ -49,30 +49,37 @@ export default function LogInForm({
   }
 
   return (
-    <form>
-      <h2>Log In</h2>
-      <label htmlFor="username">Username</label>
-      <input
-        type="text"
-        value={logInFormData.username}
-        onChange={handleFormChange}
-        placeholder="username"
-        id="username"
-        name="username"
-        autoComplete="username"
-      ></input>
-      <label htmlFor="password">Password</label>
-      <input
-        type="password"
-        value={logInFormData.password}
-        onChange={handleFormChange}
-        placeholder="password"
-        id="password"
-        name="password"
-        autoComplete="password"
-      ></input>
+    <main id="main-container">
+      <section className="auth-form-container">
+        <form className="auth-form">
+          <h2>log in</h2>
 
-      <button onClick={submitLogInForm}>Log In</button>
-    </form>
+          <div className="auth-form-fields">
+            <label htmlFor="username">username</label>
+            <input
+              type="text"
+              value={logInFormData.username}
+              onChange={handleFormChange}
+              id="username"
+              name="username"
+              autoComplete="username"
+            ></input>
+            <label htmlFor="password">password</label>
+            <input
+              type="password"
+              value={logInFormData.password}
+              onChange={handleFormChange}
+              id="password"
+              name="password"
+              autoComplete="password"
+            ></input>
+          </div>
+
+          <div className="auth-form-btn-container">
+            <button onClick={submitLogInForm}>Log In</button>
+          </div>
+        </form>
+      </section>
+    </main>
   );
 }
