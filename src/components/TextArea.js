@@ -20,6 +20,7 @@ export default function TextArea({
             value={textAreaInput}
             onChange={handleTextareaChange}
             style={styles}
+            aria-label="Main Text Input"
           ></textarea>
           <AudioVisualizer isRecording={isRecording} />
         </section>
