@@ -14,7 +14,7 @@ export default function LogOutBtn({
   async function getUsername() {
     try {
       const usernameResponse = await axios.get(
-        "https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/users/",
+        "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/users/",
         {
           headers: {
             Authorization: `Token ${userToken}`,
@@ -35,7 +35,7 @@ export default function LogOutBtn({
       // event.preventDefault();
       // TODO: change URL to a variable
       const logOutResponse = await axios.post(
-        "https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/api/auth/logout/",
+        "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/api/auth/logout/",
         {
           headers: {
             Authorization: `Token ${userToken}`,

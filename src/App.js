@@ -80,9 +80,9 @@ export default function App() {
   console.log({ isLoggedIn });
 
   const NOTES_API_URL =
-    "https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/notes/";
+    "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/notes/";
   const FOLDERS_API_URL =
-    "https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/folders/";
+    "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/folders/";
   // TODO: change this when the deployed URL is confirmed...
   const FOLDERS_API_URL_NO_HTTPS =
     "http://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/folders/";

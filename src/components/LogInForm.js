@@ -33,7 +33,7 @@ export default function LogInForm({
     try {
       // Obtain the authorisation token by logging in the user
       const logInResponse = await axios.post(
-        "https://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/api/auth/login/",
+        "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/api/auth/login/",
         {
           username: logInFormData.username,
           password: logInFormData.password,
