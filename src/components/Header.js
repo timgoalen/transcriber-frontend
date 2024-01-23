@@ -36,7 +36,7 @@ export default function Header({
           {/* User log in menu */}
           {showUserIcon && (
             <div className="list-view-btn-container">
-              <Button icon={faUser} onClick={toggleLogInMenu} />
+              <Button icon={faUser} onClick={toggleLogInMenu} ariaLabel="User Account"/>
             </div>
           )}
           {/* Navigation */}
@@ -44,6 +44,7 @@ export default function Header({
             <div className="list-view-btn-container">
               <Button
                 icon={navIcon}
+                ariaLabel="Inbox"
                 onClick={() => {
                   onNavIconClick();
                   setShowLogInMenu(false);

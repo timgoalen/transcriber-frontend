@@ -11,11 +11,11 @@ export default function Toolbar({
   return (
     <section className="toolbar">
       <div className="footer-left">
-        <Button name={tool1Name} icon={tool1Icon} onClick={tool1OnClick} />
+        <Button name={tool1Name} icon={tool1Icon} onClick={tool1OnClick} ariaLabel="Save" />
       </div>
 
       <div className="footer-right">
-        <Button name={tool2Name} icon={tool2Icon} onClick={tool2OnClick} />
+        <Button name={tool2Name} icon={tool2Icon} onClick={tool2OnClick} ariaLabel="Clear" />
       </div>
     </section>
   );

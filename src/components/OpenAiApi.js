@@ -47,9 +47,9 @@ export default function OpenAiApi({ textAreaInput, handleTextAreaUserInput }) {
   return (
     <div id="ai-btn" onClick={() => sendToOpenAiApi()}>
       {isLoading ? (
-        <Button name={""} icon={faSpinner} />
+        <Button name={""} icon={faSpinner} ariaLabel="Loading AI Response"/>
       ) : (
-        <Button name={""} icon={faWandMagicSparkles} />
+        <Button name={""} icon={faWandMagicSparkles} ariaLabel="AI Formatting"/>
 
       )}
     </div>
