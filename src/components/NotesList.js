@@ -70,8 +70,8 @@ export default function NotesList({
         : // Only show placeholder SVG in "inbox"
           folderChoice === null && (
             <EmptyPlaceholderGraphics
-              primaryColour="#f28c26"
-              secondaryColour="#268cf2"
+              primaryColour="#EC7100"
+              secondaryColour="#0074E8"
             />
           )}
 

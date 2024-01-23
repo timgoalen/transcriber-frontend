@@ -1,6 +1,8 @@
 :root {
-  --orange: #f28c26;
-  --blue: #268cf2;
+  --orange: #EC7100;
+  --orange-hover: #CC6300;
+  --blue: #0074E8;
+  --blue-hover: #175796;
   --grey: #989898;
   --white: #fff;
   --black: #212121;
@@ -327,13 +329,13 @@ canvas {
 #delete-btn-modal:hover,
 .list-view-btn-container:hover {
   cursor: pointer;
-  color: #0b66c1;
+  color: var(--blue-hover);
 }
 
 #new-note-container:hover {
   cursor: pointer;
-  color: #e77a0d;
-  border-color: #e77a0d;
+  color: var(--orange-hover);
+  border-color: var(--orange-hover);
 }
 
 .list-page-item:hover {
@@ -374,8 +376,8 @@ canvas {
 
 .recording-off:hover {
   cursor: pointer;
-  border: 1px solid #e77a0d;
-  color: #e77a0d;
+  border: 1px solid var(--orange-hover);
+  color: var(--orange-hover);
 }
 
 /* -- LIST PAGE -- */
