@@ -26,7 +26,7 @@ export default function NotesListModal({
   assembleFolder,
   saveFolder,
   handleNewFolderFormSubmit,
-  FOLDERS_API_URL_NO_HTTPS,
+  FOLDERS_API_URL,
 }) {
   const [modalContentChoice, setModalContentChoice] =
     useState("note detail view");
@@ -121,7 +121,7 @@ export default function NotesListModal({
                   <p>{folder.title}</p>
                 </div>
                 {/* Show tick for conaining folder */}
-                {selectedNote.folderId === FOLDERS_API_URL_NO_HTTPS + `${folder.id}/` && (
+                {selectedNote.folderId === FOLDERS_API_URL + `${folder.id}/` && (
                   <div className="item-tools">
                     <FontAwesomeIcon icon={faCheck} />
                   </div>

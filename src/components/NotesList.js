@@ -20,7 +20,7 @@ export default function NotesList({
   folderChoice,
   handleNewFolderFormSubmit,
   handleShowNewFolderBtnClick,
-  FOLDERS_API_URL_NO_HTTPS,
+  FOLDERS_API_URL,
 }) {
   const [isNotesListModalOpen, setIsNotesListModalOpen] = useState(false);
 
@@ -89,7 +89,7 @@ export default function NotesList({
         cancelNewFolderForm={cancelNewFolderForm}
         showNewFolderForm={showNewFolderForm}
         handleNewFolderFormSubmit={handleNewFolderFormSubmit}
-        FOLDERS_API_URL_NO_HTTPS={FOLDERS_API_URL_NO_HTTPS}
+        FOLDERS_API_URL={FOLDERS_API_URL}
       />
     </>
   );

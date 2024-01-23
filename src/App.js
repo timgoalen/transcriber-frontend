@@ -83,9 +83,6 @@ export default function App() {
     "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/notes/";
   const FOLDERS_API_URL =
     "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/folders/";
-  // TODO: change this when the deployed URL is confirmed...
-  const FOLDERS_API_URL_NO_HTTPS =
-    "http://8000-timgoalen-transcriberba-5uy4uhx3wov.ws-eu107.gitpod.io/folders/";
 
   // Get data from API on page load
 
@@ -309,7 +306,7 @@ export default function App() {
   }
 
   function handleCreateNewNoteinFolderClick(folderId) {
-    setTargetFolder(FOLDERS_API_URL_NO_HTTPS + `${folderId}/`);
+    setTargetFolder(FOLDERS_API_URL + `${folderId}/`);
     setDisplayPageChoice("create");
     clearTextArea();
   }
@@ -487,7 +484,7 @@ export default function App() {
             cancelNewFolderForm={cancelNewFolderForm}
             handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
             showNewFolderForm={showNewFolderForm}
-            FOLDERS_API_URL_NO_HTTPS={FOLDERS_API_URL_NO_HTTPS}
+            FOLDERS_API_URL={FOLDERS_API_URL}
           />
           <MainTool icon={faPlus} onMainToolClick={handleNewNoteClick} />
         </main>
@@ -558,7 +555,7 @@ export default function App() {
             handleNewFolderFormSubmit={handleNewFolderFormSubmit}
             handleCreateNewNoteinFolderClick={handleCreateNewNoteinFolderClick}
             handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
-            FOLDERS_API_URL_NO_HTTPS={FOLDERS_API_URL_NO_HTTPS}
+            FOLDERS_API_URL={FOLDERS_API_URL}
           />
         </main>
       </>
