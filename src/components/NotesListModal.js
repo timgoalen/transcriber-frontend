@@ -88,7 +88,7 @@ export default function NotesListModal({
               <div
                 className="item-text"
                 onClick={() => {
-                  handleAddNoteToFolder("inbox");
+                  handleAddNoteToFolder(null);
                   toggleModalVisibility();
                   setModalContentChoice("note detail view");
                 }}

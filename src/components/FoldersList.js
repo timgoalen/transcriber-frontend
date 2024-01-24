@@ -32,10 +32,10 @@ export default function FoldersList({
   handleNewFolderFormSubmit,
   handleCreateNewNoteinFolderClick,
   handleShowNewFolderBtnClick,
-  FOLDERS_API_URL_NO_HTTPS,
+  FOLDERS_API_URL,
 }) {
   const [openToolList, setOpenToolList] = useState(0);
-  const [editTitle, setEditTitle] = useState(0)
+  const [editTitle, setEditTitle] = useState(0);
   const [showNotesInFolder, setShowNotesInFolder] = useState(0);
 
   // -- EVENT HANDLERS --
@@ -131,7 +131,6 @@ export default function FoldersList({
                 </>
               )}
             </div>
-
             {showNotesInFolder === folder.id && (
               <section className="notes-in-folder-dropdown">
                 <NotesList
@@ -142,12 +141,12 @@ export default function FoldersList({
                   deleteNote={deleteNote}
                   openEditPage={openEditPage}
                   handleAddNoteToFolder={handleAddNoteToFolder}
-                  folderChoice={FOLDERS_API_URL_NO_HTTPS + `${folder.id}/`}
+                  folderChoice={FOLDERS_API_URL + `${folder.id}/`}
                   handleNewFolderFormSubmit={handleNewFolderFormSubmit}
                   cancelNewFolderForm={cancelNewFolderForm}
                   handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
                   showNewFolderForm={showNewFolderForm}
-                  FOLDERS_API_URL_NO_HTTPS={FOLDERS_API_URL_NO_HTTPS}
+                  FOLDERS_API_URL={FOLDERS_API_URL}
                 />
 
                 {/* Create new note in folder */}
