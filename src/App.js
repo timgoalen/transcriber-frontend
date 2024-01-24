@@ -22,6 +22,7 @@ import OpenAiApi from "./components/OpenAiApi.js";
 import SignUpForm from "./components/SignUpForm.js";
 import LogInForm from "./components/LogInForm.js";
 import LogOutBtn from "./components/LogOutBtn.js";
+import SearchBar from "./components/SearchBar.js";
 
 import { generateRandomColour } from "./utils/utils.js";
 import {
@@ -56,6 +57,7 @@ export default function App() {
   const [showNewFolderForm, setShowNewFolderForm] = useState(false);
   const [userToken, setUserToken] = useState(getInitialUserToken);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [searchTerms, setSearchTerms] = useState("");
 
   // Sync the local storage copy of the user token when it changes in state
   // useEffect(() => {
@@ -369,6 +371,10 @@ export default function App() {
     }
   }
 
+  function handleSearchInputChange(event) {
+    setSearchTerms(event.target.value);
+  }
+
   // -- RENDER ELEMENTS --
 
   if (displayPageChoice === "create") {
@@ -418,47 +424,47 @@ export default function App() {
     );
   } else if (displayPageChoice === "login") {
     return (
-    <>
-      <Header
-        title="transcriber"
-        showUserIcon={true}
-        showNavIcon={true}
-        navIcon={faListUl}
-        onNavIconClick={showNotesList}
-        isLoggedIn={isLoggedIn}
-        showLogInForm={showLogInForm}
-        showSignUpForm={showSignUpForm}
-      />
-      <LogInForm
-        saveUserToken={saveUserToken}
-        saveTokenToLocalStorage={saveTokenToLocalStorage}
-        getInitialNotesDataFromApi={getInitialNotesDataFromApi}
-        getInitialFoldersDataFromApi={getInitialFoldersDataFromApi}
-        setDisplayPageChoice={setDisplayPageChoice}
-      />
-    </>
+      <>
+        <Header
+          title="transcriber"
+          showUserIcon={true}
+          showNavIcon={true}
+          navIcon={faListUl}
+          onNavIconClick={showNotesList}
+          isLoggedIn={isLoggedIn}
+          showLogInForm={showLogInForm}
+          showSignUpForm={showSignUpForm}
+        />
+        <LogInForm
+          saveUserToken={saveUserToken}
+          saveTokenToLocalStorage={saveTokenToLocalStorage}
+          getInitialNotesDataFromApi={getInitialNotesDataFromApi}
+          getInitialFoldersDataFromApi={getInitialFoldersDataFromApi}
+          setDisplayPageChoice={setDisplayPageChoice}
+        />
+      </>
     );
   } else if (displayPageChoice === "signup") {
     return (
-    <>
-      <Header
-        title="transcriber"
-        showUserIcon={true}
-        showNavIcon={true}
-        navIcon={faListUl}
-        onNavIconClick={showNotesList}
-        isLoggedIn={isLoggedIn}
-        showLogInForm={showLogInForm}
-        showSignUpForm={showSignUpForm}
-      />
-      <SignUpForm
-        saveUserToken={saveUserToken}
-        saveTokenToLocalStorage={saveTokenToLocalStorage}
-        getInitialNotesDataFromApi={getInitialNotesDataFromApi}
-        getInitialFoldersDataFromApi={getInitialFoldersDataFromApi}
-        setDisplayPageChoice={setDisplayPageChoice}
-      />
-    </>
+      <>
+        <Header
+          title="transcriber"
+          showUserIcon={true}
+          showNavIcon={true}
+          navIcon={faListUl}
+          onNavIconClick={showNotesList}
+          isLoggedIn={isLoggedIn}
+          showLogInForm={showLogInForm}
+          showSignUpForm={showSignUpForm}
+        />
+        <SignUpForm
+          saveUserToken={saveUserToken}
+          saveTokenToLocalStorage={saveTokenToLocalStorage}
+          getInitialNotesDataFromApi={getInitialNotesDataFromApi}
+          getInitialFoldersDataFromApi={getInitialFoldersDataFromApi}
+          setDisplayPageChoice={setDisplayPageChoice}
+        />
+      </>
     );
   } else if (displayPageChoice === "inbox") {
     // Display notes inbox
@@ -471,6 +477,11 @@ export default function App() {
           onNavIconClick={showFoldersList}
         />
         <main className="list-page-main">
+          <SearchBar
+            searchTerms={searchTerms}
+            setSearchTerms={setSearchTerms}
+            handleSearchInputChange={handleSearchInputChange}
+          />
           <NotesList
             notes={notes}
             folders={folders}
@@ -485,6 +496,7 @@ export default function App() {
             handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
             showNewFolderForm={showNewFolderForm}
             FOLDERS_API_URL={FOLDERS_API_URL}
+            searchTerms={searchTerms}
           />
           <MainTool icon={faPlus} onMainToolClick={handleNewNoteClick} />
         </main>
@@ -535,6 +547,11 @@ export default function App() {
           onNavIconClick={showNotesList}
         />
         <main className="list-page-main">
+          <SearchBar
+            searchTerms={searchTerms}
+            setSearchTerms={setSearchTerms}
+            handleSearchInputChange={handleSearchInputChange}
+          />
           <FoldersList
             folders={folders}
             notes={notes}
@@ -556,6 +573,7 @@ export default function App() {
             handleCreateNewNoteinFolderClick={handleCreateNewNoteinFolderClick}
             handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
             FOLDERS_API_URL={FOLDERS_API_URL}
+            searchTerms={searchTerms}
           />
         </main>
       </>

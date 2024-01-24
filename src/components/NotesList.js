@@ -21,6 +21,7 @@ export default function NotesList({
   handleNewFolderFormSubmit,
   handleShowNewFolderBtnClick,
   FOLDERS_API_URL,
+  searchTerms,
 }) {
   const [isNotesListModalOpen, setIsNotesListModalOpen] = useState(false);
 
@@ -53,10 +54,12 @@ export default function NotesList({
     toggleModalVisibility();
   }
 
+  let filteredNotes = notes.filter(note => note.text.toLowerCase().includes(searchTerms.toLowerCase()));
+
   return (
     <>
       {!isEmptyFolder
-        ? notes.map(
+        ? filteredNotes.map(
             (note) =>
               note.folder_id === folderChoice && (
                 <NoteListItem

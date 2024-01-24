@@ -33,6 +33,7 @@ export default function FoldersList({
   handleCreateNewNoteinFolderClick,
   handleShowNewFolderBtnClick,
   FOLDERS_API_URL,
+  searchTerms,
 }) {
   const [openToolList, setOpenToolList] = useState(0);
   const [editTitle, setEditTitle] = useState(0);
@@ -70,12 +71,14 @@ export default function FoldersList({
     setOpenToolList(0);
   }
 
+  let filteredFolders = folders.filter(folder => folder.title.toLowerCase().includes(searchTerms.toLowerCase()));
+
   return (
     // refactor into <ListItem /> components
     <>
       {folders && folders.length > 0 ? (
         /* Folders list */
-        folders.map((folder) => (
+        filteredFolders.map((folder) => (
           <Fragment key={folder.id}>
             <div id={folder.id} className="list-page-item">
               {/* Replace normal div with a text input form when user clicks on edit icon */}
@@ -147,6 +150,7 @@ export default function FoldersList({
                   handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
                   showNewFolderForm={showNewFolderForm}
                   FOLDERS_API_URL={FOLDERS_API_URL}
+                  searchTerms={searchTerms}
                 />
 
                 {/* Create new note in folder */}

@@ -1,7 +1,7 @@
 :root {
-  --orange: #EC7100;
-  --orange-hover: #CC6300;
-  --blue: #0074E8;
+  --orange: #ec7100;
+  --orange-hover: #cc6300;
+  --blue: #0074e8;
   --blue-hover: #175796;
   --grey: #989898;
   --white: #fff;
@@ -381,6 +381,35 @@ canvas {
 }
 
 /* -- LIST PAGE -- */
+
+#search-icon {
+  width: 1.202rem;
+    border: 1px dotted var(--grey);
+    font-size: 0.8rem;
+    padding: 0.701rem 0.5rem;
+    color: var(--grey);
+}
+
+input[type="search"] {
+  width: 45%;
+  border: 1px dotted var(--blue);
+  font-size: 1.2rem;
+  padding: 0.2rem 0.5rem;
+  line-height: 1.5;
+  height: 2.2rem;
+  font-family: "Delius", sans-serif;
+  display: inline-block;
+}
+
+#search:focus {
+  border: 1px dotted var(--orange);
+  outline: none;
+}
+
+.search-bar-close-icon {
+  color: var(--blue);
+  display: inline-grid;
+}
 
 .list-page-item {
   margin: 3% 3% 0 3%;
