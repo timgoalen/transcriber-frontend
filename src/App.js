@@ -58,6 +58,8 @@ export default function App() {
   const [userToken, setUserToken] = useState(getInitialUserToken);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [searchTerms, setSearchTerms] = useState("");
+  const [isFoldersSearchEmpty, setIsFoldersSearchEmpty] = useState(null);
+  const [isNotesSearchEmpty, setIsNotesSearchEmpty] = useState(null);
 
   // TODO: rename to 'saveUserTokenToState'
   function saveUserToken(token) {
@@ -253,6 +255,7 @@ export default function App() {
   }
 
   function showSearchPage() {
+    setSearchTerms("");
     setDisplayPageChoice("search");
   }
 
@@ -492,6 +495,7 @@ export default function App() {
             FOLDERS_API_URL={FOLDERS_API_URL}
             searchTerms={searchTerms}
             displayPageChoice={displayPageChoice}
+            setIsNotesSearchEmpty={setIsNotesSearchEmpty}
           />
           <MainTool icon={faPlus} onMainToolClick={handleNewNoteClick} />
         </main>
@@ -566,6 +570,7 @@ export default function App() {
                 FOLDERS_API_URL={FOLDERS_API_URL}
                 searchTerms={searchTerms}
                 displayPageChoice={displayPageChoice}
+                setIsNotesSearchEmpty={setIsNotesSearchEmpty}
               />
               {/* Folders search results */}
               <FoldersList
@@ -592,7 +597,13 @@ export default function App() {
                 handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
                 FOLDERS_API_URL={FOLDERS_API_URL}
                 searchTerms={searchTerms}
+                setIsFoldersSearchEmpty={setIsFoldersSearchEmpty}
+                setIsNotesSearchEmpty={setIsNotesSearchEmpty}
               />
+              {/* No search results */}
+              {isFoldersSearchEmpty && isNotesSearchEmpty && (
+                <h2 id="no-results-message">no results</h2>
+              )}
             </>
           )}
         </main>
@@ -632,6 +643,8 @@ export default function App() {
             handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
             FOLDERS_API_URL={FOLDERS_API_URL}
             searchTerms={searchTerms}
+            setIsFoldersSearchEmpty={setIsFoldersSearchEmpty}
+            setIsNotesSearchEmpty={setIsNotesSearchEmpty}
           />
         </main>
       </>

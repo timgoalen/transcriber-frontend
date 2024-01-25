@@ -35,6 +35,8 @@ export default function FoldersList({
   FOLDERS_API_URL,
   searchTerms,
   displayPageChoice,
+  setIsFoldersSearchEmpty,
+  setIsNotesSearchEmpty
 }) {
   const [openToolList, setOpenToolList] = useState(0);
   const [editTitle, setEditTitle] = useState(0);
@@ -80,6 +82,12 @@ export default function FoldersList({
     );
   } else {
     filteredFolders = folders;
+  }
+   // Tell the App if there are no search results, so 'no results' can be displayed
+   if (filteredFolders.length > 0) {
+    setIsFoldersSearchEmpty(false);
+  } else {
+    setIsFoldersSearchEmpty(true);
   }
 
   return (
@@ -166,6 +174,7 @@ export default function FoldersList({
                   FOLDERS_API_URL={FOLDERS_API_URL}
                   searchTerms={searchTerms}
                   displayPageChoice={displayPageChoice}
+                  setIsNotesSearchEmpty={setIsNotesSearchEmpty}
                 />
 
                 {/* Create new note in folder */}

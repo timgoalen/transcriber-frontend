@@ -23,6 +23,7 @@ export default function NotesList({
   FOLDERS_API_URL,
   searchTerms,
   displayPageChoice,
+  setIsNotesSearchEmpty,
 }) {
   const [isNotesListModalOpen, setIsNotesListModalOpen] = useState(false);
 
@@ -68,6 +69,13 @@ export default function NotesList({
   } else {
     filteredNotes = notes;
   }
+  // Tell the App if there are no search results, so 'no results' can be displayed
+  if (filteredNotes.length > 0) {
+    setIsNotesSearchEmpty(false);
+  } else {
+    setIsNotesSearchEmpty(true);
+  }
+  console.table(filteredNotes)
 
   return (
     <>

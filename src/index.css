@@ -411,6 +411,11 @@ input[type="search"] {
   margin-top: 6%;
 }
 
+#no-results-message {
+  color: var(--grey);
+  margin-top: 6%;
+}
+
 /* .search-bar-close-icon {
   color: var(--blue);
   display: inline-grid;
@@ -623,6 +628,10 @@ input[type="search"] {
 
   .list-page-item {
     margin: 1.5rem auto 0 auto;
+  }
+
+  input[type="search"] {
+    width: 100%;
   }
 
   #detail-view-modal-content {
