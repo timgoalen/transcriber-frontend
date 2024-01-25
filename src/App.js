@@ -59,11 +59,6 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [searchTerms, setSearchTerms] = useState("");
 
-  // Sync the local storage copy of the user token when it changes in state
-  // useEffect(() => {
-  //   localStorage.setItem("userToken", userToken);
-  // }, [userToken]);
-
   // TODO: rename to 'saveUserTokenToState'
   function saveUserToken(token) {
     setUserToken(token);
@@ -73,13 +68,9 @@ export default function App() {
     localStorage.setItem("userToken", token);
   }
 
-  console.log({ userToken });
-
   useEffect(() => {
     setIsLoggedIn(userToken ? true : false);
   }, []);
-
-  console.log({ isLoggedIn });
 
   const NOTES_API_URL =
     "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/notes/";
@@ -261,6 +252,10 @@ export default function App() {
     setDisplayPageChoice("signup");
   }
 
+  function showSearchPage() {
+    setDisplayPageChoice("search");
+  }
+
   // UTILITY FUNCTIONS
 
   function clearTextArea() {
@@ -390,6 +385,7 @@ export default function App() {
           isLoggedIn={isLoggedIn}
           showLogInForm={showLogInForm}
           showSignUpForm={showSignUpForm}
+          showSearchPage={showSearchPage}
           userToken={userToken}
           saveUserToken={saveUserToken}
         />
@@ -434,6 +430,7 @@ export default function App() {
           isLoggedIn={isLoggedIn}
           showLogInForm={showLogInForm}
           showSignUpForm={showSignUpForm}
+          showSearchPage={showSearchPage}
         />
         <LogInForm
           saveUserToken={saveUserToken}
@@ -456,6 +453,7 @@ export default function App() {
           isLoggedIn={isLoggedIn}
           showLogInForm={showLogInForm}
           showSignUpForm={showSignUpForm}
+          showSearchPage={showSearchPage}
         />
         <SignUpForm
           saveUserToken={saveUserToken}
@@ -475,13 +473,9 @@ export default function App() {
           showNavIcon={true}
           navIcon={faFolder}
           onNavIconClick={showFoldersList}
+          showSearchPage={showSearchPage}
         />
         <main className="list-page-main">
-          <SearchBar
-            searchTerms={searchTerms}
-            setSearchTerms={setSearchTerms}
-            handleSearchInputChange={handleSearchInputChange}
-          />
           <NotesList
             notes={notes}
             folders={folders}
@@ -497,6 +491,7 @@ export default function App() {
             showNewFolderForm={showNewFolderForm}
             FOLDERS_API_URL={FOLDERS_API_URL}
             searchTerms={searchTerms}
+            displayPageChoice={displayPageChoice}
           />
           <MainTool icon={faPlus} onMainToolClick={handleNewNoteClick} />
         </main>
@@ -536,12 +531,12 @@ export default function App() {
         />
       </>
     );
-  } else {
-    // Display folders page
+  } else if (displayPageChoice === "search") {
+    // Display search page
     return (
       <>
         <Header
-          title="folders"
+          title="search"
           showNavIcon={true}
           navIcon={faListUl}
           onNavIconClick={showNotesList}
@@ -552,6 +547,69 @@ export default function App() {
             setSearchTerms={setSearchTerms}
             handleSearchInputChange={handleSearchInputChange}
           />
+          {searchTerms && (
+            <>
+              {/* Notes search results */}
+              <NotesList
+                notes={notes}
+                folders={folders}
+                selectNote={selectNote}
+                selectedNote={selectedNote}
+                deleteNote={deleteNote}
+                openEditPage={openEditPage}
+                handleAddNoteToFolder={handleAddNoteToFolder}
+                folderChoice={null}
+                handleNewFolderFormSubmit={handleNewFolderFormSubmit}
+                cancelNewFolderForm={cancelNewFolderForm}
+                handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
+                showNewFolderForm={showNewFolderForm}
+                FOLDERS_API_URL={FOLDERS_API_URL}
+                searchTerms={searchTerms}
+                displayPageChoice={displayPageChoice}
+              />
+              {/* Folders search results */}
+              <FoldersList
+                folders={folders}
+                notes={notes}
+                selectNote={selectNote}
+                selectedNote={selectedNote}
+                deleteNote={deleteNote}
+                openEditPage={openEditPage}
+                displayPageChoice={displayPageChoice}
+                isColourBlock={true}
+                showNewFolderForm={showNewFolderForm}
+                saveFolder={saveFolder}
+                assembleFolder={assembleFolder}
+                cancelNewFolderForm={cancelNewFolderForm}
+                deleteFolder={deleteFolder}
+                handleUpdateFolderFormSubmit={handleUpdateFolderFormSubmit}
+                findFolderByID={findFolderByID}
+                handleAddNoteToFolder={handleAddNoteToFolder}
+                handleNewFolderFormSubmit={handleNewFolderFormSubmit}
+                handleCreateNewNoteinFolderClick={
+                  handleCreateNewNoteinFolderClick
+                }
+                handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
+                FOLDERS_API_URL={FOLDERS_API_URL}
+                searchTerms={searchTerms}
+              />
+            </>
+          )}
+        </main>
+      </>
+    );
+  } else {
+    // Display folders page
+    return (
+      <>
+        <Header
+          title="folders"
+          showNavIcon={true}
+          navIcon={faListUl}
+          onNavIconClick={showNotesList}
+          showSearchPage={showSearchPage}
+        />
+        <main className="list-page-main">
           <FoldersList
             folders={folders}
             notes={notes}

@@ -10,43 +10,15 @@ export default function SearchBar({
   setSearchTerms,
   handleSearchInputChange,
 }) {
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const searchBarRef = useRef(null);
-  const searchIconRef = useRef(null);
-
   return (
-    <>
-      {isSearchOpen ? (
-        <>
-          <input
-            type="search"
-            value={searchTerms}
-            onChange={handleSearchInputChange}
-            placeholder="Search notes.."
-            className="list-page-item"
-            id="search"
-            autocomplete="off"
-          ></input>
-          <span
-            onClick={() => {
-              setIsSearchOpen(false);
-              setSearchTerms("");
-            }}
-            className="search-bar-close-icon"
-          >
-            <FontAwesomeIcon icon={faChevronLeft} />
-          </span>
-        </>
-      ) : (
-        <div className="search-icon-container">
-          <FontAwesomeIcon
-            icon={faMagnifyingGlass}
-            onClick={() => setIsSearchOpen(true)}
-            className="list-page-item"
-            id="search-icon"
-          />
-        </div>
-      )}
-    </>
+    <input
+      type="search"
+      value={searchTerms}
+      onChange={handleSearchInputChange}
+      placeholder="Notes & folders.."
+      className="list-page-item"
+      id="search"
+      autoComplete="off"
+    ></input>
   );
 }

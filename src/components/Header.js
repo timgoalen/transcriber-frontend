@@ -3,6 +3,7 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRightToBracket,
+  faMagnifyingGlass,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
@@ -19,6 +20,7 @@ export default function Header({
   isLoggedIn,
   showLogInForm,
   showSignUpForm,
+  showSearchPage,
   userToken,
   saveUserToken,
 }) {
@@ -33,10 +35,21 @@ export default function Header({
       <header>
         <h1>{title}</h1>
         <div className="header-icons-container">
+          <div className="list-view-btn-container">
+            <Button
+              icon={faMagnifyingGlass}
+              onClick={showSearchPage}
+              ariaLabel="Search"
+            />
+          </div>
           {/* User log in menu */}
           {showUserIcon && (
             <div className="list-view-btn-container">
-              <Button icon={faUser} onClick={toggleLogInMenu} ariaLabel="User Account"/>
+              <Button
+                icon={faUser}
+                onClick={toggleLogInMenu}
+                ariaLabel="User Account"
+              />
             </div>
           )}
           {/* Navigation */}

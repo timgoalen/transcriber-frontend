@@ -22,15 +22,22 @@ export default function NotesList({
   handleShowNewFolderBtnClick,
   FOLDERS_API_URL,
   searchTerms,
+  displayPageChoice,
 }) {
   const [isNotesListModalOpen, setIsNotesListModalOpen] = useState(false);
 
   // Create an array of notes in selected folder, only used to check if folder is empty
-  const notesInCurrentFolder = notes.filter(
-    (note) => note.folder_id === folderChoice
-  );
-
+  let notesInCurrentFolder = [];
   let isEmptyFolder;
+
+  // Include all notes if in Search page
+  if (displayPageChoice === "search") {
+    notesInCurrentFolder = notes;
+  } else {
+    notesInCurrentFolder = notes.filter(
+      (note) => note.folder_id === folderChoice
+    );
+  }
 
   if (notesInCurrentFolder.length > 0) {
     isEmptyFolder = false;
@@ -48,18 +55,40 @@ export default function NotesList({
   }
 
   function handleDeleteBtnClick(id) {
-    console.log("NotesList id:");
-    console.log(id);
     deleteNote(id);
     toggleModalVisibility();
   }
 
-  let filteredNotes = notes.filter(note => note.text.toLowerCase().includes(searchTerms.toLowerCase()));
+  let filteredNotes = [];
+  // Include all folders if in Search page
+  if (displayPageChoice === "search") {
+    filteredNotes = notes.filter((note) =>
+      note.text.toLowerCase().includes(searchTerms.toLowerCase())
+    );
+  } else {
+    filteredNotes = notes;
+  }
 
   return (
     <>
-      {!isEmptyFolder
-        ? filteredNotes.map(
+      {/* Add title if Note items are found in the search page */}
+      {displayPageChoice === "search" && filteredNotes.length > 0 && (
+        <h2 className="search-results-title">notes</h2>
+      )}
+
+      {displayPageChoice === "search"
+        ? filteredNotes.map((note) => (
+          // When in search page
+            <NoteListItem
+              id={note.id}
+              text={note.text}
+              folderId={note.folder_id}
+              handleNoteItemClick={handleNoteItemClick}
+            />
+          ))
+          // When in notes list
+        : !isEmptyFolder
+        ? notes.map(
             (note) =>
               note.folder_id === folderChoice && (
                 <NoteListItem

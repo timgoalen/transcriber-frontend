@@ -34,6 +34,7 @@ export default function FoldersList({
   handleShowNewFolderBtnClick,
   FOLDERS_API_URL,
   searchTerms,
+  displayPageChoice,
 }) {
   const [openToolList, setOpenToolList] = useState(0);
   const [editTitle, setEditTitle] = useState(0);
@@ -71,11 +72,24 @@ export default function FoldersList({
     setOpenToolList(0);
   }
 
-  let filteredFolders = folders.filter(folder => folder.title.toLowerCase().includes(searchTerms.toLowerCase()));
+  let filteredFolders = [];
+  // Include all folders if in Search page
+  if (displayPageChoice === "search") {
+    filteredFolders = folders.filter((folder) =>
+      folder.title.toLowerCase().includes(searchTerms.toLowerCase())
+    );
+  } else {
+    filteredFolders = folders;
+  }
 
   return (
     // refactor into <ListItem /> components
     <>
+      {/* Add title if Folder items are found in the search page */}
+      {displayPageChoice === "search" && filteredFolders.length > 0 && (
+        <h2 className="search-results-title">folders</h2>
+      )}
+
       {folders && folders.length > 0 ? (
         /* Folders list */
         filteredFolders.map((folder) => (
@@ -151,6 +165,7 @@ export default function FoldersList({
                   showNewFolderForm={showNewFolderForm}
                   FOLDERS_API_URL={FOLDERS_API_URL}
                   searchTerms={searchTerms}
+                  displayPageChoice={displayPageChoice}
                 />
 
                 {/* Create new note in folder */}
@@ -174,21 +189,22 @@ export default function FoldersList({
 
       {/* SHOW NEW FOLDER FORM OR BUTTON */}
 
-      {showNewFolderForm ? (
-        <div className="list-page-item">
-          <NewFolderForm
-            initialFolderName=""
-            assembleFolder={assembleFolder}
-            saveFolder={saveFolder}
-            cancelNewFolderForm={cancelNewFolderForm}
-            handleFolderFormSubmit={handleNewFolderFormSubmit}
+      {displayPageChoice !== "search" &&
+        (showNewFolderForm ? (
+          <div className="list-page-item">
+            <NewFolderForm
+              initialFolderName=""
+              assembleFolder={assembleFolder}
+              saveFolder={saveFolder}
+              cancelNewFolderForm={cancelNewFolderForm}
+              handleFolderFormSubmit={handleNewFolderFormSubmit}
+            />
+          </div>
+        ) : (
+          <NewFolderBtn
+            handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
           />
-        </div>
-      ) : (
-        <NewFolderBtn
-          handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
-        />
-      )}
+        ))}
     </>
   );
 }
