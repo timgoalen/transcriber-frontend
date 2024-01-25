@@ -22,6 +22,7 @@ import OpenAiApi from "./components/OpenAiApi.js";
 import SignUpForm from "./components/SignUpForm.js";
 import LogInForm from "./components/LogInForm.js";
 import LogOutBtn from "./components/LogOutBtn.js";
+import SearchBar from "./components/SearchBar.js";
 
 import { generateRandomColour } from "./utils/utils.js";
 import {
@@ -56,11 +57,9 @@ export default function App() {
   const [showNewFolderForm, setShowNewFolderForm] = useState(false);
   const [userToken, setUserToken] = useState(getInitialUserToken);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  // Sync the local storage copy of the user token when it changes in state
-  // useEffect(() => {
-  //   localStorage.setItem("userToken", userToken);
-  // }, [userToken]);
+  const [searchTerms, setSearchTerms] = useState("");
+  const [isFoldersSearchEmpty, setIsFoldersSearchEmpty] = useState(null);
+  const [isNotesSearchEmpty, setIsNotesSearchEmpty] = useState(null);
 
   // TODO: rename to 'saveUserTokenToState'
   function saveUserToken(token) {
@@ -71,13 +70,9 @@ export default function App() {
     localStorage.setItem("userToken", token);
   }
 
-  console.log({ userToken });
-
   useEffect(() => {
     setIsLoggedIn(userToken ? true : false);
   }, []);
-
-  console.log({ isLoggedIn });
 
   const NOTES_API_URL =
     "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/notes/";
@@ -259,6 +254,11 @@ export default function App() {
     setDisplayPageChoice("signup");
   }
 
+  function showSearchPage() {
+    setSearchTerms("");
+    setDisplayPageChoice("search");
+  }
+
   // UTILITY FUNCTIONS
 
   function clearTextArea() {
@@ -369,6 +369,10 @@ export default function App() {
     }
   }
 
+  function handleSearchInputChange(event) {
+    setSearchTerms(event.target.value);
+  }
+
   // -- RENDER ELEMENTS --
 
   if (displayPageChoice === "create") {
@@ -384,6 +388,7 @@ export default function App() {
           isLoggedIn={isLoggedIn}
           showLogInForm={showLogInForm}
           showSignUpForm={showSignUpForm}
+          showSearchPage={showSearchPage}
           userToken={userToken}
           saveUserToken={saveUserToken}
         />
@@ -418,47 +423,49 @@ export default function App() {
     );
   } else if (displayPageChoice === "login") {
     return (
-    <>
-      <Header
-        title="transcriber"
-        showUserIcon={true}
-        showNavIcon={true}
-        navIcon={faListUl}
-        onNavIconClick={showNotesList}
-        isLoggedIn={isLoggedIn}
-        showLogInForm={showLogInForm}
-        showSignUpForm={showSignUpForm}
-      />
-      <LogInForm
-        saveUserToken={saveUserToken}
-        saveTokenToLocalStorage={saveTokenToLocalStorage}
-        getInitialNotesDataFromApi={getInitialNotesDataFromApi}
-        getInitialFoldersDataFromApi={getInitialFoldersDataFromApi}
-        setDisplayPageChoice={setDisplayPageChoice}
-      />
-    </>
+      <>
+        <Header
+          title="transcriber"
+          showUserIcon={true}
+          showNavIcon={true}
+          navIcon={faListUl}
+          onNavIconClick={showNotesList}
+          isLoggedIn={isLoggedIn}
+          showLogInForm={showLogInForm}
+          showSignUpForm={showSignUpForm}
+          showSearchPage={showSearchPage}
+        />
+        <LogInForm
+          saveUserToken={saveUserToken}
+          saveTokenToLocalStorage={saveTokenToLocalStorage}
+          getInitialNotesDataFromApi={getInitialNotesDataFromApi}
+          getInitialFoldersDataFromApi={getInitialFoldersDataFromApi}
+          setDisplayPageChoice={setDisplayPageChoice}
+        />
+      </>
     );
   } else if (displayPageChoice === "signup") {
     return (
-    <>
-      <Header
-        title="transcriber"
-        showUserIcon={true}
-        showNavIcon={true}
-        navIcon={faListUl}
-        onNavIconClick={showNotesList}
-        isLoggedIn={isLoggedIn}
-        showLogInForm={showLogInForm}
-        showSignUpForm={showSignUpForm}
-      />
-      <SignUpForm
-        saveUserToken={saveUserToken}
-        saveTokenToLocalStorage={saveTokenToLocalStorage}
-        getInitialNotesDataFromApi={getInitialNotesDataFromApi}
-        getInitialFoldersDataFromApi={getInitialFoldersDataFromApi}
-        setDisplayPageChoice={setDisplayPageChoice}
-      />
-    </>
+      <>
+        <Header
+          title="transcriber"
+          showUserIcon={true}
+          showNavIcon={true}
+          navIcon={faListUl}
+          onNavIconClick={showNotesList}
+          isLoggedIn={isLoggedIn}
+          showLogInForm={showLogInForm}
+          showSignUpForm={showSignUpForm}
+          showSearchPage={showSearchPage}
+        />
+        <SignUpForm
+          saveUserToken={saveUserToken}
+          saveTokenToLocalStorage={saveTokenToLocalStorage}
+          getInitialNotesDataFromApi={getInitialNotesDataFromApi}
+          getInitialFoldersDataFromApi={getInitialFoldersDataFromApi}
+          setDisplayPageChoice={setDisplayPageChoice}
+        />
+      </>
     );
   } else if (displayPageChoice === "inbox") {
     // Display notes inbox
@@ -469,6 +476,7 @@ export default function App() {
           showNavIcon={true}
           navIcon={faFolder}
           onNavIconClick={showFoldersList}
+          showSearchPage={showSearchPage}
         />
         <main className="list-page-main">
           <NotesList
@@ -485,6 +493,9 @@ export default function App() {
             handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
             showNewFolderForm={showNewFolderForm}
             FOLDERS_API_URL={FOLDERS_API_URL}
+            searchTerms={searchTerms}
+            displayPageChoice={displayPageChoice}
+            setIsNotesSearchEmpty={setIsNotesSearchEmpty}
           />
           <MainTool icon={faPlus} onMainToolClick={handleNewNoteClick} />
         </main>
@@ -524,6 +535,80 @@ export default function App() {
         />
       </>
     );
+  } else if (displayPageChoice === "search") {
+    // Display search page
+    return (
+      <>
+        <Header
+          title="search"
+          showNavIcon={true}
+          navIcon={faListUl}
+          onNavIconClick={showNotesList}
+        />
+        <main className="list-page-main">
+          <SearchBar
+            searchTerms={searchTerms}
+            setSearchTerms={setSearchTerms}
+            handleSearchInputChange={handleSearchInputChange}
+          />
+          {searchTerms && (
+            <>
+              {/* Notes search results */}
+              <NotesList
+                notes={notes}
+                folders={folders}
+                selectNote={selectNote}
+                selectedNote={selectedNote}
+                deleteNote={deleteNote}
+                openEditPage={openEditPage}
+                handleAddNoteToFolder={handleAddNoteToFolder}
+                folderChoice={null}
+                handleNewFolderFormSubmit={handleNewFolderFormSubmit}
+                cancelNewFolderForm={cancelNewFolderForm}
+                handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
+                showNewFolderForm={showNewFolderForm}
+                FOLDERS_API_URL={FOLDERS_API_URL}
+                searchTerms={searchTerms}
+                displayPageChoice={displayPageChoice}
+                setIsNotesSearchEmpty={setIsNotesSearchEmpty}
+              />
+              {/* Folders search results */}
+              <FoldersList
+                folders={folders}
+                notes={notes}
+                selectNote={selectNote}
+                selectedNote={selectedNote}
+                deleteNote={deleteNote}
+                openEditPage={openEditPage}
+                displayPageChoice={displayPageChoice}
+                isColourBlock={true}
+                showNewFolderForm={showNewFolderForm}
+                saveFolder={saveFolder}
+                assembleFolder={assembleFolder}
+                cancelNewFolderForm={cancelNewFolderForm}
+                deleteFolder={deleteFolder}
+                handleUpdateFolderFormSubmit={handleUpdateFolderFormSubmit}
+                findFolderByID={findFolderByID}
+                handleAddNoteToFolder={handleAddNoteToFolder}
+                handleNewFolderFormSubmit={handleNewFolderFormSubmit}
+                handleCreateNewNoteinFolderClick={
+                  handleCreateNewNoteinFolderClick
+                }
+                handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
+                FOLDERS_API_URL={FOLDERS_API_URL}
+                searchTerms={searchTerms}
+                setIsFoldersSearchEmpty={setIsFoldersSearchEmpty}
+                setIsNotesSearchEmpty={setIsNotesSearchEmpty}
+              />
+              {/* No search results */}
+              {isFoldersSearchEmpty && isNotesSearchEmpty && (
+                <h2 id="no-results-message">no results</h2>
+              )}
+            </>
+          )}
+        </main>
+      </>
+    );
   } else {
     // Display folders page
     return (
@@ -533,6 +618,7 @@ export default function App() {
           showNavIcon={true}
           navIcon={faListUl}
           onNavIconClick={showNotesList}
+          showSearchPage={showSearchPage}
         />
         <main className="list-page-main">
           <FoldersList
@@ -556,6 +642,9 @@ export default function App() {
             handleCreateNewNoteinFolderClick={handleCreateNewNoteinFolderClick}
             handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
             FOLDERS_API_URL={FOLDERS_API_URL}
+            searchTerms={searchTerms}
+            setIsFoldersSearchEmpty={setIsFoldersSearchEmpty}
+            setIsNotesSearchEmpty={setIsNotesSearchEmpty}
           />
         </main>
       </>

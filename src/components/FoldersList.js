@@ -33,6 +33,10 @@ export default function FoldersList({
   handleCreateNewNoteinFolderClick,
   handleShowNewFolderBtnClick,
   FOLDERS_API_URL,
+  searchTerms,
+  displayPageChoice,
+  setIsFoldersSearchEmpty,
+  setIsNotesSearchEmpty
 }) {
   const [openToolList, setOpenToolList] = useState(0);
   const [editTitle, setEditTitle] = useState(0);
@@ -70,12 +74,33 @@ export default function FoldersList({
     setOpenToolList(0);
   }
 
+  let filteredFolders = [];
+  // Include all folders if in Search page
+  if (displayPageChoice === "search") {
+    filteredFolders = folders.filter((folder) =>
+      folder.title.toLowerCase().includes(searchTerms.toLowerCase())
+    );
+  } else {
+    filteredFolders = folders;
+  }
+   // Tell the App if there are no search results, so 'no results' can be displayed
+   if (filteredFolders.length > 0) {
+    setIsFoldersSearchEmpty(false);
+  } else {
+    setIsFoldersSearchEmpty(true);
+  }
+
   return (
     // refactor into <ListItem /> components
     <>
+      {/* Add title if Folder items are found in the search page */}
+      {displayPageChoice === "search" && filteredFolders.length > 0 && (
+        <h2 className="search-results-title">folders</h2>
+      )}
+
       {folders && folders.length > 0 ? (
         /* Folders list */
-        folders.map((folder) => (
+        filteredFolders.map((folder) => (
           <Fragment key={folder.id}>
             <div id={folder.id} className="list-page-item">
               {/* Replace normal div with a text input form when user clicks on edit icon */}
@@ -147,6 +172,9 @@ export default function FoldersList({
                   handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
                   showNewFolderForm={showNewFolderForm}
                   FOLDERS_API_URL={FOLDERS_API_URL}
+                  searchTerms={searchTerms}
+                  displayPageChoice={displayPageChoice}
+                  setIsNotesSearchEmpty={setIsNotesSearchEmpty}
                 />
 
                 {/* Create new note in folder */}
@@ -170,21 +198,22 @@ export default function FoldersList({
 
       {/* SHOW NEW FOLDER FORM OR BUTTON */}
 
-      {showNewFolderForm ? (
-        <div className="list-page-item">
-          <NewFolderForm
-            initialFolderName=""
-            assembleFolder={assembleFolder}
-            saveFolder={saveFolder}
-            cancelNewFolderForm={cancelNewFolderForm}
-            handleFolderFormSubmit={handleNewFolderFormSubmit}
+      {displayPageChoice !== "search" &&
+        (showNewFolderForm ? (
+          <div className="list-page-item">
+            <NewFolderForm
+              initialFolderName=""
+              assembleFolder={assembleFolder}
+              saveFolder={saveFolder}
+              cancelNewFolderForm={cancelNewFolderForm}
+              handleFolderFormSubmit={handleNewFolderFormSubmit}
+            />
+          </div>
+        ) : (
+          <NewFolderBtn
+            handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
           />
-        </div>
-      ) : (
-        <NewFolderBtn
-          handleShowNewFolderBtnClick={handleShowNewFolderBtnClick}
-        />
-      )}
+        ))}
     </>
   );
 }
