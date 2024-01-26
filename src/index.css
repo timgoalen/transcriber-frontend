@@ -313,7 +313,7 @@ canvas {
 #clear-btn,
 #update-btn,
 #cancel-btn,
-.list-view-btn-container {
+.header-btn-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -327,7 +327,7 @@ canvas {
 #back-btn-modal:hover,
 #edit-btn-modal:hover,
 #delete-btn-modal:hover,
-.list-view-btn-container:hover {
+.header-btn-container:hover {
   cursor: pointer;
   color: var(--blue-hover);
 }

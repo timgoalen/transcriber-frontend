@@ -12,12 +12,6 @@ import Layout from "./pages/Layout";
 export default function App() {
   return (
     <>
-      <Link to="/">home</Link>
-      <Link to="/inbox">inbox</Link>
-      <Link to="/folders">folders</Link>
-      <Link to="/update">update</Link>
-      <Link to="/signup">sign up</Link>
-      <Link to="/login">log in</Link>
       <Routes>
         <Route path="/" element={<Transcriber />} />
         <Route path="/inbox" element={<Inbox />} />
