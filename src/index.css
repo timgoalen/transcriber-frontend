@@ -72,7 +72,8 @@ header {
 .header-icons-container {
   display: flex;
   flex-direction: row;
-  gap: 5vw;
+  gap: 5.5vw;
+  align-items: center;
 }
 
 h1 {

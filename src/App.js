@@ -3,11 +3,10 @@ import { Routes, Route, Link } from "react-router-dom";
 import Transcriber from "./pages/Transcriber";
 import Inbox from "./pages/Inbox";
 import Folders from "./pages/Folders";
-import Update from "./pages/Update";
+import Edit from "./pages/Edit";
 import SignUp from "./pages/SignUp";
 import LogIn from "./pages/LogIn";
 import NoPage from "./pages/NoPage";
-import Layout from "./pages/Layout";
 
 export default function App() {
   return (
@@ -16,11 +15,10 @@ export default function App() {
         <Route path="/" element={<Transcriber />} />
         <Route path="/inbox" element={<Inbox />} />
         <Route path="/folders" element={<Folders />} />
-        <Route path="/update" element={<Update />} />
+        <Route path="/edit" element={<Edit />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<LogIn />} />
-        <Route path="/nopage" element={<NoPage />} />
-        <Route path="/layout" element={<Layout />} />
+        <Route path="/*" element={<NoPage />} />
       </Routes>
     </>
   );
