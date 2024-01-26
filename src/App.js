@@ -8,17 +8,21 @@ import SignUp from "./pages/SignUp";
 import LogIn from "./pages/LogIn";
 import NoPage from "./pages/NoPage";
 
+import { UserProvider } from "./contexts/UserContext";
+
 export default function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Transcriber />} />
-        <Route path="/inbox" element={<Inbox />} />
-        <Route path="/folders" element={<Folders />} />
-        <Route path="/edit" element={<Edit />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/login" element={<LogIn />} />
-        <Route path="/*" element={<NoPage />} />
+        {/* <UserProvider> */}
+          <Route path="/" element={<Transcriber />} />
+          <Route path="/inbox" element={<Inbox />} />
+          <Route path="/folders" element={<Folders />} />
+          <Route path="/edit" element={<Edit />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<LogIn />} />
+          <Route path="/*" element={<NoPage />} />
+        {/* </UserProvider> */}
       </Routes>
     </>
   );

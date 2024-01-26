@@ -1,3 +1,16 @@
+import HomePageHeader from "../components/HomePageHeader";
+import LogInForm from "../components/LogInForm";
+
 export default function LogIn() {
-    return <h1>log in</h1>
+  return (
+    <>
+      <HomePageHeader />
+
+      <main id="main-container">
+        <LogInForm />
+      </main>
+
+      {/* <footer className="toolbar">FOOTER</footer> */}
+    </>
+  );
 }
