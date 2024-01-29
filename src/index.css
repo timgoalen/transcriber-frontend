@@ -218,8 +218,8 @@ canvas {
 }
 
 .list-page-main {
-  height: 91vh;
-  height: 91dvh;
+  height: 82vh;
+  height: 82dvh;
   /* overflow: scroll; */
   max-width: 600px;
   margin: auto;

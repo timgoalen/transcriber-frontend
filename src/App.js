@@ -61,11 +61,14 @@ export default function TranscriberApp() {
     }
   }, [isLoggedIn]);
 
+  console.table(notes);
+  console.table(folders);
+
   return (
     <>
       <Routes>
         <Route path="/" element={<Transcriber />} />
-        <Route path="/inbox" element={<Inbox notes={notes} />} />
+        <Route path="/inbox" element={<Inbox notes={notes} folders={folders} />} />
         <Route
           path="/folders"
           element={<Folders notes={notes} folders={folders} />}
