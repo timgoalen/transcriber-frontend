@@ -6,7 +6,6 @@ import PersonOffOutlined from "@mui/icons-material/PersonOffOutlined";
 
 export default function HeaderBtn({ onClick, ariaLabel, icon }) {
   const { isLoggedIn } = useContext(UserContext);
-  console.log(isLoggedIn);
 
   return (
     <div className="header-btn-container">
