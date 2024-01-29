@@ -1,13 +1,13 @@
-import HomePageHeader from "../components/HomePageHeader";
+import HomePageHeader from "../components/DefaultPageHeader";
 
 export default function Transcriber() {
   return (
     <>
       <HomePageHeader />
 
-      <main id="main-container">MAIN</main>
+      <main id="main-container"></main>
 
-      <footer className="toolbar">FOOTER</footer>
+      <footer className="toolbar"></footer>
     </>
   );
 }

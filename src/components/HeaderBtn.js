@@ -1,6 +1,13 @@
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import PersonOffOutlined from "@mui/icons-material/PersonOffOutlined";
 
 export default function HeaderBtn({ onClick, ariaLabel, icon }) {
+  const { isLoggedIn } = useContext(UserContext);
+  console.log(isLoggedIn);
+
   return (
     <div className="header-btn-container">
       <button
@@ -8,7 +15,11 @@ export default function HeaderBtn({ onClick, ariaLabel, icon }) {
         onClick={onClick}
         aria-label={ariaLabel}
       >
-        <FontAwesomeIcon icon={icon} />
+        {isLoggedIn ? (
+          <FontAwesomeIcon icon={icon} />
+        ) : (
+          <PersonOffOutlined style={{ fontSize: "1.6rem" }} />
+        )}
       </button>
     </div>
   );

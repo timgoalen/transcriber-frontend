@@ -70,11 +70,21 @@ header {
   justify-content: space-between;
 }
 
+/* Note: the 'home' material icon is sized inline at 'AltPageHeader.js' */
 .header-icons-container {
   display: flex;
   flex-direction: row;
   gap: 5.5vw;
   align-items: center;
+}
+
+.header-btn-container {
+  font-size: 1.3rem;
+}
+
+.material-icon-link {
+  display: grid;
+  place-items: center;
 }
 
 h1 {

@@ -3,8 +3,8 @@ import { useState } from "react";
 import { faListUl } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 
-import HeaderBtn from "../components/HeaderBtn";
-import HeaderLink from "../components/HeaderLink";
+import HeaderBtn from "./HeaderBtn";
+import HeaderLink from "./HeaderLink";
 import LogInMenu from "./LogInMenu";
 
 export default function HomePageHeader() {

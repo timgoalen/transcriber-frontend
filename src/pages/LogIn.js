@@ -1,4 +1,4 @@
-import HomePageHeader from "../components/HomePageHeader";
+import HomePageHeader from "../components/DefaultPageHeader";
 import LogInForm from "../components/LogInForm";
 
 export default function LogIn() {

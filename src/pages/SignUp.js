@@ -1,4 +1,4 @@
-import HomePageHeader from "../components/HomePageHeader";
+import HomePageHeader from "../components/DefaultPageHeader";
 import SignUpForm from "../components/SignUpForm";
 
 export default function SignUp() {

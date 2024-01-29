@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { UserContext } from "../contexts/UserContext";
+import { UserContext } from "../context/UserContext";
 
 import { Link } from "react-router-dom";
 import {
@@ -11,9 +11,7 @@ import LogOut from "./LogOut";
 import LogInMenuItem from "./LogInMenuItem";
 
 export default function LogInMenu() {
-  const userData = useContext(UserContext);
-  const isLoggedIn = userData.isLoggedIn;
-  // console.log(userData.userToken);
+  const { isLoggedIn } = useContext(UserContext);
 
   return (
     <div className="login-menu">
