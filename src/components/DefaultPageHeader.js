@@ -28,7 +28,7 @@ export default function HomePageHeader() {
         </div>
       </header>
 
-      {showLogInMenu && <LogInMenu />}
+      {showLogInMenu && <LogInMenu setShowLogInMenu={setShowLogInMenu} />}
     </>
   );
 }

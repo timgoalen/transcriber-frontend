@@ -186,7 +186,7 @@ textarea {
 }
 
 #modal-container,
-#detail-view-modal-container {
+#note-detail-modal-container {
   position: absolute;
   top: 0;
   left: 0;
@@ -340,9 +340,9 @@ canvas {
 #clear-btn:hover,
 #update-btn:hover,
 #cancel-btn:hover,
-#back-btn-modal:hover,
+/* #back-btn-modal:hover, */
 #edit-btn-modal:hover,
-#delete-btn-modal:hover,
+/* #delete-btn-modal:hover, */
 .header-btn-container:hover {
   cursor: pointer;
   color: var(--blue-hover);
@@ -524,14 +524,14 @@ input[type="search"] {
   padding-left: var(--folder-dropdown-offset);
 }
 
-#detail-view-modal-container {
-  display: none;
+#note-detail-modal-container {
+  display: grid;
   backdrop-filter: blur(3px);
   background-color: rgb(226 223 223 / 80%);
   z-index: 999;
 }
 
-#detail-view-modal-content {
+#note-detail-modal-content {
   border: 1px solid var(--grey);
   border-radius: 8px;
   background-color: var(--white);
@@ -540,12 +540,12 @@ input[type="search"] {
   grid-template-rows: 1fr 3rem;
 }
 
-#detail-view-modal-text {
+#note-detail-modal-text {
   font-size: 1.2rem;
   padding: 1.5rem 1rem;
 }
 
-#detail-view-modal-tools-container {
+#note-detail-modal-tools-container {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -555,7 +555,7 @@ input[type="search"] {
   font-size: 0.9rem;
 }
 
-#back-btn-modal,
+/* #back-btn-modal,
 #edit-btn-modal,
 #delete-btn-modal,
 #folder-btn-modal {
@@ -563,7 +563,7 @@ input[type="search"] {
   flex-direction: column;
   align-items: center;
   color: var(--blue);
-}
+} */
 
 .add-note-to-folder-btn {
   display: grid;
@@ -627,7 +627,7 @@ input[type="search"] {
     bottom: 6dvh;
   }
 
-  #detail-view-modal-content {
+  #note-detail-modal-content {
     width: 78%;
   }
 }
@@ -650,7 +650,7 @@ input[type="search"] {
     width: 100%;
   }
 
-  #detail-view-modal-content {
+  #note-detail-modal-content {
     max-width: 600px;
   }
 

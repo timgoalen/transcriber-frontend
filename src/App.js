@@ -13,11 +13,15 @@ import Edit from "./pages/Edit";
 import SignUp from "./pages/SignUp";
 import LogIn from "./pages/LogIn";
 import NoPage from "./pages/NoPage";
+import NoteDetailModal from "./components/NoteDetailModal";
 
 export default function TranscriberApp() {
+  const { isLoggedIn, userToken } = useContext(UserContext);
   const [notes, setNotes] = useState([]);
   const [folders, setFolders] = useState([]);
-  const { isLoggedIn, userToken } = useContext(UserContext);
+  const [showNoteDetailModal, setShowNoteDetailModal] = useState(false);
+  const [selectedNoteID, setSelectedNoteID] = useState(0);
+
   const NOTES_API_URL =
     "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/notes/";
   const FOLDERS_API_URL =
@@ -61,17 +65,42 @@ export default function TranscriberApp() {
     }
   }, [isLoggedIn]);
 
-  console.table(notes);
-  console.table(folders);
+  // -- EVENT HANDLERS --
+
+  function handleNoteItemClick(id) {
+    setShowNoteDetailModal(true);
+    setSelectedNoteID(id);
+  }
+
+  function modalBackBtnClick() {
+    setShowNoteDetailModal(false);
+  }
+
+  // -- RENDER ELEMENTS --
 
   return (
     <>
       <Routes>
         <Route path="/" element={<Transcriber />} />
-        <Route path="/inbox" element={<Inbox notes={notes} folders={folders} />} />
+        <Route
+          path="/inbox"
+          element={
+            <Inbox
+              notes={notes}
+              folders={folders}
+              handleNoteItemClick={handleNoteItemClick}
+            />
+          }
+        />
         <Route
           path="/folders"
-          element={<Folders notes={notes} folders={folders} />}
+          element={
+            <Folders
+              notes={notes}
+              folders={folders}
+              handleNoteItemClick={handleNoteItemClick}
+            />
+          }
         />
         <Route
           path="/search"
@@ -82,6 +111,16 @@ export default function TranscriberApp() {
         <Route path="/login" element={<LogIn />} />
         <Route path="/*" element={<NoPage />} />
       </Routes>
+
+      {showNoteDetailModal && (
+        <NoteDetailModal
+          notes={notes}
+          folders={folders}
+          selectedNoteID={selectedNoteID}
+          modalBackBtnClick={modalBackBtnClick}
+          setShowNoteDetailModal={setShowNoteDetailModal}
+        />
+      )}
     </>
   );
 }

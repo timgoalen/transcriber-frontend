@@ -11,7 +11,7 @@ export default function NoteListItem({
   return (
     <div
       className="list-page-item"
-      onClick={() => handleNoteItemClick(id, text, folderId)}
+      onClick={() => handleNoteItemClick(id)}
     >
       <div className="item-text">
         <p>{text}</p>

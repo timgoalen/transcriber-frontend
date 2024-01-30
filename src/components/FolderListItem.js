@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 
-export default function FolderListItem({ title, colour }) {
+export default function FolderListItem({ id, title, colour, handleFolderClick }) {
   return (
     <div className="list-page-item">
       {/* Colour block */}
@@ -11,7 +11,7 @@ export default function FolderListItem({ title, colour }) {
       ></div>
 
       {/* Title */}
-      <div className="item-text" onClick={() => handleFolderClick(folder.id)}>
+      <div className="item-text" onClick={() => handleFolderClick(id)}>
         <p>{title}</p>
       </div>
 

@@ -1,12 +1,13 @@
+import { useState } from "react";
+
 import { faFolder } from "@fortawesome/free-regular-svg-icons";
 
 import AltPageHeader from "../components/AltPageHeader";
 import NoteListItem from "../components/NoteListItem";
+import { findFolderColour } from "../utils/utils.js";
 
-export default function Inbox({ notes, folders }) {
-  function handleNoteItemClick() {
-    alert("handle note click");
-  }
+export default function Inbox({ notes, folders, handleNoteItemClick }) {
+  const inboxNotes = notes.filter(note => note.folder_id === null);
 
   return (
     <>
@@ -17,32 +18,14 @@ export default function Inbox({ notes, folders }) {
       />
 
       <main className="list-page-main">
-        {notes.map((note) => {
-          // Get the colour of the parent folder
-          const findFolderColour = () => {
-            if (note.folder_id === null) {
-              // Return grey if parent folder is inbox (null)
-              return "var(--grey)";
-            } else {
-              const parentFolderURL = note.folder_id;
-              const folderIdAsInt = parseInt(
-                parentFolderURL.charAt(parentFolderURL.length - 2)
-              );
-              const parentFolder = folders.find(
-                (folder) => folder.id === folderIdAsInt
-              );
-              console.log("parent folder", parentFolder)
-              return parentFolder.colour;
-            }
-          };
-
+        {inboxNotes.map((note) => {
           return (
             <NoteListItem
               key={note.id}
               id={note.id}
               text={note.text}
               folderId={note.folder_id}
-              folderColour={findFolderColour()}
+              folderColour={findFolderColour(folders, note.folder_id)}
               handleNoteItemClick={handleNoteItemClick}
             />
           );

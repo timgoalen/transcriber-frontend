@@ -1,7 +1,6 @@
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import { UserContext } from "../context/UserContext";
 
-import { Link } from "react-router-dom";
 import {
   faArrowUpFromBracket,
   faPlus,
@@ -9,12 +8,20 @@ import {
 
 import LogOut from "./LogOut";
 import LogInMenuItem from "./LogInMenuItem";
+import useClickOutside from "../hooks/useClickOutside";
 
-export default function LogInMenu() {
+export default function LogInMenu({ setShowLogInMenu }) {
   const { isLoggedIn } = useContext(UserContext);
+  const ref = useRef(null);
+
+  function handleClickOutside() {
+    setShowLogInMenu(false);
+  }
+
+  useClickOutside(ref, handleClickOutside);
 
   return (
-    <div className="login-menu">
+    <div className="login-menu" ref={ref}>
       {isLoggedIn ? (
         <>
           <div className="login-menu-item">TODO: username here</div>
@@ -32,37 +39,6 @@ export default function LogInMenu() {
           <LogInMenuItem linkTo="/signup" name="Sign Up" icon={faPlus} />
         </>
       )}
-      {/* {isLoggedIn ? (
-        <LogOutBtn
-          toggleLogInMenu={toggleLogInMenu}
-          userToken={userToken}
-          saveUserToken={saveUserToken}
-        />
-      ) : (
-        <>
-          <div
-            className="login-menu-item"
-            onClick={() => {
-              showLogInForm();
-              toggleLogInMenu();
-            }}
-          >
-            <FontAwesomeIcon icon={faArrowRightToBracket} />
-            <button>Log In</button>
-          </div>
-          <hr></hr>
-          <div
-            className="login-menu-item"
-            onClick={() => {
-              showSignUpForm();
-              toggleLogInMenu();
-            }}
-          >
-            <FontAwesomeIcon icon={faPlus} />
-            <button>Sign Up</button>
-          </div>
-        </>
-      )} */}
     </div>
   );
 }
