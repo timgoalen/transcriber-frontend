@@ -1,0 +1,32 @@
+import Button from "./Button.js";
+
+export default function Toolbar({
+  tool1Name,
+  tool1Icon,
+  tool1OnClick,
+  tool2Name,
+  tool2Icon,
+  tool2OnClick,
+}) {
+  return (
+    <>
+      <div className="footer-left">
+        <Button
+          name={tool1Name}
+          icon={tool1Icon}
+          onClick={tool1OnClick}
+          ariaLabel="Save"
+        />
+      </div>
+
+      <div className="footer-right">
+        <Button
+          name={tool2Name}
+          icon={tool2Icon}
+          onClick={tool2OnClick}
+          ariaLabel="Clear"
+        />
+      </div>
+    </>
+  );
+}

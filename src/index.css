@@ -154,9 +154,15 @@ h2 {
   box-shadow: none;
 }
 
-#text-container {
+#main-container {
   height: 82vh;
   height: 82dvh;
+}
+
+#text-container {
+  /* height: 82vh; */
+  /* height: 82dvh; */
+  height: 100%;
   width: 100%;
   display: grid;
   place-items: center;
@@ -365,8 +371,8 @@ canvas {
   border-radius: 50%;
   font-size: 2rem;
   position: absolute;
-  bottom: 5vh;
-  bottom: 5dvh;
+  bottom: 3vh;
+  bottom: 3dvh;
   left: 50%;
   transform: translateX(-50%);
   display: grid;
@@ -400,6 +406,7 @@ canvas {
   color: var(--orange);
 }
 .main-tool-orange:hover {
+  cursor: pointer;
   border: 1px solid var(--orange-hover);
   color: var(--orange-hover);
 }
@@ -408,6 +415,7 @@ canvas {
   color: var(--blue);
 }
 .main-tool-blue:hover {
+  cursor: pointer;
   border: 1px solid var(--blue-hover);
   color: var(--blue-hover);
 }
