@@ -27,6 +27,7 @@ export default function Folders({ notes, folders, handleNoteItemClick }) {
 
       <main className="list-page-main">
         {folders.map((folder) => {
+          // TODO: remove return statement (& in inbox)
           return (
             <Fragment key={folder.id}>
               <FolderListItem

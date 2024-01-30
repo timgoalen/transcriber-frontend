@@ -21,15 +21,14 @@ export default function TranscriberApp() {
   const [folders, setFolders] = useState([]);
   const [showNoteDetailModal, setShowNoteDetailModal] = useState(false);
   const [selectedNoteID, setSelectedNoteID] = useState(0);
-
-  const NOTES_API_URL =
+  const notesApiUrl =
     "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/notes/";
-  const FOLDERS_API_URL =
+  const foldersApiUrl =
     "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/folders/";
 
   async function getNotesDataFromApi() {
     try {
-      const response = await axios.get(NOTES_API_URL, {
+      const response = await axios.get(notesApiUrl, {
         headers: {
           Authorization: `Token ${userToken}`,
         },
@@ -42,7 +41,7 @@ export default function TranscriberApp() {
 
   async function getFoldersDataFromApi() {
     try {
-      const response = await axios.get(FOLDERS_API_URL, {
+      const response = await axios.get(foldersApiUrl, {
         headers: {
           Authorization: `Token ${userToken}`,
         },
@@ -104,7 +103,13 @@ export default function TranscriberApp() {
         />
         <Route
           path="/search"
-          element={<Search notes={notes} folders={folders} />}
+          element={
+            <Search
+              notes={notes}
+              folders={folders}
+              handleNoteItemClick={handleNoteItemClick}
+            />
+          }
         />
         <Route path="/edit" element={<Edit />} />
         <Route path="/signup" element={<SignUp />} />
