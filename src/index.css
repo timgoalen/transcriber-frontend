@@ -359,8 +359,7 @@ canvas {
   border-color: var(--black);
 }
 
-#microphone-container,
-#new-note-container {
+#main-tool-container {
   height: 54px;
   width: 54px;
   border-radius: 50%;
@@ -394,6 +393,23 @@ canvas {
   cursor: pointer;
   border: 1px solid var(--orange-hover);
   color: var(--orange-hover);
+}
+
+.main-tool-orange {
+  border: 1px solid var(--orange);
+  color: var(--orange);
+}
+.main-tool-orange:hover {
+  border: 1px solid var(--orange-hover);
+  color: var(--orange-hover);
+}
+.main-tool-blue {
+  border: 1px solid var(--blue);
+  color: var(--blue);
+}
+.main-tool-blue:hover {
+  border: 1px solid var(--blue-hover);
+  color: var(--blue-hover);
 }
 
 /* -- LIST PAGE -- */
@@ -621,8 +637,7 @@ input[type="search"] {
     margin-right: 16%;
   }
 
-  #microphone-container,
-  #new-note-container {
+  #main-tool-container {
     bottom: 6vh;
     bottom: 6dvh;
   }

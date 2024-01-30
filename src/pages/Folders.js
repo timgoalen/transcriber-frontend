@@ -1,10 +1,13 @@
 import { useState, Fragment } from "react";
 
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { faListUl } from "@fortawesome/free-solid-svg-icons";
 
 import AltPageHeader from "../components/AltPageHeader";
 import FolderListItem from "../components/FolderListItem";
 import NotesInFolderDropdown from "../components/NotesInFolderDropdown";
+import EmptyPlaceholderGraphics from "../components/EmptyPlaceholderGraphics.js";
+import MainTool from "../components/MainTool.js";
 import { getNotesInFolder } from "../utils/utils.js";
 
 export default function Folders({ notes, folders, handleNoteItemClick }) {
@@ -46,6 +49,20 @@ export default function Folders({ notes, folders, handleNoteItemClick }) {
             </Fragment>
           );
         })}
+
+        {folders.length === 0 && (
+          <EmptyPlaceholderGraphics
+            primaryColour="#268cf2"
+            secondaryColour="#f28c26"
+          />
+        )}
+
+        <MainTool
+          className="main-tool-blue"
+          ariaLabel="New folder"
+          onClick={() => alert("todo")}
+          icon={faPlus}
+        />
       </main>
 
       <footer className="toolbar"></footer>
