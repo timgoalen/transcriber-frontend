@@ -80,7 +80,7 @@ export default function TranscriberApp() {
 
   // -- CRUD FUNCTIONS --
 
-  // TODO: refactor into separet functions
+  // TODO: refactor into separate functions
   async function createNote(text, targetFolderID) {
     let newNote = {};
     const folderURL = `${foldersApiUrl}${targetFolderID}/`;
@@ -107,10 +107,10 @@ export default function TranscriberApp() {
     }
   }
 
+  // TODO: refactor into separate functions
   async function createFolder(title) {
     const colour = generateRandomColour();
     const newFolder = { title: title, colour: colour };
-
     try {
       const response = await axios.post(foldersApiUrl, newFolder, {
         headers: {
@@ -123,27 +123,6 @@ export default function TranscriberApp() {
       alert(`Error saving folder: ${error.message}`);
     }
   }
-
-  // function assembleFolder(title) {
-  //   const colour = generateRandomColour();
-  //   const newFolder = { title: title, colour: colour };
-  //   return newFolder;
-  // }
-
-  // async function saveFolder(newFolder) {
-  // try {
-  //   const response = await axios.post(FOLDERS_API_URL, newFolder, {
-  //     headers: {
-  //       Authorization: `Token ${userToken}`,
-  //     },
-  //   });
-  //   console.log("Folder saved:", response.data);
-  //   getInitialFoldersDataFromApi();
-  //   cancelNewFolderForm();
-  // } catch (error) {
-  //   console.error("Error saving folder:", error.message);
-  // }
-  // }
 
   // -- RENDER ELEMENTS --
 
@@ -195,6 +174,7 @@ export default function TranscriberApp() {
           selectedNoteID={selectedNoteID}
           modalBackBtnClick={modalBackBtnClick}
           setShowNoteDetailModal={setShowNoteDetailModal}
+          createFolder={createFolder}
         />
       )}
     </>

@@ -35,6 +35,7 @@ export default function NewFolderForm({
         onChange={updateFolderName}
         className="item-text"
       />
+
       <button
         className="crud-new-folder-btns"
         onClick={handleNewFolderFormCancel}
@@ -42,10 +43,11 @@ export default function NewFolderForm({
       >
         <FontAwesomeIcon icon={faXmark} />
       </button>
+
       <button
         className="crud-new-folder-btns"
         onClick={() => {
-          handleNewFolderFormSubmit(folderName, folderID);
+          handleNewFolderFormSubmit(folderName);
           setFolderName("");
         }}
       >

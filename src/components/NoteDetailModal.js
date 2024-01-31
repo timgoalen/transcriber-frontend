@@ -2,13 +2,15 @@ import { useRef, useState } from "react";
 
 import { faArrowLeft, faPen, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan, faFolder } from "@fortawesome/free-regular-svg-icons";
+import { FolderRounded } from "@mui/icons-material";
 
 import { findNoteByID } from "../utils/utils.js";
 import useClickOutside from "../hooks/useClickOutside";
 import Folders from "../pages/Folders.js";
 import Button from "./Button.js";
 import FolderOptionItem from "./FolderOptionItem.js";
-import { FolderRounded } from "@mui/icons-material";
+import NewFolderForm from "./NewFolderForm.js";
+import AddAuxItemBtn from "./AddAuxItemBtn.js";
 
 export default function NoteDetailModal({
   notes,
@@ -16,8 +18,10 @@ export default function NoteDetailModal({
   selectedNoteID,
   modalBackBtnClick,
   setShowNoteDetailModal,
+  createFolder,
 }) {
   const [showFolderOptions, setShowFolderOptions] = useState(false);
+  const [showNewFolderForm, setShowNewFolderForm] = useState(false);
   const ref = useRef(null);
   const selectedNote = findNoteByID(notes, selectedNoteID);
 
@@ -26,6 +30,11 @@ export default function NoteDetailModal({
   }
 
   useClickOutside(ref, handleClickOutside);
+
+  function handleNewFolderFormSubmitInModal(title) {
+    setShowNewFolderForm(false);
+    createFolder(title);
+  }
 
   return (
     <section id="note-detail-modal-container">
@@ -58,6 +67,7 @@ export default function NoteDetailModal({
         <div id="note-detail-modal-content">
           <div id="note-detail-modal-text">
             <h2>move to folder</h2>
+
             {/* Inbox choice */}
             <FolderOptionItem
               key={0}
@@ -66,6 +76,7 @@ export default function NoteDetailModal({
               colour="var(--orange)"
               selectedNote={selectedNote}
             />
+
             {/* Other folders */}
             {folders.map((folder) => (
               <FolderOptionItem
@@ -76,8 +87,22 @@ export default function NoteDetailModal({
                 selectedNote={selectedNote}
               />
             ))}
+
+            {/* Create new folder */}
+            {showNewFolderForm ? (
+              <NewFolderForm
+                handleNewFolderFormSubmit={handleNewFolderFormSubmitInModal}
+                setShowNewFolderForm={setShowNewFolderForm}
+              />
+            ) : (
+              <AddAuxItemBtn
+                onClick={() => setShowNewFolderForm(true)}
+                text="new folder"
+              />
+            )}
           </div>
 
+          {/* Tools */}
           <div id="note-detail-modal-tools-container">
             <Button
               name="Back"

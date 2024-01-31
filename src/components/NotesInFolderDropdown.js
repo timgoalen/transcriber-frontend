@@ -1,9 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-
 import NoteListItem from "./NoteListItem";
+import AddAuxItemBtn from "./AddAuxItemBtn.js";
 import { findFolderColour } from "../utils/utils.js";
 
 export default function NotesInFolderDropdown({
@@ -32,13 +30,10 @@ export default function NotesInFolderDropdown({
       ))}
 
       {/* Create new note in folder */}
-      <div
+      <AddAuxItemBtn
         onClick={() => handleCreateNewNoteInFolder(parentFolderID)}
-        className="list-page-item add-note-to-folder-btn"
-      >
-        <FontAwesomeIcon icon={faPlus} />
-        <div className="add-note-to-folder-text">new note</div>
-      </div>
+        text="new note"
+      />
     </section>
   );
 }

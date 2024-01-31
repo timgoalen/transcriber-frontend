@@ -593,7 +593,7 @@ input[type="search"] {
   color: var(--blue);
 } */
 
-.add-note-to-folder-btn {
+.add-aux-item-btn {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -606,11 +606,11 @@ input[type="search"] {
   color: var(--grey);
 }
 
-.add-note-to-folder-btn svg {
+.add-aux-item-btn svg {
   padding-right: 0.4rem;
 }
 
-.add-note-to-folder-text {
+.add-aux-item-text {
   /* margin-bottom: 0.1rem; */
 }
 
