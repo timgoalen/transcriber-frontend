@@ -11,7 +11,7 @@ import LogInMenuItem from "./LogInMenuItem";
 import useClickOutside from "../hooks/useClickOutside";
 
 export default function LogInMenu({ setShowLogInMenu }) {
-  const { isLoggedIn } = useContext(UserContext);
+  const { isLoggedIn, userName } = useContext(UserContext);
   const ref = useRef(null);
 
   function handleClickOutside() {
@@ -22,9 +22,10 @@ export default function LogInMenu({ setShowLogInMenu }) {
 
   return (
     <div className="login-menu" ref={ref}>
+    {/* <div className="login-menu"> */}
       {isLoggedIn ? (
         <>
-          <div className="login-menu-item">TODO: username here</div>
+          <div className="login-menu-item">Hi, {userName}!</div>
           <hr></hr>
           <LogOut />
         </>

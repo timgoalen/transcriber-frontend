@@ -155,8 +155,8 @@ h2 {
 }
 
 #main-container {
-  height: 82vh;
-  height: 82dvh;
+  height: 83vh;
+  height: 83dvh;
 }
 
 #text-container {
@@ -224,8 +224,8 @@ canvas {
 }
 
 .list-page-main {
-  height: 82vh;
-  height: 82dvh;
+  height: 81vh;
+  height: 81dvh;
   /* overflow: scroll; */
   max-width: 600px;
   margin: auto;
@@ -316,8 +316,8 @@ canvas {
 }
 
 .toolbar {
-  height: 9vh;
-  height: 9dvh;
+  height: 8vh;
+  height: 8dvh;
   border-top: 1px solid var(--grey);
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -468,6 +468,10 @@ input[type="search"] {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+
+.list-page-item:first-of-type {
+  margin-top: 2vh;
 }
 
 .item-colour-block {

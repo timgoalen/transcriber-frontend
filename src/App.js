@@ -2,6 +2,7 @@ import { useState, useContext, useEffect } from "react";
 import { UserContext } from "./context/UserContext";
 
 import { Routes, Route } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import transcriberAxios from "./config/axiosConfig";
 
@@ -21,6 +22,7 @@ export default function TranscriberApp() {
   const [folders, setFolders] = useState([]);
   const [showNoteDetailModal, setShowNoteDetailModal] = useState(false);
   const [selectedNoteID, setSelectedNoteID] = useState(0);
+  const navigate = useNavigate();
   const notesApiUrl =
     "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/notes/";
   const foldersApiUrl =
@@ -75,12 +77,35 @@ export default function TranscriberApp() {
     setShowNoteDetailModal(false);
   }
 
+  // -- CRUD FUNCTIONS --
+
+  // Default `folderID` value of null when saving to inbox
+  async function createNote(text, folderID = null) {
+    const newNote = { text: text, folder_id: folderID };
+    try {
+      const response = await axios.post(notesApiUrl, newNote, {
+        headers: {
+          Authorization: `Token ${userToken}`,
+        },
+      });
+      console.log("Note saved:", response.data);
+      await getNotesDataFromApi();
+      navigate("/inbox");
+    } catch (error) {
+      alert(`Error saving note: ${error.message}`);
+      // console.error("Error saving note:", error.message);
+    }
+  }
+
   // -- RENDER ELEMENTS --
 
   return (
     <>
       <Routes>
-        <Route path="/" element={<Transcriber />} />
+        <Route
+          path="/"
+          element={<Transcriber createNote={createNote} />}
+        />
         <Route
           path="/inbox"
           element={

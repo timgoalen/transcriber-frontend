@@ -1,6 +1,9 @@
 import { useState } from "react";
 
-import { faMicrophone, faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMicrophone,
+  faArrowUpFromBracket,
+} from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
 import HomePageHeader from "../components/DefaultPageHeader";
@@ -8,17 +11,18 @@ import MicrophoneTool from "../components/MicrophoneTool";
 import TextArea from "../components/TextArea";
 import Toolbar from "../components/Toolbar";
 
-export default function Transcriber() {
+export default function Transcriber({ createNote }) {
+  const [textAreaInput, setTextAreaInput] = useState("");
   const [isRecording, setIsRecording] = useState(false);
 
   function handleMicrophoneClick() {
     alert("todo");
   }
-  
+
   function handleSaveNoteBtnClick() {
-    alert("todo");
+    createNote(textAreaInput);
   }
- 
+
   function clearTextArea() {
     alert("todo");
   }
@@ -28,7 +32,10 @@ export default function Transcriber() {
       <HomePageHeader />
 
       <main id="main-container">
-        <TextArea />
+        <TextArea
+          textAreaInput={textAreaInput}
+          setTextAreaInput={setTextAreaInput}
+        />
 
         <MicrophoneTool
           icon={faMicrophone}
