@@ -8,12 +8,26 @@ import AltPageHeader from "../components/AltPageHeader";
 import FolderListItem from "../components/FolderListItem";
 import NotesInFolderDropdown from "../components/NotesInFolderDropdown";
 import EmptyPlaceholderGraphics from "../components/EmptyPlaceholderGraphics.js";
+import NewFolderForm from "../components/NewFolderForm.js";
 import MainTool from "../components/MainTool.js";
 import { getNotesInFolder } from "../utils/utils.js";
 
-export default function Folders({ notes, folders, handleNoteItemClick }) {
+export default function Folders({
+  notes,
+  folders,
+  handleNoteItemClick,
+  createFolder,
+}) {
   const [showNotesInFolder, setShowNotesInFolder] = useState(0);
+  const [showNewFolderForm, setShowNewFolderForm] = useState(false);
+
   const passedData = useLocation();
+  useEffect(() => {
+    if (passedData.state) {
+      const { savedToFolderID } = passedData.state;
+      setShowNotesInFolder(savedToFolderID);
+    }
+  }, []);
 
   function handleFolderClick(id) {
     // Show/hide notes list
@@ -22,12 +36,10 @@ export default function Folders({ notes, folders, handleNoteItemClick }) {
       : setShowNotesInFolder(id);
   }
 
-  useEffect(() => {
-    if (passedData.state) {
-      const { savedToFolderID } = passedData.state;
-      setShowNotesInFolder(savedToFolderID);
-    }
-  }, [])
+  function handleNewFolderFormSubmit(title) {
+    setShowNewFolderForm(false);
+    createFolder(title);
+  }
 
   return (
     <>
@@ -60,19 +72,23 @@ export default function Folders({ notes, folders, handleNoteItemClick }) {
           );
         })}
 
+        {showNewFolderForm ? (
+          <NewFolderForm setShowNewFolderForm={setShowNewFolderForm} handleNewFolderFormSubmit={handleNewFolderFormSubmit} />
+        ) : (
+          <MainTool
+            className="main-tool-blue"
+            ariaLabel="New folder"
+            onClick={() => setShowNewFolderForm(true)}
+            icon={faPlus}
+          />
+        )}
+
         {folders.length === 0 && (
           <EmptyPlaceholderGraphics
             primaryColour="#268cf2"
             secondaryColour="#f28c26"
           />
         )}
-
-        <MainTool
-          className="main-tool-blue"
-          ariaLabel="New folder"
-          onClick={() => alert("todo")}
-          icon={faPlus}
-        />
       </main>
 
       <footer className="toolbar"></footer>

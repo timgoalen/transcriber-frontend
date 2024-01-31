@@ -15,6 +15,7 @@ import SignUp from "./pages/SignUp";
 import LogIn from "./pages/LogIn";
 import NoPage from "./pages/NoPage";
 import NoteDetailModal from "./components/NoteDetailModal";
+import { generateRandomColour } from "./utils/utils";
 
 export default function TranscriberApp() {
   const { isLoggedIn, userToken } = useContext(UserContext);
@@ -106,6 +107,44 @@ export default function TranscriberApp() {
     }
   }
 
+  async function createFolder(title) {
+    const colour = generateRandomColour();
+    const newFolder = { title: title, colour: colour };
+
+    try {
+      const response = await axios.post(foldersApiUrl, newFolder, {
+        headers: {
+          Authorization: `Token ${userToken}`,
+        },
+      });
+      console.log("Folder saved:", response.data);
+      await getFoldersDataFromApi();
+    } catch (error) {
+      alert(`Error saving folder: ${error.message}`);
+    }
+  }
+
+  // function assembleFolder(title) {
+  //   const colour = generateRandomColour();
+  //   const newFolder = { title: title, colour: colour };
+  //   return newFolder;
+  // }
+
+  // async function saveFolder(newFolder) {
+  // try {
+  //   const response = await axios.post(FOLDERS_API_URL, newFolder, {
+  //     headers: {
+  //       Authorization: `Token ${userToken}`,
+  //     },
+  //   });
+  //   console.log("Folder saved:", response.data);
+  //   getInitialFoldersDataFromApi();
+  //   cancelNewFolderForm();
+  // } catch (error) {
+  //   console.error("Error saving folder:", error.message);
+  // }
+  // }
+
   // -- RENDER ELEMENTS --
 
   return (
@@ -129,6 +168,7 @@ export default function TranscriberApp() {
               notes={notes}
               folders={folders}
               handleNoteItemClick={handleNoteItemClick}
+              createFolder={createFolder}
             />
           }
         />
