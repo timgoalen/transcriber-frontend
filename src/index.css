@@ -594,19 +594,24 @@ input[type="search"] {
 } */
 
 .add-note-to-folder-btn {
-  display: grid;
-  color: var(--orange);
-  font-size: 1.2rem;
-  padding: 0.2rem 0.5rem;
-  line-height: 1.5;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 0.9rem;
   height: 2.2rem;
-  align-content: center;
-  justify-content: center;
+  line-height: 1.5;
+  padding: 0.2rem 0.5rem;
   border-style: dashed;
+  color: var(--grey);
 }
 
 .add-note-to-folder-btn svg {
-  padding-right: 1.85rem;
+  padding-right: 0.4rem;
+}
+
+.add-note-to-folder-text {
+  /* margin-bottom: 0.1rem; */
 }
 
 /* PLACEHOLDER SVG */

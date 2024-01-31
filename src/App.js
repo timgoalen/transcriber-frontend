@@ -79,9 +79,13 @@ export default function TranscriberApp() {
 
   // -- CRUD FUNCTIONS --
 
-  // Default `folderID` value of null when saving to inbox
-  async function createNote(text, folderID = null) {
-    const newNote = { text: text, folder_id: folderID };
+  // TODO: refactor into separet functions
+  async function createNote(text, targetFolderID) {
+    let newNote = {};
+    const folderURL = `${foldersApiUrl}${targetFolderID}/`;
+    targetFolderID === null
+      ? (newNote = { text: text, folder_id: null })
+      : (newNote = { text: text, folder_id: folderURL });
     try {
       const response = await axios.post(notesApiUrl, newNote, {
         headers: {
@@ -90,10 +94,15 @@ export default function TranscriberApp() {
       });
       console.log("Note saved:", response.data);
       await getNotesDataFromApi();
-      navigate("/inbox");
+      // Redirect to inbox of folders
+      if (targetFolderID === null) {
+        navigate("/inbox");
+      } else {
+        // Include folder ID in redirect so folder can be opened
+        navigate("/folders", { state: { savedToFolderID: targetFolderID } });
+      }
     } catch (error) {
       alert(`Error saving note: ${error.message}`);
-      // console.error("Error saving note:", error.message);
     }
   }
 
@@ -102,10 +111,7 @@ export default function TranscriberApp() {
   return (
     <>
       <Routes>
-        <Route
-          path="/"
-          element={<Transcriber createNote={createNote} />}
-        />
+        <Route path="/" element={<Transcriber createNote={createNote} />} />
         <Route
           path="/inbox"
           element={

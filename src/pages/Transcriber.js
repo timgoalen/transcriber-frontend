@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
+import { useLocation } from "react-router-dom";
 import {
   faMicrophone,
   faArrowUpFromBracket,
@@ -10,17 +11,28 @@ import HomePageHeader from "../components/DefaultPageHeader";
 import MicrophoneTool from "../components/MicrophoneTool";
 import TextArea from "../components/TextArea";
 import Toolbar from "../components/Toolbar";
+import { CollectionsOutlined } from "@mui/icons-material";
 
 export default function Transcriber({ createNote }) {
   const [textAreaInput, setTextAreaInput] = useState("");
   const [isRecording, setIsRecording] = useState(false);
+  const [targetFolderID, setTargetFolderID] = useState(null);
+  const passedData = useLocation();
+
+  useEffect(() => {
+    if (passedData.state) {
+      const { passedFolderID } = passedData.state;
+      setTargetFolderID(passedFolderID);
+    }
+  }, [targetFolderID]);
 
   function handleMicrophoneClick() {
     alert("todo");
   }
 
   function handleSaveNoteBtnClick() {
-    createNote(textAreaInput);
+    // Inbox has `targetFolderID` of null
+    createNote(textAreaInput, targetFolderID);
   }
 
   function clearTextArea() {

@@ -1,5 +1,6 @@
-import { useState, Fragment } from "react";
+import { useState, Fragment, useEffect } from "react";
 
+import { useLocation } from "react-router-dom";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { faListUl } from "@fortawesome/free-solid-svg-icons";
 
@@ -12,6 +13,7 @@ import { getNotesInFolder } from "../utils/utils.js";
 
 export default function Folders({ notes, folders, handleNoteItemClick }) {
   const [showNotesInFolder, setShowNotesInFolder] = useState(0);
+  const passedData = useLocation();
 
   function handleFolderClick(id) {
     // Show/hide notes list
@@ -19,6 +21,13 @@ export default function Folders({ notes, folders, handleNoteItemClick }) {
       ? setShowNotesInFolder(0)
       : setShowNotesInFolder(id);
   }
+
+  useEffect(() => {
+    if (passedData.state) {
+      const { savedToFolderID } = passedData.state;
+      setShowNotesInFolder(savedToFolderID);
+    }
+  }, [])
 
   return (
     <>
@@ -44,6 +53,7 @@ export default function Folders({ notes, folders, handleNoteItemClick }) {
                   folders={folders}
                   notesInFolder={getNotesInFolder(notes, folder.id)}
                   handleNoteItemClick={handleNoteItemClick}
+                  parentFolderID={folder.id}
                 />
               )}
             </Fragment>
