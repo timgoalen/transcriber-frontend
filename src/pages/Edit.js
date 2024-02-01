@@ -1,13 +1,16 @@
 import { useState } from "react";
 
 import Transcriber from "../components/Transcriber";
+import Header from "../components/header/Header";
+import Account from "../components/header/Account";
+import Inbox from "../components/header/Inbox";
 
 export default function Edit({ getNotesDataFromApi }) {
   const [toolbarType, setToolbarType] = useState("editPage");
 
   return (
     <>
-      <h1>edit</h1>
+      <Header pageTitle="edit"></Header>
 
       <Transcriber
         toolbarType={toolbarType}

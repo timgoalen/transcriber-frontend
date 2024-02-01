@@ -23,7 +23,7 @@ export default function Account() {
       >
         <FontAwesomeIcon icon={faUser} />
         {isLoggedIn ? (
-          <div className="header-btn-text">log out</div>
+          <div className="header-btn-text">user</div>
         ) : (
           <div className="header-btn-text">log in</div>
         )}

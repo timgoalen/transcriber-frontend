@@ -23,6 +23,8 @@ export default function Folders({
   const [openToolList, setOpenToolList] = useState(0);
   const [editFolderTitle, setEditFolderTitle] = useState(0);
 
+  console.table(notes);
+
   const passedData = useLocation();
   useEffect(() => {
     if (passedData.state) {

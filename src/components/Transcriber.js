@@ -19,6 +19,7 @@ import Toolbar from "./Toolbar";
 export default function Transcriber({ toolbarType, getNotesDataFromApi }) {
   const [textAreaInput, setTextAreaInput] = useState("");
   const [isRecording, setIsRecording] = useState(false);
+  const [targetNoteID, setTargetNoteID] = useState(null);
   const [targetFolderID, setTargetFolderID] = useState(null);
   const { isLoggedIn, userToken } = useContext(UserContext);
   const navigate = useNavigate();
@@ -30,12 +31,37 @@ export default function Transcriber({ toolbarType, getNotesDataFromApi }) {
   const foldersApiUrl =
     "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/folders/";
 
+  // TODO: explain: for save-note-in-folder funcitonality
+  // useEffect(() => {
+  //   if (passedData.state) {
+  //     const { passedFolderID } = passedData.state;
+  //     setTargetFolderID(passedFolderID);
+  //   }
+  // }, [targetFolderID]);
+
   useEffect(() => {
     if (passedData.state) {
-      const { passedFolderID } = passedData.state;
-      setTargetFolderID(passedFolderID);
+      if (passedData.state.passedFolderID) {
+        const { passedFolderID } = passedData.state;
+        setTargetFolderID(passedFolderID);
+      }
+      if (passedData.state.selectedNote) {
+        const { selectedNote } = passedData.state;
+        setTextAreaInput(selectedNote.text);
+        setTargetNoteID(selectedNote.id);
+        setTargetFolderID(selectedNote.folder_id);
+      }
     }
-  }, [targetFolderID]);
+  }, [targetFolderID, passedData.state])
+
+  // useEffect(() => {
+  //   if (passedData.state) {
+  //     const { passedFolderID, selectedNote } = passedData.state;
+  //     setTargetFolderID(passedFolderID);
+  //     setTextAreaInput(selectedNote.text);
+  //   }
+  // }, [targetFolderID, passedData.state]);
+  
 
   // -- CRUD FUNCTIONS --
 
@@ -44,7 +70,9 @@ export default function Transcriber({ toolbarType, getNotesDataFromApi }) {
     let newNote = {};
     const folderURL = `${foldersApiUrl}${targetFolderID}/`;
     targetFolderID === null
+      // Save to inbox
       ? (newNote = { text: text, folder_id: null })
+      // Save to target folder
       : (newNote = { text: text, folder_id: folderURL });
     try {
       const response = await axios.post(notesApiUrl, newNote, {
@@ -54,7 +82,8 @@ export default function Transcriber({ toolbarType, getNotesDataFromApi }) {
       });
       console.log("Note saved:", response.data);
       await getNotesDataFromApi();
-      // Redirect to inbox of folders
+      // TODO: refactor for duplication in `updateNote` below
+      // Redirect to inbox
       if (targetFolderID === null) {
         navigate("/inbox");
       } else {
@@ -63,6 +92,29 @@ export default function Transcriber({ toolbarType, getNotesDataFromApi }) {
       }
     } catch (error) {
       alert(`Error saving note: ${error.message}`);
+    }
+  }
+
+  async function updateNote() {
+    // Assemble the updated note
+    const updatedNote = { text: textAreaInput };
+    try {
+      const response = await axios.patch(notesApiUrl + `${targetNoteID}/`, updatedNote, {
+        headers: {
+          Authorization: `Token ${userToken}`,
+        },
+      });
+      console.log("Note updated:", response.data);
+      await getNotesDataFromApi();
+      // Redirect to inbox
+      if (targetFolderID === null) {
+        navigate("/inbox");
+      } else {
+        // Include folder ID in redirect so folder can be opened
+        navigate("/folders", { state: { savedToFolderID: targetFolderID } });
+      }
+    } catch (error) {
+      alert("Error updating note:", error.message);
     }
   }
 
@@ -79,6 +131,10 @@ export default function Transcriber({ toolbarType, getNotesDataFromApi }) {
 
   function clearTextArea() {
     setTextAreaInput("");
+  }
+
+  function closeEditPage() {
+    navigate("/inbox");
   }
 
   return (
@@ -111,10 +167,10 @@ export default function Transcriber({ toolbarType, getNotesDataFromApi }) {
           <Toolbar
             tool1Label="Update"
             tool1Icon={faArrowUpFromBracket}
-            tool1OnClick={() => alert("todo")}
+            tool1OnClick={updateNote}
             tool2Label="Cancel"
             tool2Icon={faXmark}
-            tool2OnClick={clearTextArea}
+            tool2OnClick={closeEditPage}
           />
         )}
       </footer>

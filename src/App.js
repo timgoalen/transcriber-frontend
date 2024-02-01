@@ -17,7 +17,7 @@ import NoPage from "./pages/NoPage";
 import NoteDetailModal from "./components/NoteDetailModal";
 import { generateRandomColour } from "./utils/utils";
 
-export default function TranscriberApp() {
+export default function App() {
   const { isLoggedIn, userToken } = useContext(UserContext);
   const [notes, setNotes] = useState([]);
   const [folders, setFolders] = useState([]);

@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 
+import { useNavigate } from "react-router-dom";
 import { faArrowLeft, faPen, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan, faFolder } from "@fortawesome/free-regular-svg-icons";
 import { FolderRounded } from "@mui/icons-material";
@@ -22,8 +23,9 @@ export default function NoteDetailModal({
 }) {
   const [showFolderOptions, setShowFolderOptions] = useState(false);
   const [showNewFolderForm, setShowNewFolderForm] = useState(false);
-  const ref = useRef(null);
   const selectedNote = findNoteByID(notes, selectedNoteID);
+  const navigate = useNavigate();
+  const ref = useRef(null);
 
   function handleClickOutside() {
     modalBackBtnClick();
@@ -37,7 +39,8 @@ export default function NoteDetailModal({
   }
 
   function handleEditBtnClick() {
-    
+    setShowNoteDetailModal(false);
+    navigate("/edit", { state: { selectedNote: selectedNote } })
   }
 
   return (
