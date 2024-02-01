@@ -21,18 +21,16 @@ export default function Inbox({ notes, folders, handleNoteItemClick }) {
       />
 
       <main className="list-page-main">
-        {inboxNotes.map((note) => {
-          return (
-            <NoteListItem
-              key={note.id}
-              id={note.id}
-              text={note.text}
-              folderId={note.folder_id}
-              folderColour={findFolderColour(folders, note.folder_id)}
-              handleNoteItemClick={handleNoteItemClick}
-            />
-          );
-        })}
+        {inboxNotes.map((note) => (
+          <NoteListItem
+            key={note.id}
+            id={note.id}
+            text={note.text}
+            folderId={note.folder_id}
+            folderColour={findFolderColour(folders, note.folder_id)}
+            handleNoteItemClick={handleNoteItemClick}
+          />
+        ))}
 
         {inboxNotes.length === 0 && (
           <EmptyPlaceholderGraphics

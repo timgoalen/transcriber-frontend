@@ -17,14 +17,14 @@ export default function Folders({
   folders,
   handleNoteItemClick,
   createFolder,
+  getAllDataFromApi,
 }) {
   const [showNotesInFolder, setShowNotesInFolder] = useState(0);
   const [showNewFolderForm, setShowNewFolderForm] = useState(false);
   const [openToolList, setOpenToolList] = useState(0);
   const [editFolderTitle, setEditFolderTitle] = useState(0);
 
-  console.table(notes);
-
+  // TODO: explain why this is needed
   const passedData = useLocation();
   useEffect(() => {
     if (passedData.state) {
@@ -66,38 +66,36 @@ export default function Folders({
       />
 
       <main className="list-page-main">
-        {folders.map((folder) => {
-          // TODO: remove return statement (& in inbox)
-          return (
-            <Fragment key={folder.id}>
-              {editFolderTitle === folder.id ? (
-                <NewFolderForm
-                  setShowNewFolderForm={setShowNewFolderForm}
-                  handleNewFolderFormSubmit={handleNewFolderFormSubmit}
-                />
-              ) : (
-                <FolderListItem
-                  id={folder.id}
-                  title={folder.title}
-                  colour={folder.colour}
-                  handleFolderClick={handleFolderClick}
-                  handleFolderOptionsClick={handleFolderOptionsClick}
-                  openToolList={openToolList}
-                  handleFolderEditClick={handleFolderEditClick}
-                />
-              )}
+        {folders.map((folder) => (
+          <Fragment key={folder.id}>
+            {editFolderTitle === folder.id ? (
+              <NewFolderForm
+                setShowNewFolderForm={setShowNewFolderForm}
+                handleNewFolderFormSubmit={handleNewFolderFormSubmit}
+              />
+            ) : (
+              <FolderListItem
+                id={folder.id}
+                title={folder.title}
+                colour={folder.colour}
+                handleFolderClick={handleFolderClick}
+                handleFolderOptionsClick={handleFolderOptionsClick}
+                openToolList={openToolList}
+                handleFolderEditClick={handleFolderEditClick}
+                getAllDataFromApi={getAllDataFromApi}
+              />
+            )}
 
-              {showNotesInFolder === folder.id && (
-                <NotesInFolderDropdown
-                  folders={folders}
-                  notesInFolder={getNotesInFolder(notes, folder.id)}
-                  handleNoteItemClick={handleNoteItemClick}
-                  parentFolderID={folder.id}
-                />
-              )}
-            </Fragment>
-          );
-        })}
+            {showNotesInFolder === folder.id && (
+              <NotesInFolderDropdown
+                folders={folders}
+                notesInFolder={getNotesInFolder(notes, folder.id)}
+                handleNoteItemClick={handleNoteItemClick}
+                parentFolderID={folder.id}
+              />
+            )}
+          </Fragment>
+        ))}
 
         {showNewFolderForm ? (
           <NewFolderForm

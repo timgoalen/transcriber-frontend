@@ -55,6 +55,11 @@ export default function App() {
     }
   }
 
+  async function getAllDataFromApi() {
+    await getNotesDataFromApi();
+    await getFoldersDataFromApi();
+  }
+
   // Get data form the API when user logs in
   useEffect(() => {
     if (isLoggedIn) {
@@ -124,6 +129,7 @@ export default function App() {
               folders={folders}
               handleNoteItemClick={handleNoteItemClick}
               createFolder={createFolder}
+              getAllDataFromApi={getAllDataFromApi}
             />
           }
         />
