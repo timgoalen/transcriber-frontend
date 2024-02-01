@@ -154,6 +154,7 @@ export default function App() {
           modalBackBtnClick={modalBackBtnClick}
           setShowNoteDetailModal={setShowNoteDetailModal}
           createFolder={createFolder}
+          getNotesDataFromApi={getNotesDataFromApi}
         />
       )}
     </>

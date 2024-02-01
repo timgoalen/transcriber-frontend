@@ -20,6 +20,7 @@ export default function NoteDetailModal({
   modalBackBtnClick,
   setShowNoteDetailModal,
   createFolder,
+  getNotesDataFromApi,
 }) {
   const [showFolderOptions, setShowFolderOptions] = useState(false);
   const [showNewFolderForm, setShowNewFolderForm] = useState(false);
@@ -40,7 +41,7 @@ export default function NoteDetailModal({
 
   function handleEditBtnClick() {
     setShowNoteDetailModal(false);
-    navigate("/edit", { state: { selectedNote: selectedNote } })
+    navigate("/edit", { state: { selectedNote: selectedNote } });
   }
 
   return (
@@ -82,6 +83,8 @@ export default function NoteDetailModal({
               title="inbox"
               colour="var(--orange)"
               selectedNote={selectedNote}
+              getNotesDataFromApi={getNotesDataFromApi}
+              setShowNoteDetailModal={setShowNoteDetailModal}
             />
 
             {/* Other folders */}
@@ -92,6 +95,8 @@ export default function NoteDetailModal({
                 title={folder.title}
                 colour={folder.colour}
                 selectedNote={selectedNote}
+                getNotesDataFromApi={getNotesDataFromApi}
+                setShowNoteDetailModal={setShowNoteDetailModal}
               />
             ))}
 

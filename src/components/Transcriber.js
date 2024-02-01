@@ -82,7 +82,7 @@ export default function Transcriber({ toolbarType, getNotesDataFromApi }) {
       });
       console.log("Note saved:", response.data);
       await getNotesDataFromApi();
-      // TODO: refactor for duplication in `updateNote` below
+      // TODO: refactor for duplication in `updateNoteTextField` below and <FolderOptionItem.js/>
       // Redirect to inbox
       if (targetFolderID === null) {
         navigate("/inbox");
@@ -95,7 +95,7 @@ export default function Transcriber({ toolbarType, getNotesDataFromApi }) {
     }
   }
 
-  async function updateNote() {
+  async function updateNoteTextField() {
     // Assemble the updated note
     const updatedNote = { text: textAreaInput };
     try {
@@ -167,7 +167,7 @@ export default function Transcriber({ toolbarType, getNotesDataFromApi }) {
           <Toolbar
             tool1Label="Update"
             tool1Icon={faArrowUpFromBracket}
-            tool1OnClick={updateNote}
+            tool1OnClick={updateNoteTextField}
             tool2Label="Cancel"
             tool2Icon={faXmark}
             tool2OnClick={closeEditPage}
