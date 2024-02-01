@@ -24,6 +24,7 @@ export default function App() {
   const [showNoteDetailModal, setShowNoteDetailModal] = useState(false);
   const [selectedNoteID, setSelectedNoteID] = useState(0);
   const navigate = useNavigate();
+  // TODO: replace with axios globals
   const notesApiUrl =
     "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/notes/";
   const foldersApiUrl =
