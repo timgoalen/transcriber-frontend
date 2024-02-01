@@ -36,6 +36,10 @@ export default function NoteDetailModal({
     createFolder(title);
   }
 
+  function handleEditBtnClick() {
+    
+  }
+
   return (
     <section id="note-detail-modal-container">
       {!showFolderOptions ? (
@@ -49,7 +53,7 @@ export default function NoteDetailModal({
               icon={faArrowLeft}
               onClick={modalBackBtnClick}
             />
-            <Button name="Edit" icon={faPen} onClick={() => alert("todo")} />
+            <Button name="Edit" icon={faPen} onClick={handleEditBtnClick} />
             <Button
               name="Folder"
               icon={faFolder}

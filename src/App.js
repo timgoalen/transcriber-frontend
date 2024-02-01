@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import transcriberAxios from "./config/axiosConfig";
 
-import Transcriber from "./pages/Transcriber";
+import Home from "./pages/Home.js";
 import Inbox from "./pages/Inbox";
 import Folders from "./pages/Folders";
 import Search from "./pages/Search";
@@ -81,33 +81,6 @@ export default function TranscriberApp() {
   // -- CRUD FUNCTIONS --
 
   // TODO: refactor into separate functions
-  async function createNote(text, targetFolderID) {
-    let newNote = {};
-    const folderURL = `${foldersApiUrl}${targetFolderID}/`;
-    targetFolderID === null
-      ? (newNote = { text: text, folder_id: null })
-      : (newNote = { text: text, folder_id: folderURL });
-    try {
-      const response = await axios.post(notesApiUrl, newNote, {
-        headers: {
-          Authorization: `Token ${userToken}`,
-        },
-      });
-      console.log("Note saved:", response.data);
-      await getNotesDataFromApi();
-      // Redirect to inbox of folders
-      if (targetFolderID === null) {
-        navigate("/inbox");
-      } else {
-        // Include folder ID in redirect so folder can be opened
-        navigate("/folders", { state: { savedToFolderID: targetFolderID } });
-      }
-    } catch (error) {
-      alert(`Error saving note: ${error.message}`);
-    }
-  }
-
-  // TODO: refactor into separate functions
   async function createFolder(title) {
     const colour = generateRandomColour();
     const newFolder = { title: title, colour: colour };
@@ -129,7 +102,10 @@ export default function TranscriberApp() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Transcriber createNote={createNote} />} />
+        <Route
+          path="/"
+          element={<Home getNotesDataFromApi={getNotesDataFromApi} />}
+        />
         <Route
           path="/inbox"
           element={
@@ -161,7 +137,10 @@ export default function TranscriberApp() {
             />
           }
         />
-        <Route path="/edit" element={<Edit />} />
+        <Route
+          path="/edit"
+          element={<Edit getNotesDataFromApi={getNotesDataFromApi} />}
+        />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/*" element={<NoPage />} />

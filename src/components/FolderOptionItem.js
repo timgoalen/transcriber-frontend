@@ -29,6 +29,7 @@ export default function FolderOptionItem({ id, title, colour, selectedNote }) {
         className="item-colour-block"
         style={{ backgroundColor: colour, zIndex: 1 }}
       ></div>
+
       <div
         className="item-text"
         onClick={() => {
@@ -40,6 +41,7 @@ export default function FolderOptionItem({ id, title, colour, selectedNote }) {
       >
         <p>{title}</p>
       </div>
+
       {/* Show tick if folder is parent folder */}
       {isParentFolder && (
         <div className="item-tools">

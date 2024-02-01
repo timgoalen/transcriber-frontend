@@ -1,7 +1,18 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
 
-export default function FolderListItem({ id, title, colour, handleFolderClick }) {
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPen, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
+import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
+
+export default function FolderListItem({
+  id,
+  title,
+  colour,
+  handleFolderClick,
+  handleFolderOptionsClick,
+  openToolList,
+  handleFolderEditClick,
+}) {
   return (
     <div className="list-page-item">
       {/* Colour block */}
@@ -17,9 +28,26 @@ export default function FolderListItem({ id, title, colour, handleFolderClick })
 
       {/* Toolbar */}
       <div className="folder-toolbar">
+        {openToolList === id && (
+          <>
+            <div
+              className="folder-options"
+              onClick={() => handleFolderEditClick(id)}
+            >
+              <FontAwesomeIcon icon={faPen} />
+            </div>
+            <div
+              className="folder-options"
+              // onClick={() => handleFolderDeleteClick(id)}
+            >
+              <FontAwesomeIcon icon={faTrashCan} />
+            </div>
+          </>
+        )}
+
         <div
           className="item-tools"
-          //   onClick={() => handleFolderOptionsClick(folder.id)}
+          onClick={() => handleFolderOptionsClick(id)}
         >
           <FontAwesomeIcon icon={faEllipsisVertical} />
         </div>

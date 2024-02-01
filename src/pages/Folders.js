@@ -20,6 +20,8 @@ export default function Folders({
 }) {
   const [showNotesInFolder, setShowNotesInFolder] = useState(0);
   const [showNewFolderForm, setShowNewFolderForm] = useState(false);
+  const [openToolList, setOpenToolList] = useState(0);
+  const [editFolderTitle, setEditFolderTitle] = useState(0);
 
   const passedData = useLocation();
   useEffect(() => {
@@ -28,6 +30,8 @@ export default function Folders({
       setShowNotesInFolder(savedToFolderID);
     }
   }, []);
+
+  // -- CLICK HANDLERS --
 
   function handleFolderClick(id) {
     // Show/hide notes list
@@ -40,6 +44,16 @@ export default function Folders({
     setShowNewFolderForm(false);
     createFolder(title);
   }
+
+  function handleFolderOptionsClick(id) {
+    openToolList === id ? setOpenToolList(0) : setOpenToolList(id);
+  }
+
+  function handleFolderEditClick(id) {
+    setEditFolderTitle(id);
+  }
+
+  // -- RENDER ELEMENTS --
 
   return (
     <>
@@ -54,12 +68,23 @@ export default function Folders({
           // TODO: remove return statement (& in inbox)
           return (
             <Fragment key={folder.id}>
-              <FolderListItem
-                id={folder.id}
-                title={folder.title}
-                colour={folder.colour}
-                handleFolderClick={handleFolderClick}
-              />
+              {editFolderTitle === folder.id ? (
+                <NewFolderForm
+                  setShowNewFolderForm={setShowNewFolderForm}
+                  handleNewFolderFormSubmit={handleNewFolderFormSubmit}
+                />
+              ) : (
+                <FolderListItem
+                  id={folder.id}
+                  title={folder.title}
+                  colour={folder.colour}
+                  handleFolderClick={handleFolderClick}
+                  handleFolderOptionsClick={handleFolderOptionsClick}
+                  openToolList={openToolList}
+                  handleFolderEditClick={handleFolderEditClick}
+                />
+              )}
+
               {showNotesInFolder === folder.id && (
                 <NotesInFolderDropdown
                   folders={folders}
@@ -73,7 +98,10 @@ export default function Folders({
         })}
 
         {showNewFolderForm ? (
-          <NewFolderForm setShowNewFolderForm={setShowNewFolderForm} handleNewFolderFormSubmit={handleNewFolderFormSubmit} />
+          <NewFolderForm
+            setShowNewFolderForm={setShowNewFolderForm}
+            handleNewFolderFormSubmit={handleNewFolderFormSubmit}
+          />
         ) : (
           <MainTool
             className="main-tool-blue"

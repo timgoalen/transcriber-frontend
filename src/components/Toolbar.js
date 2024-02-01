@@ -1,10 +1,10 @@
 import Button from "./Button.js";
 
 export default function Toolbar({
-  tool1Name,
+  tool1Label,
   tool1Icon,
   tool1OnClick,
-  tool2Name,
+  tool2Label,
   tool2Icon,
   tool2OnClick,
 }) {
@@ -12,19 +12,19 @@ export default function Toolbar({
     <>
       <div className="footer-left">
         <Button
-          name={tool1Name}
+          name={tool1Label}
           icon={tool1Icon}
           onClick={tool1OnClick}
-          ariaLabel="Save"
+          ariaLabel={tool1Label}
         />
       </div>
 
       <div className="footer-right">
         <Button
-          name={tool2Name}
+          name={tool2Label}
           icon={tool2Icon}
           onClick={tool2OnClick}
-          ariaLabel="Clear"
+          ariaLabel={tool2Label}
         />
       </div>
     </>
