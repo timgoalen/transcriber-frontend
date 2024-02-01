@@ -1,24 +1,26 @@
-import { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { faFolder } from "@fortawesome/free-regular-svg-icons";
 
-import AltPageHeader from "../components/AltPageHeader";
+import Header from "../components/header/Header";
+import Create from "../components/header/Create";
+import Search from "../components/header/Search.js";
+import Folders from "../components/header/Folders";
 import NoteListItem from "../components/NoteListItem";
 import EmptyPlaceholderGraphics from "../components/EmptyPlaceholderGraphics.js";
 import MainTool from "../components/MainTool.js";
 import { findFolderColour } from "../utils/utils.js";
 
 export default function Inbox({ notes, folders, handleNoteItemClick }) {
+  const navigate = useNavigate();
   const inboxNotes = notes.filter((note) => note.folder_id === null);
 
   return (
     <>
-      <AltPageHeader
-        title="inbox"
-        cornerIcon={faFolder}
-        cornerIconLinkTo="/folders"
-      />
+      <Header pageTitle="inbox">
+        <Create />
+        <Search />
+        <Folders />
+      </Header>
 
       <main className="list-page-main">
         {inboxNotes.map((note) => (
@@ -42,7 +44,7 @@ export default function Inbox({ notes, folders, handleNoteItemClick }) {
         <MainTool
           className="main-tool-orange"
           ariaLabel="New note"
-          onClick={() => alert("todo")}
+          onClick={() => navigate("/")}
           icon={faPlus}
         />
       </main>

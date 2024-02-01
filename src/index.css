@@ -74,12 +74,16 @@ header {
 .header-icons-container {
   display: flex;
   flex-direction: row;
-  gap: 5.5vw;
+  gap: 4vw;
   align-items: center;
 }
 
 .header-btn-container {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
+}
+
+.header-btn-text {
+  font-size: 0.9rem;
 }
 
 .material-icon-link {

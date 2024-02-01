@@ -3,10 +3,12 @@ import { useState, Fragment, useEffect, useContext } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { faListUl } from "@fortawesome/free-solid-svg-icons";
 
 import { UserContext } from "../context/UserContext";
-import AltPageHeader from "../components/AltPageHeader";
+import Header from "../components/header/Header.js";
+import Create from "../components/header/Create.js";
+import Inbox from "../components/header/Inbox.js";
+import Search from "../components/header/Search.js";
 import FolderListItem from "../components/FolderListItem";
 import NotesInFolderDropdown from "../components/NotesInFolderDropdown";
 import EmptyPlaceholderGraphics from "../components/EmptyPlaceholderGraphics.js";
@@ -97,11 +99,11 @@ export default function Folders({
 
   return (
     <>
-      <AltPageHeader
-        title="folders"
-        cornerIcon={faListUl}
-        cornerIconLinkTo="/inbox"
-      />
+      <Header pageTitle="folders">
+        <Create />
+        <Search />
+        <Inbox />
+      </Header>
 
       <main className="list-page-main">
         {folders.map((folder) => (

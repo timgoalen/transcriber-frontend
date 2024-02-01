@@ -1,8 +1,8 @@
 import { useState, Fragment } from "react";
 
-import { faFolder } from "@fortawesome/free-regular-svg-icons";
-
-import AltPageHeader from "../components/AltPageHeader";
+import Header from "../components/header/Header";
+import Create from "../components/header/Create";
+import Folders from "../components/header/Folders";
 import SearchBar from "../components/SearchBar.js";
 import NoteListItem from "../components/NoteListItem";
 import FolderListItem from "../components/FolderListItem.js";
@@ -33,11 +33,11 @@ export default function Search({ notes, folders, handleNoteItemClick }) {
 
   return (
     <>
-      <AltPageHeader
-        title="search"
-        cornerIcon={faFolder}
-        cornerIconLinkTo="/folders"
-      />
+      <Header pageTitle="inbox">
+        <Create />
+        <Search />
+        <Folders />
+      </Header>
 
       <main className="list-page-main">
         <SearchBar
