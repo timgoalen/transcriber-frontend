@@ -1,9 +1,11 @@
-import { useState, Fragment, useEffect } from "react";
+import { useState, Fragment, useEffect, useContext } from "react";
 
+import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { faListUl } from "@fortawesome/free-solid-svg-icons";
 
+import { UserContext } from "../context/UserContext";
 import AltPageHeader from "../components/AltPageHeader";
 import FolderListItem from "../components/FolderListItem";
 import NotesInFolderDropdown from "../components/NotesInFolderDropdown";
@@ -18,11 +20,17 @@ export default function Folders({
   handleNoteItemClick,
   createFolder,
   getAllDataFromApi,
+  getFoldersDataFromApi,
 }) {
   const [showNotesInFolder, setShowNotesInFolder] = useState(0);
   const [showNewFolderForm, setShowNewFolderForm] = useState(false);
   const [openToolList, setOpenToolList] = useState(0);
   const [editFolderTitle, setEditFolderTitle] = useState(0);
+  const { isLoggedIn, userToken } = useContext(UserContext);
+
+  // TODO: replace with axios globals
+  const foldersApiUrl =
+    "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/folders/";
 
   // TODO: explain why this is needed
   const passedData = useLocation();
@@ -33,6 +41,27 @@ export default function Folders({
     }
   }, []);
 
+  async function updateFolderTitle(title, id) {
+    const updatedFolder = { title: title };
+    setEditFolderTitle(0);
+    setOpenToolList(0);
+    try {
+      const response = await axios.patch(
+        `${foldersApiUrl}${id}/`,
+        updatedFolder,
+        {
+          headers: {
+            Authorization: `Token ${userToken}`,
+          },
+        }
+      );
+      console.log("Folder updated:", response.data);
+      await getFoldersDataFromApi();
+    } catch (error) {
+      alert("Error updating folder:", error.message);
+    }
+  }
+
   // -- CLICK HANDLERS --
 
   function handleFolderClick(id) {
@@ -42,9 +71,9 @@ export default function Folders({
       : setShowNotesInFolder(id);
   }
 
-  function handleNewFolderFormSubmit(title) {
+  async function handleNewFolderFormSubmit(title) {
     setShowNewFolderForm(false);
-    createFolder(title);
+    await createFolder(title);
   }
 
   function handleFolderOptionsClick(id) {
@@ -71,7 +100,9 @@ export default function Folders({
             {editFolderTitle === folder.id ? (
               <NewFolderForm
                 setShowNewFolderForm={setShowNewFolderForm}
-                handleNewFolderFormSubmit={handleNewFolderFormSubmit}
+                handleNewFolderFormSubmit={updateFolderTitle}
+                initialFolderName={folder.title}
+                initialFolderID={folder.id}
               />
             ) : (
               <FolderListItem
@@ -101,6 +132,8 @@ export default function Folders({
           <NewFolderForm
             setShowNewFolderForm={setShowNewFolderForm}
             handleNewFolderFormSubmit={handleNewFolderFormSubmit}
+            initialFolderName=""
+            initialFolderID={null}
           />
         ) : (
           <MainTool

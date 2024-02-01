@@ -6,22 +6,20 @@ import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 export default function NewFolderForm({
   setShowNewFolderForm,
   handleNewFolderFormSubmit,
+  initialFolderName,
+  initialFolderID,
   //   cancelNewFolderForm,
-  //   initialFolderName,
   //   handleFolderFormSubmit,
-  //   initialFolderID,
 }) {
-  //   const [folderName, setFolderName] = useState(initialFolderName);
-  const [folderName, setFolderName] = useState("");
-  //   const [folderID, setFolderID] = useState(initialFolderID);
-  const [folderID, setFolderID] = useState(null);
+  const [folderTitle, setFolderTitle] = useState(initialFolderName);
+  const [folderID, setFolderID] = useState(initialFolderID);
 
   function updateFolderName(e) {
-    setFolderName(e.target.value);
+    setFolderTitle(e.target.value);
   }
 
   function handleNewFolderFormCancel() {
-    setFolderName("");
+    setFolderTitle("");
     setShowNewFolderForm(false);
   }
 
@@ -31,7 +29,7 @@ export default function NewFolderForm({
         autoFocus
         type="text"
         placeholder="Folder Name"
-        value={folderName}
+        value={folderTitle}
         onChange={updateFolderName}
         className="item-text"
       />
@@ -47,8 +45,8 @@ export default function NewFolderForm({
       <button
         className="crud-new-folder-btns"
         onClick={() => {
-          handleNewFolderFormSubmit(folderName);
-          setFolderName("");
+          handleNewFolderFormSubmit(folderTitle, folderID);
+          setFolderTitle("");
         }}
       >
         <FontAwesomeIcon icon={faCheck} />

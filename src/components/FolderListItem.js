@@ -58,13 +58,13 @@ export default function FolderListItem({
       <div className="folder-toolbar">
         {openToolList === id && (
           <>
-            <div className="folder-options" onClick={handleDeleteBtnClick}>
-              <FontAwesomeIcon icon={faPen} />
-            </div>
             <div
               className="folder-options"
-              // onClick={() => handleFolderDeleteClick(id)}
+              onClick={() => handleFolderEditClick(id)}
             >
+              <FontAwesomeIcon icon={faPen} />
+            </div>
+            <div className="folder-options" onClick={handleDeleteBtnClick}>
               <FontAwesomeIcon icon={faTrashCan} />
             </div>
           </>

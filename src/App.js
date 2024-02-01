@@ -131,6 +131,7 @@ export default function App() {
               handleNoteItemClick={handleNoteItemClick}
               createFolder={createFolder}
               getAllDataFromApi={getAllDataFromApi}
+              getFoldersDataFromApi={getFoldersDataFromApi}
             />
           }
         />
