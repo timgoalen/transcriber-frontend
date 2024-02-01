@@ -71,6 +71,15 @@ export default function Folders({
       : setShowNotesInFolder(id);
   }
 
+  function handleNewFolderFormCancel() {
+    setShowNewFolderForm(false);
+  }
+
+  function handleUpdateFolderCancel() {
+    setEditFolderTitle(0);
+    setOpenToolList(0);
+  }
+
   async function handleNewFolderFormSubmit(title) {
     setShowNewFolderForm(false);
     await createFolder(title);
@@ -99,6 +108,7 @@ export default function Folders({
           <Fragment key={folder.id}>
             {editFolderTitle === folder.id ? (
               <NewFolderForm
+                handleNewFolderFormCancel={handleUpdateFolderCancel}
                 setShowNewFolderForm={setShowNewFolderForm}
                 handleNewFolderFormSubmit={updateFolderTitle}
                 initialFolderName={folder.title}
@@ -130,7 +140,7 @@ export default function Folders({
 
         {showNewFolderForm ? (
           <NewFolderForm
-            setShowNewFolderForm={setShowNewFolderForm}
+            handleNewFolderFormCancel={handleNewFolderFormCancel}
             handleNewFolderFormSubmit={handleNewFolderFormSubmit}
             initialFolderName=""
             initialFolderID={null}
