@@ -1,16 +1,16 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 import axios from "axios";
 
-import CloseAuthFormsBtn from "./CloseAuthFormsBtn.js";
+import CloseAuthFormsBtn from "./CloseAuthFormsBtn";
 
-export default function SignUpForm({
-  saveUserToken,
-  saveTokenToLocalStorage,
-  getInitialNotesDataFromApi,
-  getInitialFoldersDataFromApi,
-  setDisplayPageChoice,
-}) {
+export default function SignUpForm() {
+  const { updateUserToken } = useContext(UserContext);
+  const navigateToHomePage = useNavigate();
+  const [errors, setErrors] = useState({});
+
   const [signUpFormData, setSignUpFormData] = useState({
     username: "",
     password1: "",
@@ -48,63 +48,93 @@ export default function SignUpForm({
         );
         console.log("Login successful:", logInResponse.data);
         const logInResponseToken = logInResponse.data.key;
-        saveUserToken(logInResponseToken);
-        saveTokenToLocalStorage(logInResponseToken);
-        // getInitialNotesDataFromApi();
-        // getInitialFoldersDataFromApi();
-        // TODO: change this hack to get data to reload into state on log in****
-        window.location.reload();
+        updateUserToken(logInResponseToken);
+        navigateToHomePage("/");
       } catch (error) {
         console.error("Error logging in to retreive token:", error.message);
+        console.error(error);
+        // TODO: setErrors
       }
     } catch (error) {
       console.error("Error submitting Sign Up Form:", error.message);
+      console.error(error.response?.data);
+      setErrors(error.response?.data);
     }
   }
 
+  // TODO: DO LOADER SPINNER ON FORM SUBMIT (WAITING FOR THE API)
+
   return (
-    <main id="main-container">
-      <section className="auth-form-container">
-        <form className="auth-form">
-          <h2>sign up</h2>
+    <section className="auth-form-container">
+      <form className="auth-form">
+        <h2>sign up</h2>
 
-          <div className="auth-form-fields">
-            <label htmlFor="username">username</label>
-            <input
-              type="text"
-              value={signUpFormData.username}
-              onChange={handleFormChange}
-              id="username"
-              name="username"
-              autoComplete="username"
-            ></input>
-            <label htmlFor="password1">password</label>
-            <input
-              type="password"
-              value={signUpFormData.password1}
-              onChange={handleFormChange}
-              id="password1"
-              name="password1"
-              autoComplete="new-password"
-            ></input>
-            <label htmlFor="password2">confirm password</label>
-            <input
-              type="password"
-              value={signUpFormData.password2}
-              onChange={handleFormChange}
-              id="password2"
-              name="password2"
-              autoComplete="new-password"
-            ></input>
-          </div>
+        <div className="auth-form-fields">
+          <label htmlFor="username">username</label>
+          <input
+            type="text"
+            value={signUpFormData.username}
+            onChange={handleFormChange}
+            id="username"
+            name="username"
+            autoComplete="username"
+          ></input>
+          {errors.username?.map((message, index) => (
+            <p className="form-error-message" key={index}>
+              {message}
+            </p>
+          ))}
 
-          <div className="auth-form-btn-container">
-            <button onClick={submitSignUpForm}>Sign Up</button>
-          </div>
+          <label htmlFor="password1">password</label>
+          <input
+            type="password"
+            value={signUpFormData.password1}
+            onChange={handleFormChange}
+            id="password1"
+            name="password1"
+            autoComplete="new-password"
+          ></input>
+          {errors.password1?.map((message, index) => (
+            <p className="form-error-message" key={index}>
+              {message}
+            </p>
+          ))}
 
-          <CloseAuthFormsBtn onClick={() => setDisplayPageChoice("create")} />
-        </form>
-      </section>
-    </main>
+          <label htmlFor="password2">confirm password</label>
+          <input
+            type="password"
+            value={signUpFormData.password2}
+            onChange={handleFormChange}
+            id="password2"
+            name="password2"
+            autoComplete="new-password"
+          ></input>
+          {errors.password2?.map((message, index) => (
+            <p className="form-error-message" key={index}>
+              {message}
+            </p>
+          ))}
+
+          {errors.non_field_errors?.map((message, index) => (
+            <p className="form-error-message" key={index}>
+              {message}
+            </p>
+          ))}
+        </div>
+
+        {/* Submit button */}
+        <div className="auth-form-btn-container">
+          <button onClick={submitSignUpForm}>Sign Up</button>
+        </div>
+
+        {/* Close button */}
+        <CloseAuthFormsBtn
+          onClick={(event) => {
+            event.preventDefault();
+            navigateToHomePage("/");
+          }}
+        />
+      </form>
+    </section>
   );
 }

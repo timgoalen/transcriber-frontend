@@ -1,17 +1,7 @@
-import {
-  faChevronLeft,
-  faMagnifyingGlass,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRef, useState, useEffect } from "react";
-
-export default function SearchBar({
-  searchTerms,
-  setSearchTerms,
-  handleSearchInputChange,
-}) {
+export default function SearchBar({ searchTerms, handleSearchInputChange }) {
   return (
     <input
+      autoFocus
       type="search"
       value={searchTerms}
       onChange={handleSearchInputChange}

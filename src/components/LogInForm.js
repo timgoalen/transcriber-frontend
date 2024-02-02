@@ -1,16 +1,16 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext.js";
 
 import axios from "axios";
 
 import CloseAuthFormsBtn from "./CloseAuthFormsBtn.js";
 
-export default function LogInForm({
-  saveUserToken,
-  saveTokenToLocalStorage,
-  getInitialNotesDataFromApi,
-  getInitialFoldersDataFromApi,
-  setDisplayPageChoice,
-}) {
+export default function LogInForm() {
+  const { updateUserToken } = useContext(UserContext);
+  const navigateToHomePage = useNavigate();
+  const [errors, setErrors] = useState({});
+
   const [logInFormData, setLogInFormData] = useState({
     username: "",
     password: "",
@@ -41,51 +41,71 @@ export default function LogInForm({
       );
       console.log("Login successful:", logInResponse.data);
       const logInResponseToken = logInResponse.data.key;
-      saveUserToken(logInResponseToken);
-      saveTokenToLocalStorage(logInResponseToken);
-      //   getInitialNotesDataFromApi();
-      //   getInitialFoldersDataFromApi();
-      // TODO: change this hack to get data to reload into state on log in****
-      window.location.reload();
+      updateUserToken(logInResponseToken);
+      navigateToHomePage("/");
     } catch (error) {
       console.error("Error logging in to retreive token:", error.message);
+      console.error(error);
+      setErrors(error.response?.data);
     }
   }
 
   return (
-    <main id="main-container">
-      <section className="auth-form-container">
-        <form className="auth-form">
-          <h2>log in</h2>
+    <section className="auth-form-container">
+      <form className="auth-form">
+        <h2>log in</h2>
 
-          <div className="auth-form-fields">
-            <label htmlFor="username">username</label>
-            <input
-              type="text"
-              value={logInFormData.username}
-              onChange={handleFormChange}
-              id="username"
-              name="username"
-              autoComplete="username"
-            ></input>
-            <label htmlFor="password">password</label>
-            <input
-              type="password"
-              value={logInFormData.password}
-              onChange={handleFormChange}
-              id="password"
-              name="password"
-              autoComplete="password"
-            ></input>
-          </div>
+        <div className="auth-form-fields">
+          <label htmlFor="username">username</label>
+          <input
+            type="text"
+            value={logInFormData.username}
+            onChange={handleFormChange}
+            id="username"
+            name="username"
+            autoComplete="username"
+          ></input>
+          {errors.username?.map((message, index) => (
+            <p className="form-error-message" key={index}>
+              {message}
+            </p>
+          ))}
 
-          <div className="auth-form-btn-container">
-            <button onClick={submitLogInForm}>Log In</button>
-          </div>
+          <label htmlFor="password">password</label>
+          <input
+            type="password"
+            value={logInFormData.password}
+            onChange={handleFormChange}
+            id="password"
+            name="password"
+            autoComplete="password"
+          ></input>
+          {errors.password?.map((message, index) => (
+            <p className="form-error-message" key={index}>
+              {message}
+            </p>
+          ))}
 
-          <CloseAuthFormsBtn onClick={() => setDisplayPageChoice("create")} />
-        </form>
-      </section>
-    </main>
+          {errors.non_field_errors?.map((message, index) => (
+            <p className="form-error-message" key={index}>
+              {message}
+            </p>
+          ))}
+        </div>
+
+        {/* Submit button */}
+        <div className="auth-form-btn-container">
+          <button onClick={submitLogInForm}>Log In</button>
+        </div>
+
+        {/* Close button */}
+        <CloseAuthFormsBtn
+          onClick={(event) => {
+            event.preventDefault();
+            navigateToHomePage("/");
+          }}
+        />
+      </form>
+    </section>
   );
 }

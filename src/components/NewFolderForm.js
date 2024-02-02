@@ -1,43 +1,32 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 export default function NewFolderForm({
-  cancelNewFolderForm,
+  handleNewFolderFormCancel,
+  handleNewFolderFormSubmit,
   initialFolderName,
-  handleFolderFormSubmit,
   initialFolderID,
 }) {
-  const [folderName, setFolderName] = useState(initialFolderName);
+  const [folderTitle, setFolderTitle] = useState(initialFolderName);
   const [folderID, setFolderID] = useState(initialFolderID);
 
-  const textInputRef = useRef(null);
-
-  // Set focus on the text input field when the component mounts
-  useEffect(() => {
-    textInputRef.current.focus();
-  }, []);
-
   function updateFolderName(e) {
-    setFolderName(e.target.value);
-  }
-
-  function handleNewFolderFormCancel() {
-    setFolderName("");
-    cancelNewFolderForm();
+    setFolderTitle(e.target.value);
   }
 
   return (
-    <>
+    <div className="list-page-item">
       <input
+        autoFocus
         type="text"
         placeholder="Folder Name"
-        value={folderName}
+        value={folderTitle}
         onChange={updateFolderName}
         className="item-text"
-        ref={textInputRef}
       />
+
       <button
         className="crud-new-folder-btns"
         onClick={handleNewFolderFormCancel}
@@ -45,16 +34,16 @@ export default function NewFolderForm({
       >
         <FontAwesomeIcon icon={faXmark} />
       </button>
+
       <button
         className="crud-new-folder-btns"
         onClick={() => {
-          handleFolderFormSubmit(folderName, folderID);
-          setFolderName("");
-          cancelNewFolderForm();
+          handleNewFolderFormSubmit(folderTitle, folderID);
+          setFolderTitle("");
         }}
       >
         <FontAwesomeIcon icon={faCheck} />
       </button>
-    </>
+    </div>
   );
 }

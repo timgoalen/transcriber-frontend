@@ -49,6 +49,7 @@ i {
 
 a {
   color: inherit;
+  text-decoration: none;
 }
 
 body {
@@ -69,10 +70,25 @@ header {
   justify-content: space-between;
 }
 
+/* Note: the 'home' material icon is sized inline at 'AltPageHeader.js' */
 .header-icons-container {
   display: flex;
   flex-direction: row;
-  gap: 5vw;
+  gap: 4vw;
+  align-items: center;
+}
+
+.header-btn-container {
+  font-size: 1.1rem;
+}
+
+.header-btn-text {
+  font-size: 0.9rem;
+}
+
+.material-icon-link {
+  display: grid;
+  place-items: center;
 }
 
 h1 {
@@ -142,9 +158,15 @@ h2 {
   box-shadow: none;
 }
 
+#main-container {
+  height: 83vh;
+  height: 83dvh;
+}
+
 #text-container {
-  height: 82vh;
-  height: 82dvh;
+  /* height: 82vh; */
+  /* height: 82dvh; */
+  height: 100%;
   width: 100%;
   display: grid;
   place-items: center;
@@ -174,7 +196,7 @@ textarea {
 }
 
 #modal-container,
-#detail-view-modal-container {
+#note-detail-modal-container {
   position: absolute;
   top: 0;
   left: 0;
@@ -206,8 +228,8 @@ canvas {
 }
 
 .list-page-main {
-  height: 91vh;
-  height: 91dvh;
+  height: 81vh;
+  height: 81dvh;
   /* overflow: scroll; */
   max-width: 600px;
   margin: auto;
@@ -279,6 +301,10 @@ canvas {
   border: 1px dashed var(--orange);
 }
 
+.form-error-message {
+  color: var(--red);
+}
+
 /* -- FOOTER -- */
 
 .characters {
@@ -294,8 +320,8 @@ canvas {
 }
 
 .toolbar {
-  height: 9vh;
-  height: 9dvh;
+  height: 8vh;
+  height: 8dvh;
   border-top: 1px solid var(--grey);
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -313,7 +339,7 @@ canvas {
 #clear-btn,
 #update-btn,
 #cancel-btn,
-.list-view-btn-container {
+.header-btn-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -324,10 +350,10 @@ canvas {
 #clear-btn:hover,
 #update-btn:hover,
 #cancel-btn:hover,
-#back-btn-modal:hover,
+/* #back-btn-modal:hover, */
 #edit-btn-modal:hover,
-#delete-btn-modal:hover,
-.list-view-btn-container:hover {
+/* #delete-btn-modal:hover, */
+.header-btn-container:hover {
   cursor: pointer;
   color: var(--blue-hover);
 }
@@ -343,15 +369,14 @@ canvas {
   border-color: var(--black);
 }
 
-#microphone-container,
-#new-note-container {
+#main-tool-container {
   height: 54px;
   width: 54px;
   border-radius: 50%;
   font-size: 2rem;
   position: absolute;
-  bottom: 5vh;
-  bottom: 5dvh;
+  bottom: 3vh;
+  bottom: 3dvh;
   left: 50%;
   transform: translateX(-50%);
   display: grid;
@@ -378,6 +403,25 @@ canvas {
   cursor: pointer;
   border: 1px solid var(--orange-hover);
   color: var(--orange-hover);
+}
+
+.main-tool-orange {
+  border: 1px solid var(--orange);
+  color: var(--orange);
+}
+.main-tool-orange:hover {
+  cursor: pointer;
+  border: 1px solid var(--orange-hover);
+  color: var(--orange-hover);
+}
+.main-tool-blue {
+  border: 1px solid var(--blue);
+  color: var(--blue);
+}
+.main-tool-blue:hover {
+  cursor: pointer;
+  border: 1px solid var(--blue-hover);
+  color: var(--blue-hover);
 }
 
 /* -- LIST PAGE -- */
@@ -428,6 +472,10 @@ input[type="search"] {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+
+.list-page-item:first-of-type {
+  margin-top: 2vh;
 }
 
 .item-colour-block {
@@ -508,14 +556,14 @@ input[type="search"] {
   padding-left: var(--folder-dropdown-offset);
 }
 
-#detail-view-modal-container {
-  display: none;
+#note-detail-modal-container {
+  display: grid;
   backdrop-filter: blur(3px);
   background-color: rgb(226 223 223 / 80%);
   z-index: 999;
 }
 
-#detail-view-modal-content {
+#note-detail-modal-content {
   border: 1px solid var(--grey);
   border-radius: 8px;
   background-color: var(--white);
@@ -524,12 +572,12 @@ input[type="search"] {
   grid-template-rows: 1fr 3rem;
 }
 
-#detail-view-modal-text {
+#note-detail-modal-text {
   font-size: 1.2rem;
   padding: 1.5rem 1rem;
 }
 
-#detail-view-modal-tools-container {
+#note-detail-modal-tools-container {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -539,7 +587,7 @@ input[type="search"] {
   font-size: 0.9rem;
 }
 
-#back-btn-modal,
+/* #back-btn-modal,
 #edit-btn-modal,
 #delete-btn-modal,
 #folder-btn-modal {
@@ -547,22 +595,27 @@ input[type="search"] {
   flex-direction: column;
   align-items: center;
   color: var(--blue);
-}
+} */
 
-.add-note-to-folder-btn {
-  display: grid;
-  color: var(--orange);
-  font-size: 1.2rem;
-  padding: 0.2rem 0.5rem;
-  line-height: 1.5;
+.add-aux-item-btn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 0.9rem;
   height: 2.2rem;
-  align-content: center;
-  justify-content: center;
+  line-height: 1.5;
+  padding: 0.2rem 0.5rem;
   border-style: dashed;
+  color: var(--grey);
 }
 
-.add-note-to-folder-btn svg {
-  padding-right: 1.85rem;
+.add-aux-item-btn svg {
+  padding-right: 0.4rem;
+}
+
+.add-aux-item-text {
+  /* margin-bottom: 0.1rem; */
 }
 
 /* PLACEHOLDER SVG */
@@ -605,13 +658,12 @@ input[type="search"] {
     margin-right: 16%;
   }
 
-  #microphone-container,
-  #new-note-container {
+  #main-tool-container {
     bottom: 6vh;
     bottom: 6dvh;
   }
 
-  #detail-view-modal-content {
+  #note-detail-modal-content {
     width: 78%;
   }
 }
@@ -634,7 +686,7 @@ input[type="search"] {
     width: 100%;
   }
 
-  #detail-view-modal-content {
+  #note-detail-modal-content {
     max-width: 600px;
   }
 

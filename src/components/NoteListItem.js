@@ -5,18 +5,18 @@ export default function NoteListItem({
   id,
   text,
   folderId,
+  folderColour,
   handleNoteItemClick,
 }) {
   return (
     <div
-      key={id}
       className="list-page-item"
-      onClick={() => handleNoteItemClick(id, text, folderId)}
+      onClick={() => handleNoteItemClick(id)}
     >
       <div className="item-text">
         <p>{text}</p>
       </div>
-      <div className="item-tools">
+      <div className="item-tools" style={{ color : folderColour }} >
         <FontAwesomeIcon icon={faExpand} />
       </div>
     </div>
