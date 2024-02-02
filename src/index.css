@@ -70,25 +70,70 @@ header {
   justify-content: space-between;
 }
 
-/* Note: the 'home' material icon is sized inline at 'AltPageHeader.js' */
 .header-icons-container {
   display: flex;
   flex-direction: row;
-  gap: 4vw;
-  align-items: center;
+  /* gap: 4vw; */
+  /* align-items: center; */
 }
 
 .header-btn-container {
-  font-size: 1.1rem;
+  /* min-width: 9.5vw; */
+  font-size: 1.2rem;
 }
+
+.header-btn-container {
+  min-width: 4rem;
+}
+
+/* .header-btn-container:not(:last-child) {
+  min-width: 4rem;
+}
+
+.header-btn-container:last-child {
+  min-width: 6rem;
+} */
+
+.header-btn-container svg {
+  width: 1.2rem;
+}
+
+.header-btn-container svg path {
+  fill: var(--blue);
+}
+
+.header-btn-container svg path:hover {
+  fill: var(--blue-hover);
+}
+
+/* #microphone-outline-svg svg {
+  width: 1.2rem;
+}
+
+#microphone-outline-svg svg path {
+  fill: var(--blue);
+}
+
+#microphone-outline-svg svg path:hover {
+  fill: var(--blue-hover);
+} */
 
 .header-btn-text {
   font-size: 0.9rem;
 }
 
-.material-icon-link {
+/* TODO: delete these next 2 if not used initial letter display */
+.header-user-initial {
+  border: 1px solid var(--blue);
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
   display: grid;
   place-items: center;
+}
+
+.header-user-initial p {
+  font-size: 1.2rem;
 }
 
 h1 {
@@ -158,14 +203,18 @@ h2 {
   box-shadow: none;
 }
 
-#main-container {
+main {
   height: 83vh;
   height: 83dvh;
+  overflow: auto;
+}
+
+#main-container {
+  /* height: 83vh; */
+  /* height: 83dvh; */
 }
 
 #text-container {
-  /* height: 82vh; */
-  /* height: 82dvh; */
   height: 100%;
   width: 100%;
   display: grid;
@@ -176,7 +225,7 @@ h2 {
 
 #text-area {
   padding: 0.2rem 0.5rem;
-  /* border: 1px solid var(--grey); */
+  border: 1px solid var(--grey);
   border-radius: 8px;
   height: 98%;
   width: 95%;
@@ -228,18 +277,20 @@ canvas {
 }
 
 .list-page-main {
-  height: 81vh;
-  height: 81dvh;
+  /* height: 83vh; */
+  /* height: 83dvh; */
   /* overflow: scroll; */
   max-width: 600px;
   margin: auto;
+  padding-bottom: 3%;
 }
 
 /* -- AUTHENTICATION PAGES -- */
 
 .auth-form-container {
-  height: 80vh;
-  height: 80dvh;
+  /* height: 80vh; */
+  /* height: 80dvh; */
+  height: 100%;
   display: grid;
   place-items: center;
 }
@@ -327,12 +378,20 @@ canvas {
   grid-template-columns: 1fr 1fr;
   font-size: 1.1rem;
   color: var(--blue);
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 1;
 }
 
 .footer-left,
 .footer-right {
   display: grid;
   place-items: center;
+}
+
+.btn-text {
+  font-size: 0.9rem;
 }
 
 .btn-container,
@@ -344,6 +403,7 @@ canvas {
   flex-direction: column;
   align-items: center;
   color: var(--blue);
+  font-size: 1.2rem;
 }
 
 .btn-container:hover,
@@ -374,15 +434,32 @@ canvas {
   width: 54px;
   border-radius: 50%;
   font-size: 2rem;
-  position: absolute;
-  bottom: 3vh;
-  bottom: 3dvh;
+  position: fixed;
+  bottom: 4.5vh;
+  bottom: 4.5dvh;
   left: 50%;
   transform: translateX(-50%);
   display: grid;
   place-items: center;
   background-color: var(--white);
   box-shadow: var(--m3-elevation-light-2);
+  z-index: 2;
+}
+
+#main-tool-container svg path {
+  fill: var(--orange);
+}
+
+#main-tool-container svg {
+  width: 2rem;
+}
+
+#microphone-tool-icon svg {
+  width: 1.2rem;
+}
+
+#microphone-tool-icon svg path {
+  fill: var(--orange);
 }
 
 .recording-on {
@@ -409,15 +486,18 @@ canvas {
   border: 1px solid var(--orange);
   color: var(--orange);
 }
+
 .main-tool-orange:hover {
   cursor: pointer;
   border: 1px solid var(--orange-hover);
   color: var(--orange-hover);
 }
+
 .main-tool-blue {
   border: 1px solid var(--blue);
   color: var(--blue);
 }
+
 .main-tool-blue:hover {
   cursor: pointer;
   border: 1px solid var(--blue-hover);
@@ -475,7 +555,7 @@ input[type="search"] {
 }
 
 .list-page-item:first-of-type {
-  margin-top: 2vh;
+  /* margin-top: 2vh; */
 }
 
 .item-colour-block {
@@ -518,6 +598,15 @@ input[type="search"] {
   place-items: center;
   width: 2.3rem;
   color: var(--grey);
+}
+
+.folder-tick {
+  color: var(--white);
+}
+
+.list-page-item:hover .folder-tick {
+  transition: color 0.25s ease-in-out;
+  color: var(--orange);
 }
 
 .new-folder-btn {
@@ -570,11 +659,14 @@ input[type="search"] {
   width: 94%;
   display: grid;
   grid-template-rows: 1fr 3rem;
+  max-height: 97%;
 }
 
 #note-detail-modal-text {
   font-size: 1.2rem;
   padding: 1.5rem 1rem;
+  max-height: 88vh;
+  overflow: auto;
 }
 
 #note-detail-modal-tools-container {
@@ -612,6 +704,10 @@ input[type="search"] {
 
 .add-aux-item-btn svg {
   padding-right: 0.4rem;
+}
+
+.add-aux-item-btn:hover {
+  color: var(--orange);
 }
 
 .add-aux-item-text {
@@ -659,8 +755,8 @@ input[type="search"] {
   }
 
   #main-tool-container {
-    bottom: 6vh;
-    bottom: 6dvh;
+    /* bottom: 6vh; */
+    /* bottom: 6dvh; */
   }
 
   #note-detail-modal-content {

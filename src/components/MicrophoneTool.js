@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import MicrophoneIcon from "../assets/custom_icons/MicrophoneIcon"
 
 export default function MicrophoneTool({
   icon,
@@ -12,7 +13,8 @@ export default function MicrophoneTool({
       className={isRecording ? "recording-on" : "recording-off"}
       onClick={handleMicrophoneClick}
     >
-      <FontAwesomeIcon icon={icon} />
+      <MicrophoneIcon id="microphone-tool-icon"/>
+      {/* <FontAwesomeIcon icon={icon} /> */}
     </button>
   );
 }

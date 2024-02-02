@@ -105,63 +105,65 @@ export default function Folders({
         <InboxNav />
       </Header>
 
-      <main className="list-page-main">
-        {folders.map((folder) => (
-          <Fragment key={folder.id}>
-            {editFolderTitle === folder.id ? (
-              <NewFolderForm
-                handleNewFolderFormCancel={handleUpdateFolderCancel}
-                setShowNewFolderForm={setShowNewFolderForm}
-                handleNewFolderFormSubmit={updateFolderTitle}
-                initialFolderName={folder.title}
-                initialFolderID={folder.id}
-              />
-            ) : (
-              <FolderListItem
-                id={folder.id}
-                title={folder.title}
-                colour={folder.colour}
-                handleFolderClick={handleFolderClick}
-                handleFolderOptionsClick={handleFolderOptionsClick}
-                openToolList={openToolList}
-                handleFolderEditClick={handleFolderEditClick}
-                getAllDataFromApi={getAllDataFromApi}
-              />
-            )}
+      <main>
+        <section className="list-page-main">
+          {folders.map((folder) => (
+            <Fragment key={folder.id}>
+              {editFolderTitle === folder.id ? (
+                <NewFolderForm
+                  handleNewFolderFormCancel={handleUpdateFolderCancel}
+                  setShowNewFolderForm={setShowNewFolderForm}
+                  handleNewFolderFormSubmit={updateFolderTitle}
+                  initialFolderName={folder.title}
+                  initialFolderID={folder.id}
+                />
+              ) : (
+                <FolderListItem
+                  id={folder.id}
+                  title={folder.title}
+                  colour={folder.colour}
+                  handleFolderClick={handleFolderClick}
+                  handleFolderOptionsClick={handleFolderOptionsClick}
+                  openToolList={openToolList}
+                  handleFolderEditClick={handleFolderEditClick}
+                  getAllDataFromApi={getAllDataFromApi}
+                />
+              )}
 
-            {showNotesInFolder === folder.id && (
-              <NotesInFolderDropdown
-                folders={folders}
-                notesInFolder={getNotesInFolder(notes, folder.id)}
-                handleNoteItemClick={handleNoteItemClick}
-                parentFolderID={folder.id}
-              />
-            )}
-          </Fragment>
-        ))}
+              {showNotesInFolder === folder.id && (
+                <NotesInFolderDropdown
+                  folders={folders}
+                  notesInFolder={getNotesInFolder(notes, folder.id)}
+                  handleNoteItemClick={handleNoteItemClick}
+                  parentFolderID={folder.id}
+                />
+              )}
+            </Fragment>
+          ))}
 
-        {showNewFolderForm ? (
-          <NewFolderForm
-            handleNewFolderFormCancel={handleNewFolderFormCancel}
-            handleNewFolderFormSubmit={handleNewFolderFormSubmit}
-            initialFolderName=""
-            initialFolderID={null}
-          />
-        ) : (
-          <MainTool
-            className="main-tool-blue"
-            ariaLabel="New folder"
-            onClick={() => setShowNewFolderForm(true)}
-            icon={faPlus}
-          />
-        )}
+          {showNewFolderForm ? (
+            <NewFolderForm
+              handleNewFolderFormCancel={handleNewFolderFormCancel}
+              handleNewFolderFormSubmit={handleNewFolderFormSubmit}
+              initialFolderName=""
+              initialFolderID={null}
+            />
+          ) : (
+            <MainTool
+              className="main-tool-blue"
+              ariaLabel="New folder"
+              onClick={() => setShowNewFolderForm(true)}
+              icon={faPlus}
+            />
+          )}
 
-        {folders.length === 0 && (
-          <EmptyPlaceholderGraphics
-            primaryColour="#268cf2"
-            secondaryColour="#f28c26"
-          />
-        )}
+          {folders.length === 0 && (
+            <EmptyPlaceholderGraphics
+              primaryColour="#268cf2"
+              secondaryColour="#f28c26"
+            />
+          )}
+        </section>
       </main>
 
       <footer className="toolbar"></footer>

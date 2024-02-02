@@ -10,7 +10,11 @@ export default function NoPage() {
         <CreateNav />
       </Header>
 
-      <div>Whoops, that page doesn't exist: <Link to="/">Home</Link></div>
+      <main>
+        <section className="list-page-main auth-form-container">
+          <h2>404 Error: page not found</h2>
+        </section>
+      </main>
     </>
   );
 }

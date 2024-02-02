@@ -22,31 +22,33 @@ export default function Inbox({ notes, folders, handleNoteItemClick }) {
         <FoldersNav />
       </Header>
 
-      <main className="list-page-main">
-        {inboxNotes.map((note) => (
-          <NoteListItem
-            key={note.id}
-            id={note.id}
-            text={note.text}
-            folderId={note.folder_id}
-            folderColour={findFolderColour(folders, note.folder_id)}
-            handleNoteItemClick={handleNoteItemClick}
-          />
-        ))}
+      <main>
+        <section className="list-page-main">
+          {inboxNotes.map((note) => (
+            <NoteListItem
+              key={note.id}
+              id={note.id}
+              text={note.text}
+              folderId={note.folder_id}
+              folderColour={findFolderColour(folders, note.folder_id)}
+              handleNoteItemClick={handleNoteItemClick}
+            />
+          ))}
 
-        {inboxNotes.length === 0 && (
-          <EmptyPlaceholderGraphics
-            primaryColour="#f28c26"
-            secondaryColour="#268cf2"
-          />
-        )}
+          {inboxNotes.length === 0 && (
+            <EmptyPlaceholderGraphics
+              primaryColour="#f28c26"
+              secondaryColour="#268cf2"
+            />
+          )}
 
-        <MainTool
-          className="main-tool-orange"
-          ariaLabel="New note"
-          onClick={() => navigate("/")}
-          icon={faPlus}
-        />
+          <MainTool
+            className="main-tool-orange"
+            ariaLabel="New note"
+            onClick={() => navigate("/")}
+            icon={faPlus}
+          />
+        </section>
       </main>
 
       <footer className="toolbar"></footer>

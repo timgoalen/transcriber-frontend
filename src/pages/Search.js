@@ -2,7 +2,7 @@ import { useState, Fragment } from "react";
 
 import Header from "../components/header/Header";
 import CreateNav from "../components/header/CreateNav.js";
-import SearchNav from "../components/header/SearchNav.js";
+import InboxNav from "../components/header/InboxNav.js";
 import FoldersNav from "../components/header/FoldersNav.js";
 import SearchBar from "../components/SearchBar.js";
 import NoteListItem from "../components/NoteListItem";
@@ -34,65 +34,67 @@ export default function Search({ notes, folders, handleNoteItemClick }) {
 
   return (
     <>
-      <Header pageTitle="inbox">
+      <Header pageTitle="search">
         <CreateNav />
-        <SearchNav />
+        <InboxNav />
         <FoldersNav />
       </Header>
 
-      <main className="list-page-main">
-        <SearchBar
-          searchTerms={searchTerms}
-          handleSearchInputChange={handleSearchInputChange}
-        />
+      <main>
+        <section className="list-page-main">
+          <SearchBar
+            searchTerms={searchTerms}
+            handleSearchInputChange={handleSearchInputChange}
+          />
 
-        {/* Notes results */}
-        {searchTerms && filteredNotes.length > 0 && (
-          <h2 className="search-results-title">notes</h2>
-        )}
-
-        {searchTerms &&
-          filteredNotes.map((note) => (
-            <NoteListItem
-              key={note.id}
-              id={note.id}
-              text={note.text}
-              folderId={note.folder_id}
-              folderColour={findFolderColour(folders, note.folder_id)}
-              handleNoteItemClick={handleNoteItemClick}
-            />
-          ))}
-
-        {/* Folders results */}
-        {searchTerms && filteredFolders.length > 0 && (
-          <h2 className="search-results-title">folders</h2>
-        )}
-
-        {searchTerms &&
-          filteredFolders.map((folder) => (
-            <Fragment key={folder.id}>
-              <FolderListItem
-                id={folder.id}
-                title={folder.title}
-                colour={folder.colour}
-                handleFolderClick={handleFolderClick}
-              />
-              {showNotesInFolder === folder.id && (
-                <NotesInFolderDropdown
-                  folders={folders}
-                  notesInFolder={getNotesInFolder(notes, folder.id)}
-                  handleNoteItemClick={handleNoteItemClick}
-                />
-              )}
-            </Fragment>
-          ))}
-
-        {/* No results */}
-        {searchTerms &&
-          filteredNotes.length === 0 &&
-          filteredFolders.length === 0 && (
-            <h2 id="no-results-message">no results</h2>
+          {/* Notes results */}
+          {searchTerms && filteredNotes.length > 0 && (
+            <h2 className="search-results-title">notes</h2>
           )}
+
+          {searchTerms &&
+            filteredNotes.map((note) => (
+              <NoteListItem
+                key={note.id}
+                id={note.id}
+                text={note.text}
+                folderId={note.folder_id}
+                folderColour={findFolderColour(folders, note.folder_id)}
+                handleNoteItemClick={handleNoteItemClick}
+              />
+            ))}
+
+          {/* Folders results */}
+          {searchTerms && filteredFolders.length > 0 && (
+            <h2 className="search-results-title">folders</h2>
+          )}
+
+          {searchTerms &&
+            filteredFolders.map((folder) => (
+              <Fragment key={folder.id}>
+                <FolderListItem
+                  id={folder.id}
+                  title={folder.title}
+                  colour={folder.colour}
+                  handleFolderClick={handleFolderClick}
+                />
+                {showNotesInFolder === folder.id && (
+                  <NotesInFolderDropdown
+                    folders={folders}
+                    notesInFolder={getNotesInFolder(notes, folder.id)}
+                    handleNoteItemClick={handleNoteItemClick}
+                  />
+                )}
+              </Fragment>
+            ))}
+
+          {/* No results */}
+          {searchTerms &&
+            filteredNotes.length === 0 &&
+            filteredFolders.length === 0 && (
+              <h2 id="no-results-message">no results</h2>
+            )}
+        </section>
       </main>
 
       <footer className="toolbar"></footer>

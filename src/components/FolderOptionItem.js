@@ -78,9 +78,13 @@ export default function FolderOptionItem({
       </div>
 
       {/* Show tick if folder is parent folder */}
-      {isParentFolder && (
+      {isParentFolder ? (
         <div className="item-tools">
           <FontAwesomeIcon icon={faCheck} />
+        </div>
+      ) : (
+        <div className="item-tools">
+          <FontAwesomeIcon className="folder-tick" icon={faCheck} />
         </div>
       )}
     </div>

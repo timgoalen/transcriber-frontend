@@ -8,11 +8,13 @@ import LogInMenu from "../LogInMenu";
 
 export default function Account() {
   const [showLogInMenu, setShowLogInMenu] = useState(false);
-  const { isLoggedIn } = useContext(UserContext);
+  const { isLoggedIn, userName } = useContext(UserContext);
 
   function toggleLogInMenu() {
     setShowLogInMenu((prevState) => !prevState);
   }
+
+  const userInitial = userName.charAt(0).toUpperCase();
 
   return (
     <>
@@ -24,6 +26,7 @@ export default function Account() {
         <FontAwesomeIcon icon={faUser} />
         {isLoggedIn ? (
           <div className="header-btn-text">user</div>
+          // <div className="header-btn-text header-user-initial"><p>{userInitial}</p></div>
         ) : (
           <div className="header-btn-text">log in</div>
         )}
