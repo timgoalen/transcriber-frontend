@@ -2,8 +2,8 @@ import { useState } from "react";
 
 import Transcriber from "../components/Transcriber";
 import Header from "../components/header/Header";
-import Account from "../components/header/Account";
-import Inbox from "../components/header/Inbox";
+import AccountNav from "../components/header/AccountNav";
+import InboxNav from "../components/header/InboxNav";
 
 export default function Home({ getNotesDataFromApi }) {
   const [toolbarType, setToolbarType] = useState("homePage");
@@ -11,8 +11,8 @@ export default function Home({ getNotesDataFromApi }) {
   return (
     <>
       <Header pageTitle="transcriber">
-        <Account />
-        <Inbox />
+        <AccountNav />
+        <InboxNav />
       </Header>
 
       <Transcriber

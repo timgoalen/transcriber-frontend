@@ -6,9 +6,9 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import { UserContext } from "../context/UserContext";
 import Header from "../components/header/Header.js";
-import Create from "../components/header/Create.js";
-import Inbox from "../components/header/Inbox.js";
-import Search from "../components/header/Search.js";
+import CreateNav from "../components/header/CreateNav.js";
+import InboxNav from "../components/header/InboxNav.js";
+import SearchNav from "../components/header/SearchNav.js";
 import FolderListItem from "../components/FolderListItem";
 import NotesInFolderDropdown from "../components/NotesInFolderDropdown";
 import EmptyPlaceholderGraphics from "../components/EmptyPlaceholderGraphics.js";
@@ -100,9 +100,9 @@ export default function Folders({
   return (
     <>
       <Header pageTitle="folders">
-        <Create />
-        <Search />
-        <Inbox />
+        <CreateNav />
+        <SearchNav />
+        <InboxNav />
       </Header>
 
       <main className="list-page-main">

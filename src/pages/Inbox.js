@@ -2,9 +2,9 @@ import { useNavigate } from "react-router-dom";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import Header from "../components/header/Header";
-import Create from "../components/header/Create";
-import Search from "../components/header/Search.js";
-import Folders from "../components/header/Folders";
+import CreateNav from "../components/header/CreateNav.js";
+import SearchNav from "../components/header/SearchNav.js";
+import FoldersNav from "../components/header/FoldersNav.js";
 import NoteListItem from "../components/NoteListItem";
 import EmptyPlaceholderGraphics from "../components/EmptyPlaceholderGraphics.js";
 import MainTool from "../components/MainTool.js";
@@ -17,9 +17,9 @@ export default function Inbox({ notes, folders, handleNoteItemClick }) {
   return (
     <>
       <Header pageTitle="inbox">
-        <Create />
-        <Search />
-        <Folders />
+        <CreateNav />
+        <SearchNav />
+        <FoldersNav />
       </Header>
 
       <main className="list-page-main">

@@ -1,8 +1,9 @@
 import { useState, Fragment } from "react";
 
 import Header from "../components/header/Header";
-import Create from "../components/header/Create";
-import Folders from "../components/header/Folders";
+import CreateNav from "../components/header/CreateNav.js";
+import SearchNav from "../components/header/SearchNav.js";
+import FoldersNav from "../components/header/FoldersNav.js";
 import SearchBar from "../components/SearchBar.js";
 import NoteListItem from "../components/NoteListItem";
 import FolderListItem from "../components/FolderListItem.js";
@@ -34,9 +35,9 @@ export default function Search({ notes, folders, handleNoteItemClick }) {
   return (
     <>
       <Header pageTitle="inbox">
-        <Create />
-        <Search />
-        <Folders />
+        <CreateNav />
+        <SearchNav />
+        <FoldersNav />
       </Header>
 
       <main className="list-page-main">
