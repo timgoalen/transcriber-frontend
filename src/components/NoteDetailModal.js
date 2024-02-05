@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { faArrowLeft, faPen, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan, faFolder } from "@fortawesome/free-regular-svg-icons";
-import { FolderRounded } from "@mui/icons-material";
 
 import { UserContext } from "../context/UserContext";
+import { UserMessagesContext } from "../context/UserMessagesContext";
 import { findNoteByID } from "../utils/utils.js";
+import { notesApiUrl } from "../constants/apiConstants";
 import useClickOutside from "../hooks/useClickOutside";
-import Folders from "../pages/Folders.js";
 import Button from "./Button.js";
 import FolderOptionItem from "./FolderOptionItem.js";
 import NewFolderForm from "./NewFolderForm.js";
@@ -27,12 +27,10 @@ export default function NoteDetailModal({
   const [showFolderOptions, setShowFolderOptions] = useState(false);
   const [showNewFolderForm, setShowNewFolderForm] = useState(false);
   const { userToken } = useContext(UserContext);
+  const { addToMessages } = useContext(UserMessagesContext);
   const selectedNote = findNoteByID(notes, selectedNoteID);
   const navigate = useNavigate();
   const ref = useRef(null);
-  // TODO: replace with axios globals
-  const notesApiUrl =
-    "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/notes/";
 
   async function deleteNote() {
     try {
@@ -41,11 +39,13 @@ export default function NoteDetailModal({
           Authorization: `Token ${userToken}`,
         },
       });
-      console.log("Note deleted", response.data);
-      await getNotesDataFromApi();
+      console.log(`Note deleted: ${response.data}`);
+      addToMessages("note deleted");
       setShowNoteDetailModal(false);
+      await getNotesDataFromApi();
     } catch (error) {
-      alert(`Error deleting note: ${error.message}`);
+      console.log(`Error deleting note: ${error.message}`);
+      addToMessages("error deleting note");
     }
   }
 
@@ -102,6 +102,7 @@ export default function NoteDetailModal({
               selectedNote={selectedNote}
               getNotesDataFromApi={getNotesDataFromApi}
               setShowNoteDetailModal={setShowNoteDetailModal}
+              folders={folders}
             />
 
             {/* Other folders */}
@@ -114,6 +115,7 @@ export default function NoteDetailModal({
                 selectedNote={selectedNote}
                 getNotesDataFromApi={getNotesDataFromApi}
                 setShowNoteDetailModal={setShowNoteDetailModal}
+                folders={folders}
               />
             ))}
 

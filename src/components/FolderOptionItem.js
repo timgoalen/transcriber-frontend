@@ -5,7 +5,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
 import { UserContext } from "../context/UserContext";
-import { parseFolderIdOfNote } from "../utils/utils.js";
+import { UserMessagesContext } from "../context/UserMessagesContext";
+import { notesApiUrl, foldersApiUrl } from "../constants/apiConstants";
+import { parseFolderIdOfNote, findFolderTitleByID } from "../utils/utils.js";
 
 export default function FolderOptionItem({
   id,
@@ -14,16 +16,16 @@ export default function FolderOptionItem({
   selectedNote,
   getNotesDataFromApi,
   setShowNoteDetailModal,
+  folders,
 }) {
   const [isParentFolder, setIsParentFolder] = useState(false);
   const { isLoggedIn, userToken } = useContext(UserContext);
+  const { addToMessages } = useContext(UserMessagesContext);
   const isSelectedNoteInInbox = selectedNote.folder_id === null;
+  const isTargetFolderInbox = id === null;
 
-  // TODO: change this to axios global...
-  const notesApiUrl =
-    "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/notes/";
-  const foldersApiUrl =
-    "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/folders/";
+  console.log("isSelectedNoteInInbox");
+  console.log(isSelectedNoteInInbox);
 
   //   TODO: explain this with comment
   useEffect(() => {
@@ -41,12 +43,14 @@ export default function FolderOptionItem({
 
   // Move note to a new folder
   async function updateNoteFolderField(noteID) {
-    let updatedNote;
-    if (id === null) {
-      updatedNote = { folder_id: null};
-    } else {
-      updatedNote = { folder_id: `${foldersApiUrl}${id}/`};
-    }
+    let updatedNote = isTargetFolderInbox
+    ? { folder_id: null }
+    : { folder_id: `${foldersApiUrl}${id}/` };
+    
+    let destinationFolderTitle = isTargetFolderInbox
+      ? "inbox"
+      : findFolderTitleByID(folders, id);
+
     try {
       const response = await axios.patch(
         `${notesApiUrl}${noteID}/`,
@@ -57,12 +61,13 @@ export default function FolderOptionItem({
           },
         }
       );
-      console.log("Note updated:", response.data);
-      await getNotesDataFromApi();
-      console.log(`moved to ${updatedNote.folder_id}`);
+      console.log(`Note updated: ${response.data}`);
+      addToMessages(`moved to '${destinationFolderTitle}'`);
       setShowNoteDetailModal(false);
+      await getNotesDataFromApi();
     } catch (error) {
-      alert(`Error updating note: ${error.message}`);
+      addToMessages("error moving note");
+      console.log(`Error updating note: ${error.message}`);
     }
   }
 

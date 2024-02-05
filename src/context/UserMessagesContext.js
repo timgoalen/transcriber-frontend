@@ -5,27 +5,18 @@ export const UserMessagesContext = createContext();
 export const UserMessagesProvider = ({ children }) => {
   const [messages, setMessages] = useState("");
 
+  // Clear the messages after 1.5 seconds
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setMessages("");
+    }, 1500);
+
+    return () => clearTimeout(timeoutId);
+  }, [messages]);
+
   function addToMessages(message) {
     setMessages(message);
   }
-
-//   const storedMessage = localStorage.getItem("message");
-//   console.log(storedMessage);
-
-//   if (storedMessage) {
-//     setMessages(storedMessage);
-//   }
-
-  useEffect(() => {
-    // const storedMessage = localStorage.getItem("message");
-    // console.log(storedMessage);
-    setTimeout(() => {
-      setMessages(""), 2000;
-    });
-    // if (storedMessage) {
-    //   setMessages(storedMessage);
-    // }
-  }, []);
 
   return (
     <UserMessagesContext.Provider value={{ messages, addToMessages }}>

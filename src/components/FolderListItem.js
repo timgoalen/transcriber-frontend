@@ -6,7 +6,9 @@ import { faPen, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
 import { UserContext } from "../context/UserContext";
+import { UserMessagesContext } from "../context/UserMessagesContext";
 import { foldersApiUrl } from "../constants/apiConstants";
+import DeleteFolderConfirmationPrompt from "./DeleteFolderConfirmationPrompt";
 
 export default function FolderListItem({
   id,
@@ -18,11 +20,12 @@ export default function FolderListItem({
   handleFolderEditClick,
   getAllDataFromApi,
 }) {
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const { userToken } = useContext(UserContext);
+  const { addToMessages } = useContext(UserMessagesContext);
 
   function handleDeleteBtnClick() {
-    alert(`Delete '${title}' and all of its contents?`);
-    deleteFolder();
+    setShowDeleteConfirmation(true);
   }
 
   async function deleteFolder() {
@@ -32,49 +35,61 @@ export default function FolderListItem({
           Authorization: `Token ${userToken}`,
         },
       });
-      console.log("Folder deleted:", response.data);
+      console.log(`Folder deleted: ${response.data}`);
+      addToMessages("folder deleted");
       await getAllDataFromApi();
     } catch (error) {
       alert(`Error deleting folder: ${error.message}`);
+      addToMessages("error deleting folder");
     }
   }
 
   return (
-    <div className="list-page-item">
-      {/* Colour block */}
-      <div
-        className="item-colour-block"
-        style={{ backgroundColor: colour }}
-      ></div>
-
-      {/* Title */}
-      <div className="item-text" onClick={() => handleFolderClick(id)}>
-        <p>{title}</p>
-      </div>
-
-      {/* Toolbar */}
-      <div className="folder-toolbar">
-        {openToolList === id && (
-          <>
-            <div
-              className="folder-options"
-              onClick={() => handleFolderEditClick(id)}
-            >
-              <FontAwesomeIcon icon={faPen} />
-            </div>
-            <div className="folder-options" onClick={handleDeleteBtnClick}>
-              <FontAwesomeIcon icon={faTrashCan} />
-            </div>
-          </>
-        )}
-
+    <>
+      <div className="list-page-item">
+        {/* Colour block */}
         <div
-          className="item-tools"
-          onClick={() => handleFolderOptionsClick(id)}
-        >
-          <FontAwesomeIcon icon={faEllipsisVertical} />
+          className="item-colour-block"
+          style={{ backgroundColor: colour }}
+        ></div>
+
+        {/* Title */}
+        <div className="item-text" onClick={() => handleFolderClick(id)}>
+          <p>{title}</p>
+        </div>
+
+        {/* Toolbar */}
+        <div className="folder-toolbar">
+          {openToolList === id && (
+            <>
+              <div
+                className="folder-options"
+                onClick={() => handleFolderEditClick(id)}
+              >
+                <FontAwesomeIcon icon={faPen} />
+              </div>
+              <div className="folder-options" onClick={handleDeleteBtnClick}>
+                <FontAwesomeIcon icon={faTrashCan} />
+              </div>
+            </>
+          )}
+
+          <div
+            className="item-tools"
+            onClick={() => handleFolderOptionsClick(id)}
+          >
+            <FontAwesomeIcon icon={faEllipsisVertical} />
+          </div>
         </div>
       </div>
-    </div>
+
+      {showDeleteConfirmation && (
+        <DeleteFolderConfirmationPrompt
+          folderTitle={title}
+          setShowDeleteConfirmation={setShowDeleteConfirmation}
+          deleteFolder={deleteFolder}
+        />
+      )}
+    </>
   );
 }

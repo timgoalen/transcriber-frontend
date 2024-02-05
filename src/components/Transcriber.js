@@ -13,7 +13,7 @@ import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 import { UserContext } from "../context/UserContext";
 import { UserMessagesContext } from "../context/UserMessagesContext";
 import { notesApiUrl, foldersApiUrl } from "../constants/apiConstants";
-import transcriberAxios from "../config/axiosConfig";
+import { parseFolderIdOfNote } from "../utils/utils.js";
 import MicrophoneTool from "./MicrophoneTool";
 import TextArea from "./TextArea";
 import Toolbar from "./Toolbar";
@@ -28,29 +28,20 @@ export default function Transcriber({ toolbarType, getNotesDataFromApi }) {
   const navigate = useNavigate();
   const passedData = useLocation();
 
-  // TODO: explain: for save-note-in-folder funcitonality
   useEffect(() => {
-    if (passedData.state) {
-      if (passedData.state.passedFolderID) {
-        const { passedFolderID } = passedData.state;
-        setTargetFolderID(passedFolderID);
-      }
-      if (passedData.state.selectedNote) {
-        const { selectedNote } = passedData.state;
-        setTextAreaInput(selectedNote.text);
-        setTargetNoteID(selectedNote.id);
-        setTargetFolderID(selectedNote.folder_id);
-      }
+    // Set target folder ID if note is to be created in folder
+    if (passedData?.state?.passedFolderID) {
+      const { passedFolderID } = passedData.state;
+      setTargetFolderID(passedFolderID);
     }
-  }, [targetFolderID, passedData.state]);
-
-  // useEffect(() => {
-  //   if (passedData.state) {
-  //     const { passedFolderID, selectedNote } = passedData.state;
-  //     setTargetFolderID(passedFolderID);
-  //     setTextAreaInput(selectedNote.text);
-  //   }
-  // }, [targetFolderID, passedData.state]);
+    // Populate textarea and save a distination folder
+    if (passedData?.state?.selectedNote) {
+      const { selectedNote } = passedData.state;
+      setTextAreaInput(selectedNote.text);
+      setTargetNoteID(selectedNote.id);
+      setTargetFolderID(parseFolderIdOfNote(selectedNote.folder_id));
+    }
+  }, []);
 
   // -- CRUD FUNCTIONS --
 
@@ -69,23 +60,18 @@ export default function Transcriber({ toolbarType, getNotesDataFromApi }) {
           Authorization: `Token ${userToken}`,
         },
       });
-      console.log("Note saved:", response.data);
+      console.log(`Note saved: ${response.data}`);
+      addToMessages("note saved");
       await getNotesDataFromApi();
-      localStorage.setItem("message", "Note Saved");
-      // addToMessages("Note Saved");
-      // setTimeout(() => {
-      // addToMessages(""), 2000;
-      // })
-      // addToMessages("Note Saved");
-      // TODO: refactor for duplication in `updateNoteTextField` below and <FolderOptionItem.js/>
-      // Redirect to inbox
       if (targetFolderID === null) {
-        navigate("/inbox");
+        // Redirect to inbox
+        navigate("/inbox", { state: { message: "note saved" } });
       } else {
         // Include folder ID in redirect so folder can be opened
         navigate("/folders", { state: { savedToFolderID: targetFolderID } });
       }
     } catch (error) {
+      addToMessages("error saving note");
       alert(`Error saving note: ${error.message}`);
     }
   }
@@ -95,7 +81,7 @@ export default function Transcriber({ toolbarType, getNotesDataFromApi }) {
     const updatedNote = { text: textAreaInput };
     try {
       const response = await axios.patch(
-        notesApiUrl + `${targetNoteID}/`,
+        `${notesApiUrl}${targetNoteID}/`,
         updatedNote,
         {
           headers: {
@@ -103,14 +89,16 @@ export default function Transcriber({ toolbarType, getNotesDataFromApi }) {
           },
         }
       );
-      console.log("Note updated:", response.data);
+      console.log(`Note updated: ${response.data}`);
       await getNotesDataFromApi();
-      // Redirect to inbox
       if (targetFolderID === null) {
-        navigate("/inbox");
+        // Redirect to inbox
+        navigate("/inbox", { state: { message: "note updated" } });
       } else {
         // Include folder ID in redirect so folder can be opened
-        navigate("/folders", { state: { savedToFolderID: targetFolderID } });
+        navigate("/folders", {
+          state: { savedToFolderID: targetFolderID, message: "note updated" },
+        });
       }
     } catch (error) {
       alert("Error updating note:", error.message);
@@ -120,7 +108,7 @@ export default function Transcriber({ toolbarType, getNotesDataFromApi }) {
   // -- CLICK HANDLERS --
 
   function handleSaveNoteBtnClick() {
-    // Inbox has `targetFolderID` of null
+    // Note: Inbox has `targetFolderID` of null
     createNote(textAreaInput, targetFolderID);
   }
 

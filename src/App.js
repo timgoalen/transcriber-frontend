@@ -16,6 +16,7 @@ import SignUp from "./pages/SignUp";
 import LogIn from "./pages/LogIn";
 import NoPage from "./pages/NoPage";
 import NoteDetailModal from "./components/NoteDetailModal";
+import UserMessages from "./components/UserMessages.js";
 import { generateRandomColour } from "./utils/utils";
 import { notesApiUrl, foldersApiUrl } from "./constants/apiConstants";
 
@@ -95,6 +96,7 @@ export default function App() {
         },
       });
       console.log("Folder saved:", response.data);
+      addToMessages("folder saved");
       await getFoldersDataFromApi();
     } catch (error) {
       alert(`Error saving folder: ${error.message}`);
@@ -164,11 +166,9 @@ export default function App() {
         />
       )}
 
-      {/* {messages && (
-        <div className="user-message-container">
-          <p className="user-message-content">{messages}</p>
-        </div>
-      )} */}
+      {messages && (
+        <UserMessages messages={messages} />
+      )}
     </>
   );
 }

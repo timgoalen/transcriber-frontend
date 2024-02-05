@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import { UserContext } from "../context/UserContext";
+import { UserMessagesContext } from "../context/UserMessagesContext";
 import Header from "../components/header/Header.js";
 import CreateNav from "../components/header/CreateNav.js";
 import InboxNav from "../components/header/InboxNav.js";
@@ -30,11 +31,17 @@ export default function Folders({
   const [openToolList, setOpenToolList] = useState(0);
   const [editFolderTitle, setEditFolderTitle] = useState(0);
   const { isLoggedIn, userToken } = useContext(UserContext);
-
-  // TODO: explain why this is needed
+  const { addToMessages } = useContext(UserMessagesContext);
   const passedData = useLocation();
+
   useEffect(() => {
-    if (passedData.state) {
+     // Show confimation messages if received from Transcriber
+    if (passedData?.state?.message) {
+      const { message } = passedData.state;
+      addToMessages(message);
+    }
+    // Open folder if note is saved to folder
+    if (passedData?.state?.savedToFolderID) {
       const { savedToFolderID } = passedData.state;
       setShowNotesInFolder(savedToFolderID);
     }
@@ -55,9 +62,11 @@ export default function Folders({
         }
       );
       console.log("Folder updated:", response.data);
+      addToMessages("folder title updated");
       await getFoldersDataFromApi();
     } catch (error) {
       alert("Error updating folder:", error.message);
+      addToMessages("error updating folder")
     }
   }
 

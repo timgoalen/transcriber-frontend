@@ -1,9 +1,9 @@
 import { foldersApiUrl } from "../constants/apiConstants";
 
-export function parseFolderURL(url) {
-  const idNumberAtEndOfURL = parseInt(url.charAt(url.length - 2));
-  return idNumberAtEndOfURL;
-}
+// export function parseFolderURL(url) {
+//   const idNumberAtEndOfURL = parseInt(url.charAt(url.length - 2));
+//   return idNumberAtEndOfURL;
+// }
 
 // Isolate the number at the end of the URL
 export function parseFolderIdOfNote(folderID) {
@@ -35,6 +35,12 @@ export function getNotesInFolder(notes, folderID) {
 export function findNoteByID(notes, noteID) {
   const selectedNote = notes.find((note) => note.id === noteID);
   return selectedNote;
+}
+
+export function findFolderTitleByID(folders, folderID) {
+  const targetFolder = folders.find((folder) => folder.id === folderID);
+  const folderTitle = targetFolder.title;
+  return folderTitle;
 }
 
 // CHANGE TO A MORE CURATION RANGE OF COLOURS
