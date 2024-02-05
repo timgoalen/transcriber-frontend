@@ -8,9 +8,10 @@ import CloseAuthFormsBtn from "./CloseAuthFormsBtn";
 import { baseApiUrl } from "../constants/apiConstants";
 
 export default function SignUpForm() {
+  const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
   const { updateUserToken } = useContext(UserContext);
   const navigateToHomePage = useNavigate();
-  const [errors, setErrors] = useState({});
 
   const [signUpFormData, setSignUpFormData] = useState({
     username: "",
@@ -31,39 +32,33 @@ export default function SignUpForm() {
 
   async function submitSignUpForm(event) {
     event.preventDefault();
+    setIsLoading(true);
     console.log("sending signup form");
     try {
       // Register a new user
-      await axios.post(
-        `${baseApiUrl}api/auth/register/`,
-        signUpFormData
-      );
+      await axios.post(`${baseApiUrl}api/auth/register/`, signUpFormData);
       try {
         // Obtain the authorisation token by logging in the user
-        const logInResponse = await axios.post(
-          `${baseApiUrl}api/auth/login/`,
-          {
-            username: signUpFormData.username,
-            password: signUpFormData.password1,
-          }
-        );
-        console.log("Login successful:", logInResponse.data);
+        const logInResponse = await axios.post(`${baseApiUrl}api/auth/login/`, {
+          username: signUpFormData.username,
+          password: signUpFormData.password1,
+        });
         const logInResponseToken = logInResponse.data.key;
         updateUserToken(logInResponseToken);
-        navigateToHomePage("/");
+        navigateToHomePage("/", {
+          state: { message: `welcome, ${signUpFormData.username}!` },
+        });
       } catch (error) {
-        console.error("Error logging in to retreive token:", error.message);
-        console.error(error);
-        // TODO: setErrors
+        console.error(`Error logging in: ${error.message}`);
+        setErrors(error.response?.data);
       }
     } catch (error) {
-      console.error("Error submitting Sign Up Form:", error.message);
-      console.error(error.response?.data);
+      console.error(`Error submitting Sign Up Form: ${error.message}`);
       setErrors(error.response?.data);
+    } finally {
+      setIsLoading(false);
     }
   }
-
-  // TODO: DO LOADER SPINNER ON FORM SUBMIT (WAITING FOR THE API)
 
   return (
     <section className="auth-form-container">
@@ -125,7 +120,9 @@ export default function SignUpForm() {
 
         {/* Submit button */}
         <div className="auth-form-btn-container">
-          <button onClick={submitSignUpForm}>Sign Up</button>
+          <button onClick={submitSignUpForm}>
+            {isLoading ? "Signing Up..." : "Sign Up"}
+          </button>
         </div>
 
         {/* Close button */}

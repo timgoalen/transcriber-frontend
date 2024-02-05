@@ -28,6 +28,7 @@ export default function Transcriber({ toolbarType, getNotesDataFromApi }) {
   const navigate = useNavigate();
   const passedData = useLocation();
 
+  // Handle data passed form other routes
   useEffect(() => {
     // Set target folder ID if note is to be created in folder
     if (passedData?.state?.passedFolderID) {
@@ -40,6 +41,11 @@ export default function Transcriber({ toolbarType, getNotesDataFromApi }) {
       setTextAreaInput(selectedNote.text);
       setTargetNoteID(selectedNote.id);
       setTargetFolderID(parseFolderIdOfNote(selectedNote.folder_id));
+    }
+    // Set user message on log in
+    if (passedData?.state?.message) {
+      const { message } = passedData.state;
+      addToMessages(message);
     }
   }, []);
 

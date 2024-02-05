@@ -1,6 +1,9 @@
 import { useState, useContext } from "react";
+
 import { useNavigate } from "react-router-dom";
+
 import { UserContext } from "../context/UserContext.js";
+import { UserMessagesContext } from "../context/UserMessagesContext";
 import { baseApiUrl } from "../constants/apiConstants";
 
 import axios from "axios";
@@ -8,9 +11,11 @@ import axios from "axios";
 import CloseAuthFormsBtn from "./CloseAuthFormsBtn.js";
 
 export default function LogInForm() {
-  const { updateUserToken } = useContext(UserContext);
-  const navigateToHomePage = useNavigate();
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const { updateUserToken } = useContext(UserContext);
+  const { addToMessages } = useContext(UserMessagesContext);
+  const navigateToHomePage = useNavigate();
 
   const [logInFormData, setLogInFormData] = useState({
     username: "",
@@ -30,24 +35,24 @@ export default function LogInForm() {
 
   async function submitLogInForm(event) {
     event.preventDefault();
+    setIsLoading(true);
     console.log("sending log in form");
     try {
       // Obtain the authorisation token by logging in the user
-      const logInResponse = await axios.post(
-        `${baseApiUrl}api/auth/login/`,
-        {
-          username: logInFormData.username,
-          password: logInFormData.password,
-        }
-      );
-      console.log("Login successful:", logInResponse.data);
+      const logInResponse = await axios.post(`${baseApiUrl}api/auth/login/`, {
+        username: logInFormData.username,
+        password: logInFormData.password,
+      });
       const logInResponseToken = logInResponse.data.key;
       updateUserToken(logInResponseToken);
-      navigateToHomePage("/");
+      navigateToHomePage("/", {
+        state: { message: `welcome, ${logInFormData.username}!` },
+      });
     } catch (error) {
-      console.error("Error logging in to retreive token:", error.message);
-      console.error(error);
+      console.error(`Error logging in: ${error.message}`);
       setErrors(error.response?.data);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -96,7 +101,9 @@ export default function LogInForm() {
 
         {/* Submit button */}
         <div className="auth-form-btn-container">
-          <button onClick={submitLogInForm}>Log In</button>
+          <button onClick={submitLogInForm}>
+            {isLoading ? "Logging In..." : "Log In"}
+          </button>
         </div>
 
         {/* Close button */}

@@ -1,19 +1,21 @@
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import { UserContext } from "../context/UserContext";
-import { baseApiUrl } from "../constants/apiConstants";
 
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons";
 
-export default function LogOut() {
+import { UserContext } from "../context/UserContext";
+import { UserMessagesContext } from "../context/UserMessagesContext";
+import { baseApiUrl } from "../constants/apiConstants";
+
+export default function LogOut({ setShowLogInMenu }) {
   const { updateUserToken, userToken } = useContext(UserContext);
+  const { addToMessages } = useContext(UserMessagesContext);
   const navigateToHomePage = useNavigate();
 
   async function submitLogOutRequest(event) {
     try {
-      // TODO: change URL to a variable
       const logOutResponse = await axios.post(
         `${baseApiUrl}api/auth/logout/`,
         {
@@ -25,8 +27,11 @@ export default function LogOut() {
       console.info(logOutResponse.data);
       // Remove the token from state (context) and local storage
       updateUserToken("");
+      addToMessages("sucessfully logged out");
+      setShowLogInMenu(false);
     } catch (error) {
-      console.error("Error logging out:", error.message);
+      console.error(`Error logging out: ${error.message}`);
+      addToMessages("error logging out");
     }
   }
 

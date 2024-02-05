@@ -26,7 +26,6 @@ export default function Account() {
         <FontAwesomeIcon icon={faUser} />
         {isLoggedIn ? (
           <div className="header-btn-text">user</div>
-          // <div className="header-btn-text header-user-initial"><p>{userInitial}</p></div>
         ) : (
           <div className="header-btn-text">log in</div>
         )}
