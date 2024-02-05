@@ -1,4 +1,4 @@
-import { notesApiUrl, foldersApiUrl } from "../constants/apiConstants";
+import { foldersApiUrl } from "../constants/apiConstants";
 
 export function parseFolderURL(url) {
   const idNumberAtEndOfURL = parseInt(url.charAt(url.length - 2));

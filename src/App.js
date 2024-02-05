@@ -17,6 +17,7 @@ import LogIn from "./pages/LogIn";
 import NoPage from "./pages/NoPage";
 import NoteDetailModal from "./components/NoteDetailModal";
 import { generateRandomColour } from "./utils/utils";
+import { notesApiUrl, foldersApiUrl } from "./constants/apiConstants";
 
 export default function App() {
   const { isLoggedIn, userToken } = useContext(UserContext);
@@ -26,14 +27,6 @@ export default function App() {
   const [showNoteDetailModal, setShowNoteDetailModal] = useState(false);
   const [selectedNoteID, setSelectedNoteID] = useState(0);
   const navigate = useNavigate();
-  // TODO: replace with axios globals
-  const notesApiUrl =
-    "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/notes/";
-  const foldersApiUrl =
-    "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/folders/";
-
-  console.table(notes)
-  console.table(folders)
 
   async function getNotesDataFromApi() {
     try {

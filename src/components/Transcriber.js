@@ -12,6 +12,7 @@ import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
 import { UserContext } from "../context/UserContext";
 import { UserMessagesContext } from "../context/UserMessagesContext";
+import { notesApiUrl, foldersApiUrl } from "../constants/apiConstants";
 import transcriberAxios from "../config/axiosConfig";
 import MicrophoneTool from "./MicrophoneTool";
 import TextArea from "./TextArea";
@@ -27,20 +28,7 @@ export default function Transcriber({ toolbarType, getNotesDataFromApi }) {
   const navigate = useNavigate();
   const passedData = useLocation();
 
-  // TODO: change this to axios global...
-  const notesApiUrl =
-    "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/notes/";
-  const foldersApiUrl =
-    "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/folders/";
-
   // TODO: explain: for save-note-in-folder funcitonality
-  // useEffect(() => {
-  //   if (passedData.state) {
-  //     const { passedFolderID } = passedData.state;
-  //     setTargetFolderID(passedFolderID);
-  //   }
-  // }, [targetFolderID]);
-
   useEffect(() => {
     if (passedData.state) {
       if (passedData.state.passedFolderID) {

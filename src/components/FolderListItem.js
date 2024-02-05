@@ -6,6 +6,7 @@ import { faPen, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
 import { UserContext } from "../context/UserContext";
+import { foldersApiUrl } from "../constants/apiConstants";
 
 export default function FolderListItem({
   id,
@@ -18,9 +19,6 @@ export default function FolderListItem({
   getAllDataFromApi,
 }) {
   const { userToken } = useContext(UserContext);
-  // TODO:replace with axios globals
-  const foldersApiUrl =
-    "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/folders/";
 
   function handleDeleteBtnClick() {
     alert(`Delete '${title}' and all of its contents?`);

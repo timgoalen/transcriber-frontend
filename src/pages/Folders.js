@@ -15,6 +15,7 @@ import EmptyPlaceholderGraphics from "../components/EmptyPlaceholderGraphics.js"
 import NewFolderForm from "../components/NewFolderForm.js";
 import MainTool from "../components/MainTool.js";
 import { getNotesInFolder } from "../utils/utils.js";
+import { foldersApiUrl } from "../constants/apiConstants";
 
 export default function Folders({
   notes,
@@ -29,10 +30,6 @@ export default function Folders({
   const [openToolList, setOpenToolList] = useState(0);
   const [editFolderTitle, setEditFolderTitle] = useState(0);
   const { isLoggedIn, userToken } = useContext(UserContext);
-
-  // TODO: replace with axios globals
-  const foldersApiUrl =
-    "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/folders/";
 
   // TODO: explain why this is needed
   const passedData = useLocation();

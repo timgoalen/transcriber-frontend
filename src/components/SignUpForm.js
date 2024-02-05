@@ -5,6 +5,7 @@ import { UserContext } from "../context/UserContext";
 import axios from "axios";
 
 import CloseAuthFormsBtn from "./CloseAuthFormsBtn";
+import { baseApiUrl } from "../constants/apiConstants";
 
 export default function SignUpForm() {
   const { updateUserToken } = useContext(UserContext);
@@ -34,13 +35,13 @@ export default function SignUpForm() {
     try {
       // Register a new user
       await axios.post(
-        "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/api/auth/register/",
+        `${baseApiUrl}api/auth/register/`,
         signUpFormData
       );
       try {
         // Obtain the authorisation token by logging in the user
         const logInResponse = await axios.post(
-          "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/api/auth/login/",
+          `${baseApiUrl}api/auth/login/`,
           {
             username: signUpFormData.username,
             password: signUpFormData.password1,

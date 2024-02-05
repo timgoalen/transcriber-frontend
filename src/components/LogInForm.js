@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext.js";
+import { baseApiUrl } from "../constants/apiConstants";
 
 import axios from "axios";
 
@@ -33,7 +34,7 @@ export default function LogInForm() {
     try {
       // Obtain the authorisation token by logging in the user
       const logInResponse = await axios.post(
-        "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/api/auth/login/",
+        `${baseApiUrl}api/auth/login/`,
         {
           username: logInFormData.username,
           password: logInFormData.password,

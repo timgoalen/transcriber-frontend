@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
+import { baseApiUrl } from "../constants/apiConstants";
 
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,7 +15,7 @@ export default function LogOut() {
     try {
       // TODO: change URL to a variable
       const logOutResponse = await axios.post(
-        "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/api/auth/logout/",
+        `${baseApiUrl}api/auth/logout/`,
         {
           headers: {
             Authorization: `Token ${userToken}`,
