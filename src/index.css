@@ -730,6 +730,28 @@ input[type="search"] {
   opacity: 0.6;
 }
 
+/* MESSAGES */
+
+.user-message-container {
+  background-color: white;
+  z-index: 1000;
+  height: 8vh;
+  height: 8dvh;
+  display: grid;
+  place-items: center;
+  position: fixed;
+  /* opacity: 1; */
+  left: 2%;
+  top: 8%;
+}
+
+.user-message-content {
+  border: 2px dashed var(--orange);
+  border-radius: 8px;
+  padding: 0.5rem;
+  box-shadow: var(--m3-elevation-light-2);
+}
+
 /* MEDIA QUERIES */
 
 @media screen and (min-width: 800px) {

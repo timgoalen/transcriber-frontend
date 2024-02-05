@@ -1,5 +1,9 @@
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+
+import { UserMessagesContext } from "../context/UserMessagesContext";
+
 
 import Header from "../components/header/Header";
 import CreateNav from "../components/header/CreateNav.js";
@@ -13,6 +17,15 @@ import { findFolderColour } from "../utils/utils.js";
 export default function Inbox({ notes, folders, handleNoteItemClick }) {
   const navigate = useNavigate();
   const inboxNotes = notes.filter((note) => note.folder_id === null);
+
+  const { addToMessages } = useContext(UserMessagesContext);
+
+  const storedMessage = localStorage.getItem("message");
+  console.log(storedMessage);
+
+  if (storedMessage) {
+    addToMessages(storedMessage);
+  }
 
   return (
     <>

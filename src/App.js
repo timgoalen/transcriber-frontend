@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import { UserContext } from "./context/UserContext";
+import { UserMessagesContext } from "./context/UserMessagesContext";
 
 import { Routes, Route } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +20,7 @@ import { generateRandomColour } from "./utils/utils";
 
 export default function App() {
   const { isLoggedIn, userToken } = useContext(UserContext);
+  const { messages, addToMessages } = useContext(UserMessagesContext);
   const [notes, setNotes] = useState([]);
   const [folders, setFolders] = useState([]);
   const [showNoteDetailModal, setShowNoteDetailModal] = useState(false);
@@ -29,6 +31,9 @@ export default function App() {
     "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/notes/";
   const foldersApiUrl =
     "https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/folders/";
+
+  console.table(notes)
+  console.table(folders)
 
   async function getNotesDataFromApi() {
     try {
@@ -165,6 +170,12 @@ export default function App() {
           getNotesDataFromApi={getNotesDataFromApi}
         />
       )}
+
+      {/* {messages && (
+        <div className="user-message-container">
+          <p className="user-message-content">{messages}</p>
+        </div>
+      )} */}
     </>
   );
 }

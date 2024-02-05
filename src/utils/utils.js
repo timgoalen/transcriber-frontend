@@ -1,6 +1,15 @@
+import { notesApiUrl, foldersApiUrl } from "../constants/apiConstants";
+
 export function parseFolderURL(url) {
   const idNumberAtEndOfURL = parseInt(url.charAt(url.length - 2));
   return idNumberAtEndOfURL;
+}
+
+// Isolate the number at the end of the URL
+export function parseFolderIdOfNote(folderID) {
+  const removedUrl = folderID.replace(foldersApiUrl, "");
+  const removedSlashAtEnd = removedUrl.slice(0, -1);
+  return parseInt(removedSlashAtEnd);
 }
 
 export function findFolderColour(folders, folderID) {
@@ -9,7 +18,7 @@ export function findFolderColour(folders, folderID) {
     return "var(--grey)";
   } else {
     // Get the number at the end of the URL
-    const folderIdAsInt = parseInt(folderID.charAt(folderID.length - 2));
+    const folderIdAsInt = parseFolderIdOfNote(folderID);
     const parentFolder = folders.find((folder) => folder.id === folderIdAsInt);
     return parentFolder.colour;
   }
@@ -18,8 +27,7 @@ export function findFolderColour(folders, folderID) {
 export function getNotesInFolder(notes, folderID) {
   const notesNotInInbox = notes.filter((note) => note.folder_id !== null);
   const notesInFolder = notesNotInInbox.filter(
-    (note) =>
-      parseInt(note.folder_id.charAt(note.folder_id.length - 2)) === folderID
+    (note) => parseFolderIdOfNote(note.folder_id) === folderID
   );
   return notesInFolder;
 }

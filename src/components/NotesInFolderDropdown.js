@@ -16,6 +16,9 @@ export default function NotesInFolderDropdown({
     navigate("/", { state: { passedFolderID: folderID } });
   }
 
+  console.log("notes in folder");
+  console.table(notesInFolder);
+
   return (
     <section className="notes-in-folder-dropdown">
       {notesInFolder.map((note) => (

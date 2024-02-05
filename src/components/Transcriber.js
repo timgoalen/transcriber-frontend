@@ -11,6 +11,7 @@ import {
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
 import { UserContext } from "../context/UserContext";
+import { UserMessagesContext } from "../context/UserMessagesContext";
 import transcriberAxios from "../config/axiosConfig";
 import MicrophoneTool from "./MicrophoneTool";
 import TextArea from "./TextArea";
@@ -22,6 +23,7 @@ export default function Transcriber({ toolbarType, getNotesDataFromApi }) {
   const [targetNoteID, setTargetNoteID] = useState(null);
   const [targetFolderID, setTargetFolderID] = useState(null);
   const { isLoggedIn, userToken } = useContext(UserContext);
+  const { addToMessages } = useContext(UserMessagesContext);
   const navigate = useNavigate();
   const passedData = useLocation();
 
@@ -52,7 +54,7 @@ export default function Transcriber({ toolbarType, getNotesDataFromApi }) {
         setTargetFolderID(selectedNote.folder_id);
       }
     }
-  }, [targetFolderID, passedData.state])
+  }, [targetFolderID, passedData.state]);
 
   // useEffect(() => {
   //   if (passedData.state) {
@@ -61,7 +63,6 @@ export default function Transcriber({ toolbarType, getNotesDataFromApi }) {
   //     setTextAreaInput(selectedNote.text);
   //   }
   // }, [targetFolderID, passedData.state]);
-  
 
   // -- CRUD FUNCTIONS --
 
@@ -70,10 +71,10 @@ export default function Transcriber({ toolbarType, getNotesDataFromApi }) {
     let newNote = {};
     const folderURL = `${foldersApiUrl}${targetFolderID}/`;
     targetFolderID === null
-      // Save to inbox
-      ? (newNote = { text: text, folder_id: null })
-      // Save to target folder
-      : (newNote = { text: text, folder_id: folderURL });
+      ? // Save to inbox
+        (newNote = { text: text, folder_id: null })
+      : // Save to target folder
+        (newNote = { text: text, folder_id: folderURL });
     try {
       const response = await axios.post(notesApiUrl, newNote, {
         headers: {
@@ -82,6 +83,12 @@ export default function Transcriber({ toolbarType, getNotesDataFromApi }) {
       });
       console.log("Note saved:", response.data);
       await getNotesDataFromApi();
+      localStorage.setItem("message", "Note Saved");
+      // addToMessages("Note Saved");
+      // setTimeout(() => {
+      // addToMessages(""), 2000;
+      // })
+      // addToMessages("Note Saved");
       // TODO: refactor for duplication in `updateNoteTextField` below and <FolderOptionItem.js/>
       // Redirect to inbox
       if (targetFolderID === null) {
@@ -99,11 +106,15 @@ export default function Transcriber({ toolbarType, getNotesDataFromApi }) {
     // Assemble the updated note
     const updatedNote = { text: textAreaInput };
     try {
-      const response = await axios.patch(notesApiUrl + `${targetNoteID}/`, updatedNote, {
-        headers: {
-          Authorization: `Token ${userToken}`,
-        },
-      });
+      const response = await axios.patch(
+        notesApiUrl + `${targetNoteID}/`,
+        updatedNote,
+        {
+          headers: {
+            Authorization: `Token ${userToken}`,
+          },
+        }
+      );
       console.log("Note updated:", response.data);
       await getNotesDataFromApi();
       // Redirect to inbox

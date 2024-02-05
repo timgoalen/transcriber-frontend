@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
 import { UserContext } from "../context/UserContext";
-import { parseFolderURL } from "../utils/utils.js";
+import { parseFolderIdOfNote } from "../utils/utils.js";
 
 export default function FolderOptionItem({
   id,
@@ -31,7 +31,7 @@ export default function FolderOptionItem({
       setIsParentFolder(true);
     } else if (
       !isSelectedNoteInInbox &&
-      parseFolderURL(selectedNote.folder_id) === id
+      parseFolderIdOfNote(selectedNote.folder_id) === id
     ) {
       setIsParentFolder(true);
     } else {
@@ -41,7 +41,12 @@ export default function FolderOptionItem({
 
   // Move note to a new folder
   async function updateNoteFolderField(noteID) {
-    const updatedNote = { folder_id: `${foldersApiUrl}${id}/` };
+    let updatedNote;
+    if (id === null) {
+      updatedNote = { folder_id: null};
+    } else {
+      updatedNote = { folder_id: `${foldersApiUrl}${id}/`};
+    }
     try {
       const response = await axios.patch(
         `${notesApiUrl}${noteID}/`,
@@ -54,7 +59,7 @@ export default function FolderOptionItem({
       );
       console.log("Note updated:", response.data);
       await getNotesDataFromApi();
-      alert(`moved to ${updatedNote.folder_id}`);
+      console.log(`moved to ${updatedNote.folder_id}`);
       setShowNoteDetailModal(false);
     } catch (error) {
       alert(`Error updating note: ${error.message}`);
