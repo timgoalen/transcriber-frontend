@@ -110,7 +110,9 @@ export default function App() {
       <Routes>
         <Route
           path="/"
-          element={<Home getNotesDataFromApi={getNotesDataFromApi} />}
+          element={
+            <Home folders={folders} getNotesDataFromApi={getNotesDataFromApi} />
+          }
         />
         <Route
           path="/inbox"
@@ -147,7 +149,9 @@ export default function App() {
         />
         <Route
           path="/edit"
-          element={<Edit getNotesDataFromApi={getNotesDataFromApi} />}
+          element={
+            <Edit folders={folders} getNotesDataFromApi={getNotesDataFromApi} />
+          }
         />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<LogIn />} />
@@ -166,9 +170,7 @@ export default function App() {
         />
       )}
 
-      {messages && (
-        <UserMessages messages={messages} />
-      )}
+      {messages && <UserMessages messages={messages} />}
     </>
   );
 }

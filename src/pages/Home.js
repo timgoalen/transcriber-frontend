@@ -5,7 +5,7 @@ import Header from "../components/header/Header";
 import AccountNav from "../components/header/AccountNav";
 import InboxNav from "../components/header/InboxNav";
 
-export default function Home({ getNotesDataFromApi }) {
+export default function Home({ folders, getNotesDataFromApi }) {
   const [toolbarType, setToolbarType] = useState("homePage");
 
   return (
@@ -16,6 +16,7 @@ export default function Home({ getNotesDataFromApi }) {
       </Header>
 
       <Transcriber
+        folders={folders}
         toolbarType={toolbarType}
         getNotesDataFromApi={getNotesDataFromApi}
       />

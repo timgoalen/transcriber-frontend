@@ -13,12 +13,12 @@ import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 import { UserContext } from "../context/UserContext";
 import { UserMessagesContext } from "../context/UserMessagesContext";
 import { notesApiUrl, foldersApiUrl } from "../constants/apiConstants";
-import { parseFolderIdOfNote } from "../utils/utils.js";
+import { parseFolderIdOfNote, findFolderTitleByID } from "../utils/utils.js";
 import MicrophoneTool from "./MicrophoneTool";
 import TextArea from "./TextArea";
 import Toolbar from "./Toolbar";
 
-export default function Transcriber({ toolbarType, getNotesDataFromApi }) {
+export default function Transcriber({ folders, toolbarType, getNotesDataFromApi }) {
   const [textAreaInput, setTextAreaInput] = useState("");
   const [isRecording, setIsRecording] = useState(false);
   const [targetNoteID, setTargetNoteID] = useState(null);
@@ -53,13 +53,15 @@ export default function Transcriber({ toolbarType, getNotesDataFromApi }) {
 
   // TODO: refactor into separate functions
   async function createNote(text, targetFolderID) {
-    let newNote = {};
     const folderURL = `${foldersApiUrl}${targetFolderID}/`;
+
+    let newNote = {};
     targetFolderID === null
       ? // Save to inbox
         (newNote = { text: text, folder_id: null })
       : // Save to target folder
         (newNote = { text: text, folder_id: folderURL });
+
     try {
       const response = await axios.post(notesApiUrl, newNote, {
         headers: {
@@ -67,14 +69,19 @@ export default function Transcriber({ toolbarType, getNotesDataFromApi }) {
         },
       });
       console.log(`Note saved: ${response.data}`);
-      addToMessages("note saved");
       await getNotesDataFromApi();
       if (targetFolderID === null) {
         // Redirect to inbox
-        navigate("/inbox", { state: { message: "note saved" } });
+        navigate("/inbox", { state: { message: "saved to 'inbox'" } });
       } else {
         // Include folder ID in redirect so folder can be opened
-        navigate("/folders", { state: { savedToFolderID: targetFolderID } });
+        const folderTitle = findFolderTitleByID(folders, targetFolderID)
+        navigate("/folders", {
+          state: {
+            savedToFolderID: targetFolderID,
+            message: `saved to '${folderTitle}'`,
+          },
+        });
       }
     } catch (error) {
       addToMessages("error saving note");
