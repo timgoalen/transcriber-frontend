@@ -649,7 +649,8 @@ input[type="search"] {
   place-items: center;
   width: 100%;
   height: 100%;
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(9px);
+  z-index: 3;
 }
 
 .delete-folder-confirmation-content {
@@ -784,13 +785,13 @@ input[type="search"] {
 
 .user-message-container {
   background-color: white;
-  z-index: 1000;
-  height: 8vh;
-  height: 8dvh;
+  /* z-index: 1000; */
+  /* height: 8vh; */
+  /* height: 8dvh; */
   display: grid;
   place-items: center;
   position: fixed;
-  /* opacity: 1; */
+  opacity: 1;
   left: 3%;
   /* top: 8%; */
   bottom: 9dvh;
@@ -799,16 +800,41 @@ input[type="search"] {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  /* box-shadow: 27px 27px 59px #c7c7c7, -27px -27px 59px #ffffff; */
+  box-shadow: 0px 4px 40px 0px rgb(152 152 152 / 69%), -20px -20px 40px 0px #ffffff;
+  border-radius: 12px;
+  /* height: 2.2rem; */
+  padding: 0.65rem;
+  /* padding: 0.2rem 0.5rem; */
+  /* border: 1px solid var(--orange); */
+  z-index: 999;
 }
 
 .user-message-content {
-  border: 2px dashed var(--orange);
-  border-radius: 8px;
-  padding: 0.5rem;
-  box-shadow: var(--m3-elevation-light-2);
-  max-width: 100%;
+  /* background-color: white; */
+  /* z-index: 1000; */
+  /* height: 8vh; */
+  /* height: 8dvh; */
+  /* display: grid; */
+  /* place-items: center; */
+  /* position: fixed; */
+  /* opacity: 1; */
+  /* left: 3%; */
+  /* top: 8%; */
+  /* bottom: 9dvh; */
+  /* max-width: 95%; */
+  /* overflow: hidden; */
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  /* box-shadow: 27px 27px 59px #c7c7c7, -27px -27px 59px #ffffff; */
+  /* box-shadow: 0px 4px 40px 0px rgb(152 152 152 / 69%), -20px -20px 40px 0px #ffffff; */
+  /* border-radius: 12px; */
+  /* height: 2.2rem; */
+  /* padding: 1rem; */
+  /* padding: 0.5rem; */
+  border: 1px solid #ec710000;
+  /* line-height: 1.5; */
 }
 
 /* MEDIA QUERIES */
@@ -842,6 +868,10 @@ input[type="search"] {
 
   #note-detail-modal-content {
     width: 78%;
+  }
+
+  .user-message-container {
+    left: 11%;
   }
 }
 
@@ -877,5 +907,9 @@ input[type="search"] {
 
   .footer-right {
     margin-right: 30%;
+  }
+
+  .user-message-container {
+    left: 18%;
   }
 }
