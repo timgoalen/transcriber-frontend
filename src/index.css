@@ -435,8 +435,10 @@ canvas {
   border-radius: 50%;
   font-size: 2rem;
   position: fixed;
-  bottom: 4.5vh;
-  bottom: 4.5dvh;
+  /* bottom: 3.8vh; */
+  /* bottom: 3.8dvh; */
+  bottom: calc(8vh - 27px);
+  bottom: calc(8dvh - 27px);
   left: 50%;
   transform: translateX(-50%);
   display: grid;
@@ -447,7 +449,7 @@ canvas {
 }
 
 #main-tool-container svg path {
-  fill: var(--orange);
+  /* fill: var(--orange); */
 }
 
 #main-tool-container svg {
