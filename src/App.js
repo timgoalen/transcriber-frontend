@@ -3,7 +3,6 @@ import { UserContext } from "./context/UserContext";
 import { UserMessagesContext } from "./context/UserMessagesContext";
 
 import { Routes, Route } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import transcriberAxios from "./config/axiosConfig";
 
@@ -21,13 +20,14 @@ import { generateRandomColour } from "./utils/utils";
 import { notesApiUrl, foldersApiUrl } from "./constants/apiConstants";
 
 export default function App() {
-  const { isLoggedIn, userToken } = useContext(UserContext);
-  const { messages, addToMessages } = useContext(UserMessagesContext);
   const [notes, setNotes] = useState([]);
   const [folders, setFolders] = useState([]);
   const [showNoteDetailModal, setShowNoteDetailModal] = useState(false);
   const [selectedNoteID, setSelectedNoteID] = useState(0);
-  const navigate = useNavigate();
+  const [isLoadingNotes, setIsLoadingNotes] = useState(true);
+  const [isLoadingFolders, setIsLoadingFolders] = useState(true);
+  const { isLoggedIn, userToken } = useContext(UserContext);
+  const { messages, addToMessages } = useContext(UserMessagesContext);
 
   async function getNotesDataFromApi() {
     try {
@@ -39,6 +39,9 @@ export default function App() {
       setNotes(response.data);
     } catch (error) {
       console.error("Error fetching notes data from the API:", error.message);
+    } finally {
+      // note: isLoadingNotes is set to 'true' only when user first logs in
+      setIsLoadingNotes(false);
     }
   }
 
@@ -52,6 +55,9 @@ export default function App() {
       setFolders(response.data);
     } catch (error) {
       console.error("Error fetching folders data from the API:", error.message);
+    } finally {
+      // note: isLoadingFolders is set to 'true' only when user first logs in
+      setIsLoadingFolders(false);
     }
   }
 
@@ -63,6 +69,9 @@ export default function App() {
   // Get data form the API when user logs in
   useEffect(() => {
     if (isLoggedIn) {
+      // Only show the loader spinners on log in
+      setIsLoadingNotes(true);
+      setIsLoadingFolders(true);
       getNotesDataFromApi();
       getFoldersDataFromApi();
     } else {
@@ -121,6 +130,7 @@ export default function App() {
               notes={notes}
               folders={folders}
               handleNoteItemClick={handleNoteItemClick}
+              isLoadingNotes={isLoadingNotes}
             />
           }
         />
@@ -134,6 +144,7 @@ export default function App() {
               createFolder={createFolder}
               getAllDataFromApi={getAllDataFromApi}
               getFoldersDataFromApi={getFoldersDataFromApi}
+              isLoadingFolders={isLoadingFolders}
             />
           }
         />

@@ -15,6 +15,7 @@ import NotesInFolderDropdown from "../components/NotesInFolderDropdown";
 import EmptyPlaceholderGraphics from "../components/EmptyPlaceholderGraphics.js";
 import NewFolderForm from "../components/NewFolderForm.js";
 import MainTool from "../components/MainTool.js";
+import LoadingSpinner from "../components/LoadingSpinner.js";
 import { getNotesInFolder } from "../utils/utils.js";
 import { foldersApiUrl } from "../constants/apiConstants";
 
@@ -25,6 +26,7 @@ export default function Folders({
   createFolder,
   getAllDataFromApi,
   getFoldersDataFromApi,
+  isLoadingFolders,
 }) {
   const [showNotesInFolder, setShowNotesInFolder] = useState(0);
   const [showNewFolderForm, setShowNewFolderForm] = useState(false);
@@ -35,7 +37,7 @@ export default function Folders({
   const passedData = useLocation();
 
   useEffect(() => {
-     // Show confimation messages if received from Transcriber
+    // Show confimation messages if received from Transcriber
     if (passedData?.state?.message) {
       const { message } = passedData.state;
       addToMessages(message);
@@ -66,7 +68,7 @@ export default function Folders({
       await getFoldersDataFromApi();
     } catch (error) {
       alert("Error updating folder:", error.message);
-      addToMessages("error updating folder")
+      addToMessages("error updating folder");
     }
   }
 
@@ -113,61 +115,67 @@ export default function Folders({
 
       <main>
         <section className="list-page-main">
-          {folders.map((folder) => (
-            <Fragment key={folder.id}>
-              {editFolderTitle === folder.id ? (
+          {isLoadingFolders ? (
+            <LoadingSpinner />
+          ) : (
+            <>
+              {folders.map((folder) => (
+                <Fragment key={folder.id}>
+                  {editFolderTitle === folder.id ? (
+                    <NewFolderForm
+                      handleNewFolderFormCancel={handleUpdateFolderCancel}
+                      setShowNewFolderForm={setShowNewFolderForm}
+                      handleNewFolderFormSubmit={updateFolderTitle}
+                      initialFolderName={folder.title}
+                      initialFolderID={folder.id}
+                    />
+                  ) : (
+                    <FolderListItem
+                      id={folder.id}
+                      title={folder.title}
+                      colour={folder.colour}
+                      handleFolderClick={handleFolderClick}
+                      handleFolderOptionsClick={handleFolderOptionsClick}
+                      openToolList={openToolList}
+                      handleFolderEditClick={handleFolderEditClick}
+                      getAllDataFromApi={getAllDataFromApi}
+                    />
+                  )}
+
+                  {showNotesInFolder === folder.id && (
+                    <NotesInFolderDropdown
+                      folders={folders}
+                      notesInFolder={getNotesInFolder(notes, folder.id)}
+                      handleNoteItemClick={handleNoteItemClick}
+                      parentFolderID={folder.id}
+                    />
+                  )}
+                </Fragment>
+              ))}
+
+              {showNewFolderForm ? (
                 <NewFolderForm
-                  handleNewFolderFormCancel={handleUpdateFolderCancel}
-                  setShowNewFolderForm={setShowNewFolderForm}
-                  handleNewFolderFormSubmit={updateFolderTitle}
-                  initialFolderName={folder.title}
-                  initialFolderID={folder.id}
+                  handleNewFolderFormCancel={handleNewFolderFormCancel}
+                  handleNewFolderFormSubmit={handleNewFolderFormSubmit}
+                  initialFolderName=""
+                  initialFolderID={null}
                 />
               ) : (
-                <FolderListItem
-                  id={folder.id}
-                  title={folder.title}
-                  colour={folder.colour}
-                  handleFolderClick={handleFolderClick}
-                  handleFolderOptionsClick={handleFolderOptionsClick}
-                  openToolList={openToolList}
-                  handleFolderEditClick={handleFolderEditClick}
-                  getAllDataFromApi={getAllDataFromApi}
+                <MainTool
+                  className="main-tool-blue"
+                  ariaLabel="New folder"
+                  onClick={() => setShowNewFolderForm(true)}
+                  icon={faPlus}
                 />
               )}
-
-              {showNotesInFolder === folder.id && (
-                <NotesInFolderDropdown
-                  folders={folders}
-                  notesInFolder={getNotesInFolder(notes, folder.id)}
-                  handleNoteItemClick={handleNoteItemClick}
-                  parentFolderID={folder.id}
+              
+              {folders.length === 0 && (
+                <EmptyPlaceholderGraphics
+                  primaryColour="#268cf2"
+                  secondaryColour="#f28c26"
                 />
               )}
-            </Fragment>
-          ))}
-
-          {showNewFolderForm ? (
-            <NewFolderForm
-              handleNewFolderFormCancel={handleNewFolderFormCancel}
-              handleNewFolderFormSubmit={handleNewFolderFormSubmit}
-              initialFolderName=""
-              initialFolderID={null}
-            />
-          ) : (
-            <MainTool
-              className="main-tool-blue"
-              ariaLabel="New folder"
-              onClick={() => setShowNewFolderForm(true)}
-              icon={faPlus}
-            />
-          )}
-
-          {folders.length === 0 && (
-            <EmptyPlaceholderGraphics
-              primaryColour="#268cf2"
-              secondaryColour="#f28c26"
-            />
+            </>
           )}
         </section>
       </main>

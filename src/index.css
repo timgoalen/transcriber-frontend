@@ -837,6 +837,35 @@ input[type="search"] {
   /* line-height: 1.5; */
 }
 
+/* LOADER SPINNER */
+
+.loader-spinner-container {
+  /* height: 83vh; */
+  /* height: 83dvh; */
+  width: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.loader-spinner {
+  margin-top: 6%;
+  border: 1px dashed var(--grey);
+  border-radius: 50%;
+  padding: 4px;
+  height: 3rem;
+  width: 3rem;
+  display: grid;
+  place-items: center;
+}
+
+.loader-spinner svg {
+  width: 2rem;
+}
+
+.loader-spinner svg path {
+  fill: var(--grey);
+}
+
 /* MEDIA QUERIES */
 
 @media screen and (min-width: 800px) {

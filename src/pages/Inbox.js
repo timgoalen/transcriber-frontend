@@ -12,9 +12,15 @@ import FoldersNav from "../components/header/FoldersNav.js";
 import NoteListItem from "../components/NoteListItem";
 import EmptyPlaceholderGraphics from "../components/EmptyPlaceholderGraphics.js";
 import MainTool from "../components/MainTool.js";
+import LoadingSpinner from "../components/LoadingSpinner.js";
 import { findFolderColour } from "../utils/utils.js";
 
-export default function Inbox({ notes, folders, handleNoteItemClick }) {
+export default function Inbox({
+  notes,
+  folders,
+  handleNoteItemClick,
+  isLoadingNotes,
+}) {
   const navigate = useNavigate();
   const inboxNotes = notes.filter((note) => note.folder_id === null);
   const { addToMessages } = useContext(UserMessagesContext);
@@ -38,22 +44,28 @@ export default function Inbox({ notes, folders, handleNoteItemClick }) {
 
       <main>
         <section className="list-page-main">
-          {inboxNotes.map((note) => (
-            <NoteListItem
-              key={note.id}
-              id={note.id}
-              text={note.text}
-              folderId={note.folder_id}
-              folderColour={findFolderColour(folders, note.folder_id)}
-              handleNoteItemClick={handleNoteItemClick}
-            />
-          ))}
+          {isLoadingNotes ? (
+            <LoadingSpinner />
+          ) : (
+            <>
+              {inboxNotes.map((note) => (
+                <NoteListItem
+                  key={note.id}
+                  id={note.id}
+                  text={note.text}
+                  folderId={note.folder_id}
+                  folderColour={findFolderColour(folders, note.folder_id)}
+                  handleNoteItemClick={handleNoteItemClick}
+                />
+              ))}
 
-          {inboxNotes.length === 0 && (
-            <EmptyPlaceholderGraphics
-              primaryColour="#f28c26"
-              secondaryColour="#268cf2"
-            />
+              {inboxNotes.length === 0 && (
+                <EmptyPlaceholderGraphics
+                  primaryColour="#f28c26"
+                  secondaryColour="#268cf2"
+                />
+              )}
+            </>
           )}
 
           <MainTool
