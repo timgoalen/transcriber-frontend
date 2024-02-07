@@ -9,8 +9,15 @@ import NoteListItem from "../components/NoteListItem";
 import FolderListItem from "../components/FolderListItem.js";
 import NotesInFolderDropdown from "../components/NotesInFolderDropdown.js";
 import { findFolderColour, getNotesInFolder } from "../utils/utils.js";
+import LoadingSpinner from "../components/LoadingSpinner.js";
 
-export default function Search({ notes, folders, handleNoteItemClick }) {
+export default function Search({
+  notes,
+  folders,
+  handleNoteItemClick,
+  isLoadingNotes,
+  isLoadingFolders,
+}) {
   const [searchTerms, setSearchTerms] = useState("");
   const [showNotesInFolder, setShowNotesInFolder] = useState(0);
 
@@ -42,10 +49,14 @@ export default function Search({ notes, folders, handleNoteItemClick }) {
 
       <main>
         <section className="list-page-main">
-          <SearchBar
-            searchTerms={searchTerms}
-            handleSearchInputChange={handleSearchInputChange}
-          />
+          {isLoadingNotes || isLoadingFolders ? (
+            <LoadingSpinner />
+          ) : (
+            <SearchBar
+              searchTerms={searchTerms}
+              handleSearchInputChange={handleSearchInputChange}
+            />
+          )}
 
           {/* Notes results */}
           {searchTerms && filteredNotes.length > 0 && (
@@ -77,12 +88,15 @@ export default function Search({ notes, folders, handleNoteItemClick }) {
                   title={folder.title}
                   colour={folder.colour}
                   handleFolderClick={handleFolderClick}
+                  showTools={false}
                 />
+
                 {showNotesInFolder === folder.id && (
                   <NotesInFolderDropdown
                     folders={folders}
                     notesInFolder={getNotesInFolder(notes, folder.id)}
                     handleNoteItemClick={handleNoteItemClick}
+                    parentFolderID={folder.id}
                   />
                 )}
               </Fragment>

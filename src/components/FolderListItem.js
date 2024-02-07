@@ -19,6 +19,7 @@ export default function FolderListItem({
   openToolList,
   handleFolderEditClick,
   getAllDataFromApi,
+  showTools,
 }) {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const { userToken } = useContext(UserContext);
@@ -59,28 +60,30 @@ export default function FolderListItem({
         </div>
 
         {/* Toolbar */}
-        <div className="folder-toolbar">
-          {openToolList === id && (
-            <>
-              <div
-                className="folder-options"
-                onClick={() => handleFolderEditClick(id)}
-              >
-                <FontAwesomeIcon icon={faPen} />
-              </div>
-              <div className="folder-options" onClick={handleDeleteBtnClick}>
-                <FontAwesomeIcon icon={faTrashCan} />
-              </div>
-            </>
-          )}
+        {showTools && (
+          <div className="folder-toolbar">
+            {openToolList === id && (
+              <>
+                <div
+                  className="folder-options"
+                  onClick={() => handleFolderEditClick(id)}
+                >
+                  <FontAwesomeIcon icon={faPen} />
+                </div>
+                <div className="folder-options" onClick={handleDeleteBtnClick}>
+                  <FontAwesomeIcon icon={faTrashCan} />
+                </div>
+              </>
+            )}
 
-          <div
-            className="item-tools"
-            onClick={() => handleFolderOptionsClick(id)}
-          >
-            <FontAwesomeIcon icon={faEllipsisVertical} />
+            <div
+              className="item-tools"
+              onClick={() => handleFolderOptionsClick(id)}
+            >
+              <FontAwesomeIcon icon={faEllipsisVertical} />
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {showDeleteConfirmation && (

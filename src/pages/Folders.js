@@ -158,6 +158,7 @@ export default function Folders({
                       openToolList={openToolList}
                       handleFolderEditClick={handleFolderEditClick}
                       getAllDataFromApi={getAllDataFromApi}
+                      showTools={true}
                     />
                   )}
 

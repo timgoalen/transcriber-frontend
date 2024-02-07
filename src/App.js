@@ -155,6 +155,8 @@ export default function App() {
               notes={notes}
               folders={folders}
               handleNoteItemClick={handleNoteItemClick}
+              isLoadingNotes={isLoadingNotes}
+              isLoadingFolders={isLoadingFolders}
             />
           }
         />
