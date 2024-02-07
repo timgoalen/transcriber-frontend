@@ -244,25 +244,6 @@ textarea {
   resize: none;
 }
 
-#modal-container,
-#note-detail-modal-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: none;
-  place-items: center;
-  background-color: rgba(33, 33, 33, 0.3);
-}
-
-#modal-content {
-  border: 2px dashed var(--orange);
-  border-radius: 8px;
-  padding: 1.4rem;
-  background-color: var(--white);
-}
-
 #canvas-container {
   position: absolute;
   left: 4%;
@@ -698,6 +679,57 @@ input[type="search"] {
   padding-left: var(--folder-dropdown-offset);
 }
 
+.add-aux-item-btn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 0.9rem;
+  height: 2.2rem;
+  line-height: 1.5;
+  padding: 0.2rem 0.5rem;
+  border-style: dashed;
+  color: var(--grey);
+}
+
+.add-aux-item-btn svg {
+  padding-right: 0.4rem;
+}
+
+.add-aux-item-btn:hover {
+  color: var(--orange);
+}
+
+.add-aux-item-text {
+  /* margin-bottom: 0.1rem; */
+}
+
+/* MODALS */
+
+#modal-container,
+#note-detail-modal-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* display: none; */
+  place-items: center;
+  background-color: rgba(
+    33,
+    33,
+    33,
+    0.3
+  ); /* duplication??? (see 10ish lines below) */
+}
+
+#modal-content {
+  border: 2px dashed var(--orange);
+  border-radius: 8px;
+  padding: 1.4rem;
+  background-color: var(--white);
+}
+
 #note-detail-modal-container {
   display: grid;
   backdrop-filter: blur(3px);
@@ -732,39 +764,32 @@ input[type="search"] {
   font-size: 0.9rem;
 }
 
-/* #back-btn-modal,
-#edit-btn-modal,
-#delete-btn-modal,
-#folder-btn-modal {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: var(--blue);
-} */
-
-.add-aux-item-btn {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  font-size: 0.9rem;
-  height: 2.2rem;
-  line-height: 1.5;
-  padding: 0.2rem 0.5rem;
-  border-style: dashed;
-  color: var(--grey);
+.login-prompt-modal-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  backdrop-filter: blur(14px);
+  z-index: 2;
 }
 
-.add-aux-item-btn svg {
-  padding-right: 0.4rem;
+.login-prompt-modal-content {
+  background-color: var(--white);
+  border: 1px dashed #0074e8;
+  border-radius: 8px;
+  padding: 1rem;
+  max-width: 95%;
 }
 
-.add-aux-item-btn:hover {
+.login-prompt-modal-text a {
   color: var(--orange);
 }
 
-.add-aux-item-text {
-  /* margin-bottom: 0.1rem; */
+.login-prompt-modal-text a:hover {
+  color: var(--orange-hover);
 }
 
 /* PLACEHOLDER SVG */
@@ -803,7 +828,8 @@ input[type="search"] {
   overflow: hidden;
   text-overflow: ellipsis;
   /* box-shadow: 27px 27px 59px #c7c7c7, -27px -27px 59px #ffffff; */
-  box-shadow: 0px 4px 40px 0px rgb(152 152 152 / 69%), -20px -20px 40px 0px #ffffff;
+  box-shadow: 0px 4px 40px 0px rgb(152 152 152 / 69%),
+    -20px -20px 40px 0px #ffffff;
   border-radius: 12px;
   /* height: 2.2rem; */
   padding: 0.65rem;

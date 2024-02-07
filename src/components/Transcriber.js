@@ -17,12 +17,18 @@ import { parseFolderIdOfNote, findFolderTitleByID } from "../utils/utils.js";
 import MicrophoneTool from "./MicrophoneTool";
 import TextArea from "./TextArea";
 import Toolbar from "./Toolbar";
+import LogInSignUpPrompt from "./LogInSignUpPrompt.js";
 
-export default function Transcriber({ folders, toolbarType, getNotesDataFromApi }) {
+export default function Transcriber({
+  folders,
+  toolbarType,
+  getNotesDataFromApi,
+}) {
   const [textAreaInput, setTextAreaInput] = useState("");
   const [isRecording, setIsRecording] = useState(false);
   const [targetNoteID, setTargetNoteID] = useState(null);
   const [targetFolderID, setTargetFolderID] = useState(null);
+  const [showLogInSignUpPrompt, setShowLogInSignUpPrompt] = useState(false);
   const { isLoggedIn, userToken } = useContext(UserContext);
   const { addToMessages } = useContext(UserMessagesContext);
   const navigate = useNavigate();
@@ -75,7 +81,7 @@ export default function Transcriber({ folders, toolbarType, getNotesDataFromApi 
         navigate("/inbox", { state: { message: "saved to 'inbox'" } });
       } else {
         // Include folder ID in redirect so folder can be opened
-        const folderTitle = findFolderTitleByID(folders, targetFolderID)
+        const folderTitle = findFolderTitleByID(folders, targetFolderID);
         navigate("/folders", {
           state: {
             savedToFolderID: targetFolderID,
@@ -121,8 +127,11 @@ export default function Transcriber({ folders, toolbarType, getNotesDataFromApi 
   // -- CLICK HANDLERS --
 
   function handleSaveNoteBtnClick() {
-    // Note: Inbox has `targetFolderID` of null
-    createNote(textAreaInput, targetFolderID);
+    if (isLoggedIn) {
+      createNote(textAreaInput, targetFolderID);
+    } else {
+      setShowLogInSignUpPrompt(true);
+    }
   }
 
   function handleMicrophoneClick() {
@@ -150,6 +159,13 @@ export default function Transcriber({ folders, toolbarType, getNotesDataFromApi 
           handleMicrophoneClick={handleMicrophoneClick}
           isRecording={isRecording}
         />
+
+        {showLogInSignUpPrompt && (
+          <LogInSignUpPrompt
+            userAttempedAction="save a note"
+            setShowLogInSignUpPrompt={setShowLogInSignUpPrompt}
+          />
+        )}
       </main>
 
       <footer className="toolbar">

@@ -24,8 +24,8 @@ export default function App() {
   const [folders, setFolders] = useState([]);
   const [showNoteDetailModal, setShowNoteDetailModal] = useState(false);
   const [selectedNoteID, setSelectedNoteID] = useState(0);
-  const [isLoadingNotes, setIsLoadingNotes] = useState(true);
-  const [isLoadingFolders, setIsLoadingFolders] = useState(true);
+  const [isLoadingNotes, setIsLoadingNotes] = useState(false);
+  const [isLoadingFolders, setIsLoadingFolders] = useState(false);
   const { isLoggedIn, userToken } = useContext(UserContext);
   const { messages, addToMessages } = useContext(UserMessagesContext);
 

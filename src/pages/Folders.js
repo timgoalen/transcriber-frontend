@@ -16,6 +16,7 @@ import EmptyPlaceholderGraphics from "../components/EmptyPlaceholderGraphics.js"
 import NewFolderForm from "../components/NewFolderForm.js";
 import MainTool from "../components/MainTool.js";
 import LoadingSpinner from "../components/LoadingSpinner.js";
+import LogInSignUpPrompt from "../components/LogInSignUpPrompt.js";
 import { getNotesInFolder } from "../utils/utils.js";
 import { foldersApiUrl } from "../constants/apiConstants";
 
@@ -32,6 +33,7 @@ export default function Folders({
   const [showNewFolderForm, setShowNewFolderForm] = useState(false);
   const [openToolList, setOpenToolList] = useState(0);
   const [editFolderTitle, setEditFolderTitle] = useState(0);
+  const [showLogInSignUpPrompt, setShowLogInSignUpPrompt] = useState(false);
   const { isLoggedIn, userToken } = useContext(UserContext);
   const { addToMessages } = useContext(UserMessagesContext);
   const passedData = useLocation();
@@ -103,6 +105,14 @@ export default function Folders({
     setEditFolderTitle(id);
   }
 
+  function handleMainToolClick() {
+    if (isLoggedIn) {
+      setShowNewFolderForm(true);
+    } else {
+      setShowLogInSignUpPrompt(true);
+    }
+  }
+
   // -- RENDER ELEMENTS --
 
   return (
@@ -153,22 +163,6 @@ export default function Folders({
                 </Fragment>
               ))}
 
-              {showNewFolderForm ? (
-                <NewFolderForm
-                  handleNewFolderFormCancel={handleNewFolderFormCancel}
-                  handleNewFolderFormSubmit={handleNewFolderFormSubmit}
-                  initialFolderName=""
-                  initialFolderID={null}
-                />
-              ) : (
-                <MainTool
-                  className="main-tool-blue"
-                  ariaLabel="New folder"
-                  onClick={() => setShowNewFolderForm(true)}
-                  icon={faPlus}
-                />
-              )}
-              
               {folders.length === 0 && (
                 <EmptyPlaceholderGraphics
                   primaryColour="#268cf2"
@@ -176,6 +170,29 @@ export default function Folders({
                 />
               )}
             </>
+          )}
+
+          {showNewFolderForm ? (
+            <NewFolderForm
+              handleNewFolderFormCancel={handleNewFolderFormCancel}
+              handleNewFolderFormSubmit={handleNewFolderFormSubmit}
+              initialFolderName=""
+              initialFolderID={null}
+            />
+          ) : (
+            <MainTool
+              className="main-tool-blue"
+              ariaLabel="New folder"
+              onClick={handleMainToolClick}
+              icon={faPlus}
+            />
+          )}
+
+          {showLogInSignUpPrompt && (
+            <LogInSignUpPrompt
+              userAttempedAction="create a folder"
+              setShowLogInSignUpPrompt={setShowLogInSignUpPrompt}
+            />
           )}
         </section>
       </main>
