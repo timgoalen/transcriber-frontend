@@ -127,7 +127,7 @@ export default function NoteDetailModal({
             {showNewFolderForm ? (
               <NewFolderForm
                 handleNewFolderFormSubmit={handleNewFolderFormSubmitInModal}
-                setShowNewFolderForm={setShowNewFolderForm}
+                handleNewFolderFormCancel={() => setShowNewFolderForm(false)}
               />
             ) : (
               <AddAuxItemBtn

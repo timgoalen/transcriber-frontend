@@ -126,7 +126,7 @@ export default function Transcriber({
         });
       }
     } catch (error) {
-      alert("Error updating note:", error.message);
+      alert(`Error updating note: ${error.message}`);
     }
   }
 
