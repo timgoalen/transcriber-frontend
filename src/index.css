@@ -433,8 +433,6 @@ canvas {
   border-radius: 50%;
   font-size: 2rem;
   position: fixed;
-  /* bottom: 3.8vh; */
-  /* bottom: 3.8dvh; */
   bottom: calc(8vh - 27px);
   bottom: calc(8dvh - 27px);
   left: 50%;
@@ -446,19 +444,11 @@ canvas {
   z-index: 2;
 }
 
-#main-tool-container svg path {
-  /* fill: var(--orange); */
-}
-
 #main-tool-container svg {
   width: 2rem;
 }
 
-#microphone-tool-icon svg {
-  width: 1.2rem;
-}
-
-#microphone-tool-icon svg path {
+#main-tool-container #microphone-icon path {
   fill: var(--orange);
 }
 

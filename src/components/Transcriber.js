@@ -179,10 +179,12 @@ export default function Transcriber({
           setTextAreaInput={setTextAreaInput}
         />
 
-        <OpenAiApi
-          textAreaInput={textAreaInput}
-          setTextAreaInput={setTextAreaInput}
-        />
+        {!isRecording && (
+          <OpenAiApi
+            textAreaInput={textAreaInput}
+            setTextAreaInput={setTextAreaInput}
+          />
+        )}
 
         <MicrophoneTool
           icon={faMicrophone}
