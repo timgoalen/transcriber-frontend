@@ -3,7 +3,7 @@ export default function Header({ pageTitle, children }) {
     <>
       <header>
         <h1>{pageTitle}</h1>
-        <div className="header-icons-container">{children}</div>
+        <nav className="header-icons-container">{children}</nav>
       </header>
     </>
   );
