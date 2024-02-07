@@ -346,9 +346,26 @@ canvas {
 
 #ai-btn {
   position: absolute;
-  bottom: 13vh;
-  bottom: 13dvh;
-  left: 5.5vw;
+  bottom: calc(10vh + 2%);
+  bottom: calc(10dvh + 2%);
+  left: 5%;
+}
+
+#ai-btn button {
+  color: var(--grey);
+}
+
+#ai-btn button:hover {
+  color: var(--blue);
+}
+
+.undo-ai-response {
+  color: var(--orange);
+}
+
+.undo-ai-response:hover {
+  color: var(--orange-hover);
+  cursor: pointer;
 }
 
 .toolbar {
@@ -908,7 +925,7 @@ input[type="search"] {
   }
 
   #ai-btn {
-    left: 11.5vw;
+    left: 12%;
   }
 
   .footer-left {
@@ -956,7 +973,7 @@ input[type="search"] {
   }
 
   #ai-btn {
-    left: 18.5vw;
+    left: 18%;
   }
 
   .footer-left {
