@@ -46,7 +46,11 @@ export default function Transcriber({
       const { selectedNote } = passedData.state;
       setTextAreaInput(selectedNote.text);
       setTargetNoteID(selectedNote.id);
-      setTargetFolderID(parseFolderIdOfNote(selectedNote.folder_id));
+      if (selectedNote.folder_id === null) {
+        setTargetFolderID(null);
+      } else {
+        setTargetFolderID(parseFolderIdOfNote(selectedNote.folder_id));
+      }
     }
     // Set user message on log in
     if (passedData?.state?.message) {
@@ -127,10 +131,22 @@ export default function Transcriber({
   // -- CLICK HANDLERS --
 
   function handleSaveNoteBtnClick() {
-    if (isLoggedIn) {
+    if (!isLoggedIn) {
+      setShowLogInSignUpPrompt(true);
+      return;
+    }
+    if (textAreaInput.trim() > "") {
       createNote(textAreaInput, targetFolderID);
     } else {
-      setShowLogInSignUpPrompt(true);
+      addToMessages("whoops, can't save an empty note");
+    }
+  }
+
+  function handleUpdateNoteBtnClick() {
+    if (textAreaInput.trim() > "") {
+      updateNoteTextField();
+    } else {
+      addToMessages("whoops, can't update with an empty note");
     }
   }
 
@@ -183,7 +199,7 @@ export default function Transcriber({
           <Toolbar
             tool1Label="Update"
             tool1Icon={faArrowUpFromBracket}
-            tool1OnClick={updateNoteTextField}
+            tool1OnClick={handleUpdateNoteBtnClick}
             tool2Label="Cancel"
             tool2Icon={faXmark}
             tool2OnClick={closeEditPage}

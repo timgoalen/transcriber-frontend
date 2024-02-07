@@ -52,6 +52,11 @@ export default function Folders({
   }, []);
 
   async function updateFolderTitle(title, id) {
+    if (!title || title.trim() === "") {
+      addToMessages("please enter a folder title");
+      return;
+    }
+
     const updatedFolder = { title: title };
     setEditFolderTitle(0);
     setOpenToolList(0);
@@ -93,8 +98,12 @@ export default function Folders({
   }
 
   async function handleNewFolderFormSubmit(title) {
-    setShowNewFolderForm(false);
-    await createFolder(title);
+    if (title.trim() === "") {
+      addToMessages("please enter a folder title");
+    } else {
+      setShowNewFolderForm(false);
+      await createFolder(title);
+    }
   }
 
   function handleFolderOptionsClick(id) {

@@ -46,7 +46,7 @@ export default function SignUpForm() {
         const logInResponseToken = logInResponse.data.key;
         updateUserToken(logInResponseToken);
         navigateToHomePage("/", {
-          state: { message: `welcome, ${signUpFormData.username}!` },
+          state: { message: `Hi, ${signUpFormData.username}!` },
         });
       } catch (error) {
         console.error(`Error logging in: ${error.message}`);

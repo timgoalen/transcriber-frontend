@@ -56,8 +56,12 @@ export default function NoteDetailModal({
   useClickOutside(ref, handleClickOutside);
 
   function handleNewFolderFormSubmitInModal(title) {
-    setShowNewFolderForm(false);
-    createFolder(title);
+    if (!title || title.trim() === "") {
+      addToMessages("please enter a folder title");
+    } else {
+      setShowNewFolderForm(false);
+      createFolder(title);
+    }
   }
 
   function handleEditBtnClick() {
