@@ -15,6 +15,8 @@ import { UserMessagesContext } from "../context/UserMessagesContext";
 import { notesApiUrl, foldersApiUrl } from "../constants/apiConstants";
 import { parseFolderIdOfNote, findFolderTitleByID } from "../utils/utils.js";
 import MicrophoneTool from "./MicrophoneTool";
+import SpeechRecognition from "./SpeechRecognition.js";
+import OpenAiApi from "./OpenAiApi.js";
 import TextArea from "./TextArea";
 import Toolbar from "./Toolbar";
 import LogInSignUpPrompt from "./LogInSignUpPrompt.js";
@@ -151,7 +153,7 @@ export default function Transcriber({
   }
 
   function handleMicrophoneClick() {
-    alert("todo");
+    setIsRecording(!isRecording);
   }
 
   function clearTextArea() {
@@ -166,6 +168,18 @@ export default function Transcriber({
     <>
       <main id="main-container">
         <TextArea
+          textAreaInput={textAreaInput}
+          setTextAreaInput={setTextAreaInput}
+          isRecording={isRecording}
+        />
+
+        <SpeechRecognition
+          isRecording={isRecording}
+          textAreaInput={textAreaInput}
+          setTextAreaInput={setTextAreaInput}
+        />
+
+        <OpenAiApi
           textAreaInput={textAreaInput}
           setTextAreaInput={setTextAreaInput}
         />

@@ -1,11 +1,11 @@
-// import AudioVisualizer from "./AudioVisualizer";
+import AudioVisualizer from "./AudioVisualizer";
 
 export default function TextArea({
   textAreaInput,
   setTextAreaInput,
-  // isRecording,
+  isRecording,
 }) {
-  // const styles = { borderColor: isRecording ? "var(--red)" : "var(--grey)" };
+  const styles = { borderColor: isRecording ? "var(--red)" : "var(--grey)" };
 
   function handleTextareaChange(event) {
     setTextAreaInput(event.target.value);
@@ -18,10 +18,11 @@ export default function TextArea({
           id="text-area"
           value={textAreaInput}
           onChange={handleTextareaChange}
-          // style={styles}
+          style={styles}
           aria-label="Main Text Input"
         ></textarea>
-        {/* <AudioVisualizer isRecording={isRecording} /> */}
+
+        <AudioVisualizer isRecording={isRecording} />
       </section>
     </>
   );
