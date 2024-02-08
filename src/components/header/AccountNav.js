@@ -8,13 +8,11 @@ import LogInMenu from "../LogInMenu";
 
 export default function Account() {
   const [showLogInMenu, setShowLogInMenu] = useState(false);
-  const { isLoggedIn, userName } = useContext(UserContext);
+  const { isLoggedIn } = useContext(UserContext);
 
   function toggleLogInMenu() {
     setShowLogInMenu((prevState) => !prevState);
   }
-
-  const userInitial = userName.charAt(0).toUpperCase();
 
   return (
     <>

@@ -14,13 +14,11 @@ export default function LogInMenu({ setShowLogInMenu }) {
   const { isLoggedIn, userName } = useContext(UserContext);
   const ref = useRef(null);
 
-  // ****REINSTATE CLICK OUTSIDE FUNCTION????
+  function handleClickOutside() {
+    setShowLogInMenu(false);
+  }
 
-  // function handleClickOutside() {
-  //   setShowLogInMenu(false);
-  // }
-
-  // useClickOutside(ref, handleClickOutside);
+  useClickOutside(ref, handleClickOutside);
 
   return (
     <div className="login-menu" ref={ref}>
