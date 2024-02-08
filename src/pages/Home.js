@@ -5,7 +5,12 @@ import Header from "../components/header/Header";
 import AccountNav from "../components/header/AccountNav";
 import InboxNav from "../components/header/InboxNav";
 
-export default function Home({ folders, getNotesDataFromApi }) {
+export default function Home({
+  folders,
+  getNotesDataFromApi,
+  noteStoreForLoggedOutUsers,
+  setNoteStoreForLoggedOutUsers,
+}) {
   const [toolbarType, setToolbarType] = useState("homePage");
 
   return (
@@ -19,6 +24,8 @@ export default function Home({ folders, getNotesDataFromApi }) {
         folders={folders}
         toolbarType={toolbarType}
         getNotesDataFromApi={getNotesDataFromApi}
+        noteStoreForLoggedOutUsers={noteStoreForLoggedOutUsers}
+        setNoteStoreForLoggedOutUsers={setNoteStoreForLoggedOutUsers}
       />
     </>
   );

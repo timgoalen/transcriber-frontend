@@ -26,6 +26,8 @@ export default function App() {
   const [selectedNoteID, setSelectedNoteID] = useState(0);
   const [isLoadingNotes, setIsLoadingNotes] = useState(false);
   const [isLoadingFolders, setIsLoadingFolders] = useState(false);
+  const [noteStoreForLoggedOutUsers, setNoteStoreForLoggedOutUsers] =
+    useState("");
   const { isLoggedIn, userToken } = useContext(UserContext);
   const { messages, addToMessages } = useContext(UserMessagesContext);
 
@@ -120,7 +122,12 @@ export default function App() {
         <Route
           path="/"
           element={
-            <Home folders={folders} getNotesDataFromApi={getNotesDataFromApi} />
+            <Home
+              folders={folders}
+              getNotesDataFromApi={getNotesDataFromApi}
+              noteStoreForLoggedOutUsers={noteStoreForLoggedOutUsers}
+              setNoteStoreForLoggedOutUsers={setNoteStoreForLoggedOutUsers}
+            />
           }
         />
         <Route

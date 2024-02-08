@@ -25,6 +25,8 @@ export default function Transcriber({
   folders,
   toolbarType,
   getNotesDataFromApi,
+  noteStoreForLoggedOutUsers,
+  setNoteStoreForLoggedOutUsers,
 }) {
   const [textAreaInput, setTextAreaInput] = useState("");
   const [isRecording, setIsRecording] = useState(false);
@@ -58,6 +60,12 @@ export default function Transcriber({
     if (passedData?.state?.message) {
       const { message } = passedData.state;
       addToMessages(message);
+    }
+
+    // If logged out users were creating a note before logging in, retrieve that note
+    if (noteStoreForLoggedOutUsers) {
+      setTextAreaInput(noteStoreForLoggedOutUsers);
+      setNoteStoreForLoggedOutUsers("");
     }
   }, []);
 
@@ -134,6 +142,7 @@ export default function Transcriber({
 
   function handleSaveNoteBtnClick() {
     if (!isLoggedIn) {
+      setNoteStoreForLoggedOutUsers(textAreaInput);
       setShowLogInSignUpPrompt(true);
       return;
     }
