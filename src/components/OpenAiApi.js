@@ -49,7 +49,7 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
       const response = await axios.post(
         "https://api.openai.com/v1/completions",
         {
-          prompt: `Format this text (use UK spelling): ${textAreaInput}`,
+          prompt: `Correct the spelling and punctuation (use UK spelling): ${textAreaInput}`,
           max_tokens: 500,
           temperature: 0.5,
           n: 1,

@@ -2,8 +2,8 @@ import { useEffect } from "react";
 
 import {
   capitalise,
-  capitaliseNewSentence,
-  punctuate,
+  punctuateByVoiceCommand,
+  capitaliseAfterThese,
 } from "../utils/speechRecognitionUtils.js";
 
 export default function SpeechRecognition({
@@ -14,37 +14,41 @@ export default function SpeechRecognition({
   let recognition;
   let SpeechRecognition;
 
-  function setTextFromSpeechRecognition(transcript) {
-    // Add punctuation to replace the voice commands
-    let punctuatedTranscript = punctuate(transcript);
+  function formatSpeechRecognitionOutput(transcript) {
+    const previousNoteContent = textAreaInput;
 
-    // If it's an empty note, start with a capital letter
-    if (textAreaInput === "") {
-      let capitalisedTranscript = capitalise(punctuatedTranscript);
-      setTextAreaInput(
-        (prevTextAreaInput) => prevTextAreaInput + capitalisedTranscript
-      );
+    // Add punctuation to replace the voice commands('full stop', 'comma' etc.))
+    let transcriptWithVoiceCommands = punctuateByVoiceCommand(transcript);
+
+    // If it's a previously empty note, start with a capital letter
+    if (!previousNoteContent) {
+      console.log("no previous transcript");
+      const capitalisedTranscript = capitalise(transcriptWithVoiceCommands);
+      return capitalisedTranscript;
+    }
+
+    // Get the last character
+    const lastCharacter = previousNoteContent.charAt(
+      previousNoteContent.length - 1
+    );
+    // If the last character signals a new sentence, add a capital letter
+    if (capitaliseAfterThese.includes(lastCharacter)) {
+      const newSentence = capitalise(transcriptWithVoiceCommands);
+      return " " + newSentence;
     } else {
-      // **THIS FUNCTIONALITY NOT WORKING YET**
-    //   **check if previous text exists, then add white space
-      // Else if previous text in is the text area, get the last character
-      let lastCharacter = textAreaInput.charAt(textAreaInput.length - 1);
-      console.log(`last char:${lastCharacter}`);
-      const capitaliseAfterThese = [".", "!", "?"];
-      // If the last character signals a new sentence, add a capital letter
-      if (capitaliseAfterThese.includes(lastCharacter)) {
-        let newSentence = capitaliseNewSentence(punctuatedTranscript);
-        setTextAreaInput(
-          (prevTextAreaInput) => prevTextAreaInput + newSentence
-        );
-      } else {
-        setTextAreaInput(
-          (prevTextAreaInput) => prevTextAreaInput + punctuatedTranscript
-        );
-      }
+      return " " + transcriptWithVoiceCommands;
     }
   }
 
+  function setTextFromSpeechRecognition(transcript) {
+    const formattedTranscript = formatSpeechRecognitionOutput(transcript);
+
+    setTextAreaInput(
+      (prevTextAreaInput) => prevTextAreaInput + formattedTranscript
+    );
+  }
+
+  // Initialize speech recognition when 'isRecording'
   useEffect(() => {
     try {
       SpeechRecognition =
@@ -66,6 +70,7 @@ export default function SpeechRecognition({
       for (let i = event.resultIndex; i < event.results.length; i++) {
         currentTranscript = event.results[i][0].transcript;
       }
+      console.log({ currentTranscript });
       setTextFromSpeechRecognition(currentTranscript);
     };
 
