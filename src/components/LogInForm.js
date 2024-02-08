@@ -1,20 +1,17 @@
 import { useState, useContext } from "react";
 
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import { UserContext } from "../context/UserContext.js";
 import { UserMessagesContext } from "../context/UserMessagesContext";
 import { baseApiUrl } from "../constants/apiConstants";
-
-import axios from "axios";
-
 import CloseAuthFormsBtn from "./CloseAuthFormsBtn.js";
 
 export default function LogInForm() {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const { updateUserToken } = useContext(UserContext);
-  const { addToMessages } = useContext(UserMessagesContext);
   const navigateToHomePage = useNavigate();
 
   const [logInFormData, setLogInFormData] = useState({

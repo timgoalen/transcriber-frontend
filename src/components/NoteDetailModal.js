@@ -93,7 +93,7 @@ export default function NoteDetailModal({
         </div>
       ) : (
         // Display folder options
-        <div id="note-detail-modal-content">
+        <div id="note-detail-modal-content" ref={ref}>
           <div id="note-detail-modal-text">
             <h2>move to folder</h2>
 
