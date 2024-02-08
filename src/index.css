@@ -448,8 +448,8 @@ canvas {
   width: 2rem;
 }
 
-#main-tool-container #microphone-icon path {
-  fill: var(--orange);
+.recording-off #microphone-icon:hover path {
+    fill: var(--orange-hover);
 }
 
 .recording-on {
