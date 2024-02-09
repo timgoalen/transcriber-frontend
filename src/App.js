@@ -1,10 +1,9 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useCallback } from "react";
 import { UserContext } from "./context/UserContext";
 import { UserMessagesContext } from "./context/UserMessagesContext";
 
 import { Routes, Route } from "react-router-dom";
 import axios from "axios";
-import transcriberAxios from "./config/axiosConfig";
 
 import Home from "./pages/Home.js";
 import Inbox from "./pages/Inbox";
@@ -63,10 +62,13 @@ export default function App() {
     }
   }
 
-  async function getAllDataFromApi() {
-    await getNotesDataFromApi();
-    await getFoldersDataFromApi();
-  }
+  // Memoize data fetching functions so they can be used in the useEffect below
+  const memoizedGetNotesDataFromApi = useCallback(getNotesDataFromApi, [
+    userToken,
+  ]);
+  const memoizedGetFoldersDataFromApi = useCallback(getFoldersDataFromApi, [
+    userToken,
+  ]);
 
   // Get data form the API when user logs in
   useEffect(() => {
@@ -74,14 +76,14 @@ export default function App() {
       // Only show the loader spinners on log in
       setIsLoadingNotes(true);
       setIsLoadingFolders(true);
-      getNotesDataFromApi();
-      getFoldersDataFromApi();
+      memoizedGetNotesDataFromApi();
+      memoizedGetFoldersDataFromApi();
     } else {
       // Clear the notes and folders state when user logs out
       setNotes([]);
       setFolders([]);
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, memoizedGetNotesDataFromApi, memoizedGetFoldersDataFromApi]);
 
   // -- EVENT HANDLERS --
 
@@ -149,7 +151,7 @@ export default function App() {
               folders={folders}
               handleNoteItemClick={handleNoteItemClick}
               createFolder={createFolder}
-              getAllDataFromApi={getAllDataFromApi}
+              getNotesDataFromApi={getNotesDataFromApi}
               getFoldersDataFromApi={getFoldersDataFromApi}
               isLoadingFolders={isLoadingFolders}
             />

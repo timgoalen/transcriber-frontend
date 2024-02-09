@@ -67,7 +67,12 @@ export default function Transcriber({
       setTextAreaInput(noteStoreForLoggedOutUsers);
       setNoteStoreForLoggedOutUsers("");
     }
-  }, []);
+  }, [
+    addToMessages,
+    noteStoreForLoggedOutUsers,
+    passedData.state,
+    setNoteStoreForLoggedOutUsers,
+  ]);
 
   // -- CRUD FUNCTIONS --
 
@@ -182,13 +187,12 @@ export default function Transcriber({
           isRecording={isRecording}
         />
 
-        <SpeechRecognition
-          isRecording={isRecording}
-          textAreaInput={textAreaInput}
-          setTextAreaInput={setTextAreaInput}
-        />
-
-        {!isRecording && (
+        {isRecording ? (
+          <SpeechRecognition
+            textAreaInput={textAreaInput}
+            setTextAreaInput={setTextAreaInput}
+          />
+        ) : (
           <OpenAiApi
             textAreaInput={textAreaInput}
             setTextAreaInput={setTextAreaInput}

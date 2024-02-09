@@ -25,7 +25,7 @@ export default function Folders({
   folders,
   handleNoteItemClick,
   createFolder,
-  getAllDataFromApi,
+  getNotesDataFromApi,
   getFoldersDataFromApi,
   isLoadingFolders,
 }) {
@@ -49,7 +49,7 @@ export default function Folders({
       const { savedToFolderID } = passedData.state;
       setShowNotesInFolder(savedToFolderID);
     }
-  }, []);
+  }, [addToMessages, passedData.state]);
 
   async function updateFolderTitle(title, id) {
     if (!title || title.trim() === "") {
@@ -157,7 +157,8 @@ export default function Folders({
                       handleFolderOptionsClick={handleFolderOptionsClick}
                       openToolList={openToolList}
                       handleFolderEditClick={handleFolderEditClick}
-                      getAllDataFromApi={getAllDataFromApi}
+                      getNotesDataFromApi={getNotesDataFromApi}
+                      getFoldersDataFromApi={getFoldersDataFromApi}
                       showTools={true}
                     />
                   )}

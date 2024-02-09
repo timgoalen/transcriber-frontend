@@ -22,7 +22,7 @@ export default function TextArea({
           aria-label="Main Text Input"
         ></textarea>
 
-        <AudioVisualizer isRecording={isRecording} />
+        {isRecording && <AudioVisualizer />}
       </section>
     </>
   );

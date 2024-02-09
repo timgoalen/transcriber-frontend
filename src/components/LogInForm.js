@@ -4,7 +4,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import { UserContext } from "../context/UserContext.js";
-import { UserMessagesContext } from "../context/UserMessagesContext";
 import { baseApiUrl } from "../constants/apiConstants";
 import CloseAuthFormsBtn from "./CloseAuthFormsBtn.js";
 

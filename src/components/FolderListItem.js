@@ -18,7 +18,8 @@ export default function FolderListItem({
   handleFolderOptionsClick,
   openToolList,
   handleFolderEditClick,
-  getAllDataFromApi,
+  getNotesDataFromApi,
+  getFoldersDataFromApi,
   showTools,
 }) {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
@@ -38,7 +39,8 @@ export default function FolderListItem({
       });
       console.log(`Folder deleted: ${response.data}`);
       addToMessages("folder deleted");
-      await getAllDataFromApi();
+      await getFoldersDataFromApi();
+      await getNotesDataFromApi();
     } catch (error) {
       alert(`Error deleting folder: ${error.message}`);
       addToMessages("error deleting folder");

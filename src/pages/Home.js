@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import Transcriber from "../components/Transcriber";
 import Header from "../components/header/Header";
 import AccountNav from "../components/header/AccountNav";
@@ -11,8 +9,6 @@ export default function Home({
   noteStoreForLoggedOutUsers,
   setNoteStoreForLoggedOutUsers,
 }) {
-  const [toolbarType, setToolbarType] = useState("homePage");
-
   return (
     <>
       <Header pageTitle="transcriber">
@@ -22,7 +18,7 @@ export default function Home({
 
       <Transcriber
         folders={folders}
-        toolbarType={toolbarType}
+        toolbarType="homePage"
         getNotesDataFromApi={getNotesDataFromApi}
         noteStoreForLoggedOutUsers={noteStoreForLoggedOutUsers}
         setNoteStoreForLoggedOutUsers={setNoteStoreForLoggedOutUsers}
