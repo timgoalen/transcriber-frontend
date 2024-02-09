@@ -3,8 +3,8 @@ import { useContext, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 
-import { UserContext } from "../../context/UserContext";
 import LogInMenu from "../LogInMenu";
+import { UserContext } from "../../context/UserContext";
 
 export default function Account() {
   const [showLogInMenu, setShowLogInMenu] = useState(false);

@@ -1,7 +1,7 @@
-import { useState, useContext } from "react";
+import { useContext } from "react";
 
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons";
 
@@ -14,7 +14,7 @@ export default function LogOut({ setShowLogInMenu }) {
   const { addToMessages } = useContext(UserMessagesContext);
   const navigateToHomePage = useNavigate();
 
-  async function submitLogOutRequest(event) {
+  async function submitLogOutRequest() {
     try {
       const logOutResponse = await axios.post(
         `${baseApiUrl}api/auth/logout/`,

@@ -1,8 +1,8 @@
 import { useEffect, useState, useContext } from "react";
 
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import axios from "axios";
 import {
   faMicrophone,
   faArrowUpFromBracket,
@@ -10,16 +10,16 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
-import { UserContext } from "../context/UserContext";
-import { UserMessagesContext } from "../context/UserMessagesContext";
-import { notesApiUrl, foldersApiUrl } from "../constants/apiConstants";
-import { parseFolderIdOfNote, findFolderTitleByID } from "../utils/utils.js";
 import MicrophoneTool from "./MicrophoneTool";
 import SpeechRecognition from "./SpeechRecognition.js";
 import OpenAiApi from "./OpenAiApi.js";
 import TextArea from "./TextArea";
 import Toolbar from "./Toolbar";
 import LogInSignUpPrompt from "./LogInSignUpPrompt.js";
+import { UserContext } from "../context/UserContext";
+import { UserMessagesContext } from "../context/UserMessagesContext";
+import { notesApiUrl, foldersApiUrl } from "../constants/apiConstants";
+import { parseFolderIdOfNote, findFolderTitleByID } from "../utils/utils.js";
 
 export default function Transcriber({
   folders,
@@ -76,7 +76,6 @@ export default function Transcriber({
 
   // -- CRUD FUNCTIONS --
 
-  // TODO: refactor into separate functions
   async function createNote(text, targetFolderID) {
     const folderURL = `${foldersApiUrl}${targetFolderID}/`;
 

@@ -23,7 +23,6 @@ export default function NotesInFolderDropdown({
           key={note.id}
           id={note.id}
           text={note.text}
-          folderId={note.folder_id}
           folderColour={findFolderColour(folders, note.folder_id)}
           handleNoteItemClick={handleNoteItemClick}
         />

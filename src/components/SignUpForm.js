@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
 
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
-import axios from "axios";
 
 import CloseAuthFormsBtn from "./CloseAuthFormsBtn";
 import { baseApiUrl } from "../constants/apiConstants";

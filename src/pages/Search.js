@@ -8,8 +8,8 @@ import SearchBar from "../components/SearchBar.js";
 import NoteListItem from "../components/NoteListItem";
 import FolderListItem from "../components/FolderListItem.js";
 import NotesInFolderDropdown from "../components/NotesInFolderDropdown.js";
-import { findFolderColour, getNotesInFolder } from "../utils/utils.js";
 import LoadingSpinner from "../components/LoadingSpinner.js";
+import { findFolderColour, getNotesInFolder } from "../utils/utils.js";
 
 export default function Search({
   notes,
@@ -69,7 +69,6 @@ export default function Search({
                 key={note.id}
                 id={note.id}
                 text={note.text}
-                folderId={note.folder_id}
                 folderColour={findFolderColour(folders, note.folder_id)}
                 handleNoteItemClick={handleNoteItemClick}
               />

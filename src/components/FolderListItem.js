@@ -5,10 +5,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
+import DeleteFolderConfirmationPrompt from "./DeleteFolderConfirmationPrompt";
 import { UserContext } from "../context/UserContext";
 import { UserMessagesContext } from "../context/UserMessagesContext";
 import { foldersApiUrl } from "../constants/apiConstants";
-import DeleteFolderConfirmationPrompt from "./DeleteFolderConfirmationPrompt";
 
 export default function FolderListItem({
   id,

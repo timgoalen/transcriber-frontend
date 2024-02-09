@@ -1,20 +1,16 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 function useClickOutside(ref, clickHandler) {
-  function handleClickOutside(event) {
-    if (ref.current && !ref.current.contains(event.target)) {
-      clickHandler();
-    }
-  }
-
   useEffect(() => {
+    function handleClickOutside(event) {
+      if (ref.current && !ref.current.contains(event.target)) {
+        clickHandler();
+      }
+    }
+
     document.addEventListener("mousedown", handleClickOutside);
-    // document.addEventListener("touchstart", handleClickOutside);
-    // document.addEventListener("touchend", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
-    //   document.addEventListener("touchstart", handleClickOutside);
-    //   document.addEventListener("touchend", handleClickOutside);
     };
   }, [ref, clickHandler]);
 }

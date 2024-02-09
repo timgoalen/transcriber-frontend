@@ -6,8 +6,8 @@ import {
   faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { UserMessagesContext } from "../context/UserMessagesContext";
 import Button from "./Button.js";
+import { UserMessagesContext } from "../context/UserMessagesContext";
 
 export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
   const [unformattedNote, setUnformattedNote] = useState("");
@@ -21,16 +21,15 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
     function removeUndoBtnOnKeyPress() {
       setShowUndo(false);
       setIsUndoLIstenerOn(false);
-    };
+    }
 
-    window.addEventListener('keydown', removeUndoBtnOnKeyPress);
+    window.addEventListener("keydown", removeUndoBtnOnKeyPress);
 
     return () => {
-      window.removeEventListener('keydown', removeUndoBtnOnKeyPress);
+      window.removeEventListener("keydown", removeUndoBtnOnKeyPress);
     };
-  }, [isUndoListenerOn]); 
-  
-  
+  }, [isUndoListenerOn]);
+
   function undoAiResponse() {
     setTextAreaInput(unformattedNote);
     setShowUndo(false);
@@ -64,15 +63,15 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
         }
       );
       const reply = response.data.choices[0].text.trim();
-      setIsLoading(false);
       setUnformattedNote(textAreaInput);
       setTextAreaInput(reply);
       setShowUndo(true);
       addToMessages("note formatted");
     } catch (error) {
-      setIsLoading(false);
       console.error("OpenAI API Error:", error);
       alert("Error retrieving AI response");
+    } finally {
+      setIsLoading(false);
     }
   }
 

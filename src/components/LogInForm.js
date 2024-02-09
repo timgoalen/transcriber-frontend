@@ -3,9 +3,9 @@ import { useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+import CloseAuthFormsBtn from "./CloseAuthFormsBtn.js";
 import { UserContext } from "../context/UserContext.js";
 import { baseApiUrl } from "../constants/apiConstants";
-import CloseAuthFormsBtn from "./CloseAuthFormsBtn.js";
 
 export default function LogInForm() {
   const [errors, setErrors] = useState({});

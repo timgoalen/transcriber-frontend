@@ -19,15 +19,11 @@ export default function FolderOptionItem({
   folders,
 }) {
   const [isParentFolder, setIsParentFolder] = useState(false);
-  const { isLoggedIn, userToken } = useContext(UserContext);
+  const { userToken } = useContext(UserContext);
   const { addToMessages } = useContext(UserMessagesContext);
   const isSelectedNoteInInbox = selectedNote.folder_id === null;
   const isTargetFolderInbox = id === null;
 
-  console.log("isSelectedNoteInInbox");
-  console.log(isSelectedNoteInInbox);
-
-  //   TODO: explain this with comment
   useEffect(() => {
     if (isSelectedNoteInInbox && id === null) {
       setIsParentFolder(true);
@@ -39,14 +35,14 @@ export default function FolderOptionItem({
     } else {
       return;
     }
-  }, [selectedNote]);
+  }, [selectedNote, id, isSelectedNoteInInbox]);
 
   // Move note to a new folder
   async function updateNoteFolderField(noteID) {
     let updatedNote = isTargetFolderInbox
-    ? { folder_id: null }
-    : { folder_id: `${foldersApiUrl}${id}/` };
-    
+      ? { folder_id: null }
+      : { folder_id: `${foldersApiUrl}${id}/` };
+
     let destinationFolderTitle = isTargetFolderInbox
       ? "inbox"
       : findFolderTitleByID(folders, id);

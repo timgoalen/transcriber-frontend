@@ -30,6 +30,8 @@ export default function App() {
   const { isLoggedIn, userToken } = useContext(UserContext);
   const { messages, addToMessages } = useContext(UserMessagesContext);
 
+  // -- DATA FETCHING FUNCTIONS --
+
   async function getNotesDataFromApi() {
     try {
       const response = await axios.get(notesApiUrl, {
@@ -62,7 +64,7 @@ export default function App() {
     }
   }
 
-  // Memoize data fetching functions so they can be used in the useEffect below
+  // Memoize the data fetching functions to be used in the useEffect below
   const memoizedGetNotesDataFromApi = useCallback(getNotesDataFromApi, [
     userToken,
   ]);
@@ -98,7 +100,6 @@ export default function App() {
 
   // -- CRUD FUNCTIONS --
 
-  // TODO: refactor into separate functions
   async function createFolder(title) {
     const colour = generateRandomColour();
     const newFolder = { title: title, colour: colour };

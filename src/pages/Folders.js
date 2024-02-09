@@ -4,8 +4,6 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
-import { UserContext } from "../context/UserContext";
-import { UserMessagesContext } from "../context/UserMessagesContext";
 import Header from "../components/header/Header.js";
 import CreateNav from "../components/header/CreateNav.js";
 import InboxNav from "../components/header/InboxNav.js";
@@ -17,6 +15,8 @@ import NewFolderForm from "../components/NewFolderForm.js";
 import MainTool from "../components/MainTool.js";
 import LoadingSpinner from "../components/LoadingSpinner.js";
 import LogInSignUpPrompt from "../components/LogInSignUpPrompt.js";
+import { UserContext } from "../context/UserContext";
+import { UserMessagesContext } from "../context/UserMessagesContext";
 import { getNotesInFolder } from "../utils/utils.js";
 import { foldersApiUrl } from "../constants/apiConstants";
 

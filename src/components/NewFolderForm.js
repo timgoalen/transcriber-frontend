@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
@@ -10,7 +10,6 @@ export default function NewFolderForm({
   initialFolderID,
 }) {
   const [folderTitle, setFolderTitle] = useState(initialFolderName);
-  const [folderID, setFolderID] = useState(initialFolderID);
 
   function updateFolderName(e) {
     setFolderTitle(e.target.value);
@@ -38,7 +37,7 @@ export default function NewFolderForm({
       <button
         className="crud-new-folder-btns"
         onClick={() => {
-          handleNewFolderFormSubmit(folderTitle, folderID);
+          handleNewFolderFormSubmit(folderTitle, initialFolderID);
           setFolderTitle("");
         }}
       >

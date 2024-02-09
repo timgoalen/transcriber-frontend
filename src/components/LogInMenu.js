@@ -1,5 +1,4 @@
 import { useContext, useRef } from "react";
-import { UserContext } from "../context/UserContext";
 
 import {
   faArrowUpFromBracket,
@@ -8,6 +7,7 @@ import {
 
 import LogOut from "./LogOut";
 import LogInMenuItem from "./LogInMenuItem";
+import { UserContext } from "../context/UserContext";
 import useClickOutside from "../hooks/useClickOutside";
 
 export default function LogInMenu({ setShowLogInMenu }) {

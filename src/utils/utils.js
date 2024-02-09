@@ -1,10 +1,5 @@
 import { foldersApiUrl } from "../constants/apiConstants";
 
-// export function parseFolderURL(url) {
-//   const idNumberAtEndOfURL = parseInt(url.charAt(url.length - 2));
-//   return idNumberAtEndOfURL;
-// }
-
 // Isolate the number at the end of the URL
 export function parseFolderIdOfNote(folderID) {
   const removedUrl = folderID.replace(foldersApiUrl, "");
@@ -43,7 +38,6 @@ export function findFolderTitleByID(folders, folderID) {
   return folderTitle;
 }
 
-// CHANGE TO A MORE CURATION RANGE OF COLOURS
 export function generateRandomColour() {
   const letters = "0123456789ABCDEF";
   let colour = "#";

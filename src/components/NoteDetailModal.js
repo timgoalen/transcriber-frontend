@@ -1,19 +1,19 @@
 import { useRef, useState, useContext } from "react";
 
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { faArrowLeft, faPen, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan, faFolder } from "@fortawesome/free-regular-svg-icons";
 
-import { UserContext } from "../context/UserContext";
-import { UserMessagesContext } from "../context/UserMessagesContext";
-import { findNoteByID } from "../utils/utils.js";
-import { notesApiUrl } from "../constants/apiConstants";
-import useClickOutside from "../hooks/useClickOutside";
 import Button from "./Button.js";
 import FolderOptionItem from "./FolderOptionItem.js";
 import NewFolderForm from "./NewFolderForm.js";
 import AddAuxItemBtn from "./AddAuxItemBtn.js";
+import useClickOutside from "../hooks/useClickOutside";
+import { UserContext } from "../context/UserContext";
+import { UserMessagesContext } from "../context/UserMessagesContext";
+import { findNoteByID } from "../utils/utils.js";
+import { notesApiUrl } from "../constants/apiConstants";
 
 export default function NoteDetailModal({
   notes,

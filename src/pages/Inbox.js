@@ -3,8 +3,6 @@ import { useContext, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
-import { UserMessagesContext } from "../context/UserMessagesContext";
-
 import Header from "../components/header/Header";
 import CreateNav from "../components/header/CreateNav.js";
 import SearchNav from "../components/header/SearchNav.js";
@@ -13,6 +11,7 @@ import NoteListItem from "../components/NoteListItem";
 import EmptyPlaceholderGraphics from "../components/EmptyPlaceholderGraphics.js";
 import MainTool from "../components/MainTool.js";
 import LoadingSpinner from "../components/LoadingSpinner.js";
+import { UserMessagesContext } from "../context/UserMessagesContext";
 import { findFolderColour } from "../utils/utils.js";
 
 export default function Inbox({
@@ -32,7 +31,7 @@ export default function Inbox({
       const confirmationMessage = passedData.state.message;
       addToMessages(confirmationMessage);
     }
-  }, []);
+  }, [addToMessages, passedData.state.message]);
 
   return (
     <>
@@ -53,7 +52,6 @@ export default function Inbox({
                   key={note.id}
                   id={note.id}
                   text={note.text}
-                  folderId={note.folder_id}
                   folderColour={findFolderColour(folders, note.folder_id)}
                   handleNoteItemClick={handleNoteItemClick}
                 />

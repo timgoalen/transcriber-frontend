@@ -6,10 +6,7 @@ import {
   capitaliseAfterThese,
 } from "../utils/speechRecognitionUtils.js";
 
-export default function SpeechRecognition({
-  textAreaInput,
-  setTextAreaInput,
-}) {
+export default function SpeechRecognition({ textAreaInput, setTextAreaInput }) {
   // Initialize speech recognition when component is mounted ('isRecording')
   useEffect(() => {
     let recognition;
