@@ -32,7 +32,6 @@ export default function LogInForm() {
   async function submitLogInForm(event) {
     event.preventDefault();
     setIsLoading(true);
-    console.log("sending log in form");
     try {
       // Obtain the authorisation token by logging in the user
       const logInResponse = await axios.post(`${baseApiUrl}api/auth/login/`, {
@@ -42,7 +41,7 @@ export default function LogInForm() {
       const logInResponseToken = logInResponse.data.key;
       updateUserToken(logInResponseToken);
       navigateToHomePage("/", {
-        state: { message: `welcome, ${logInFormData.username}!` },
+        state: { message: `Hi, ${logInFormData.username}!` },
       });
     } catch (error) {
       console.error(`Error logging in: ${error.message}`);

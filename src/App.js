@@ -74,7 +74,7 @@ export default function App() {
 
   // Get data form the API when user logs in
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedIn && userToken) {
       // Only show the loader spinners on log in
       setIsLoadingNotes(true);
       setIsLoadingFolders(true);
@@ -85,7 +85,12 @@ export default function App() {
       setNotes([]);
       setFolders([]);
     }
-  }, [isLoggedIn, memoizedGetNotesDataFromApi, memoizedGetFoldersDataFromApi]);
+  }, [
+    isLoggedIn,
+    userToken,
+    memoizedGetNotesDataFromApi,
+    memoizedGetFoldersDataFromApi,
+  ]);
 
   // -- EVENT HANDLERS --
 

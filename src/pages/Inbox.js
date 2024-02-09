@@ -31,7 +31,7 @@ export default function Inbox({
       const confirmationMessage = passedData.state.message;
       addToMessages(confirmationMessage);
     }
-  }, [addToMessages, passedData.state.message]);
+  }, [addToMessages, passedData.state]);
 
   return (
     <>

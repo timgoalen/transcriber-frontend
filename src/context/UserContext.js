@@ -37,7 +37,7 @@ export const UserProvider = ({ children }) => {
       }
     }
 
-    if (isLoggedIn) {
+    if (isLoggedIn && userToken) {
       getUserName();
     }
   }, [isLoggedIn, userToken]);
