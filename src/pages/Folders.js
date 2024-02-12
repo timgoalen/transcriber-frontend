@@ -135,6 +135,22 @@ export default function Folders({
 
       <main>
         <section className="list-page-main">
+        {showNewFolderForm ? (
+            <NewFolderForm
+              handleNewFolderFormCancel={handleNewFolderFormCancel}
+              handleNewFolderFormSubmit={handleNewFolderFormSubmit}
+              initialFolderName=""
+              initialFolderID={null}
+            />
+          ) : (
+            <MainTool
+              className="main-tool-blue"
+              ariaLabel="New folder"
+              onClick={handleMainToolClick}
+              icon={faPlus}
+            />
+          )}
+
           {isLoadingFolders ? (
             <LoadingSpinner />
           ) : (
@@ -182,22 +198,6 @@ export default function Folders({
                 />
               )}
             </>
-          )}
-
-          {showNewFolderForm ? (
-            <NewFolderForm
-              handleNewFolderFormCancel={handleNewFolderFormCancel}
-              handleNewFolderFormSubmit={handleNewFolderFormSubmit}
-              initialFolderName=""
-              initialFolderID={null}
-            />
-          ) : (
-            <MainTool
-              className="main-tool-blue"
-              ariaLabel="New folder"
-              onClick={handleMainToolClick}
-              icon={faPlus}
-            />
           )}
 
           {showLogInSignUpPrompt && (

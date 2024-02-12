@@ -5,11 +5,11 @@ export const UserMessagesContext = createContext();
 export const UserMessagesProvider = ({ children }) => {
   const [messages, setMessages] = useState("");
 
-  // Clear the messages after 1.5 seconds
+  // Clear the messages after 2 seconds
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setMessages("");
-    }, 1500);
+    }, 2000);
 
     return () => clearTimeout(timeoutId);
   }, [messages]);

@@ -109,6 +109,14 @@ export default function NoteDetailModal({
               folders={folders}
             />
 
+            {/* New folder form */}
+            {showNewFolderForm && (
+              <NewFolderForm
+                handleNewFolderFormSubmit={handleNewFolderFormSubmitInModal}
+                handleNewFolderFormCancel={() => setShowNewFolderForm(false)}
+              />
+            )}
+
             {/* Other folders */}
             {folders.map((folder) => (
               <FolderOptionItem
@@ -123,13 +131,8 @@ export default function NoteDetailModal({
               />
             ))}
 
-            {/* Create new folder */}
-            {showNewFolderForm ? (
-              <NewFolderForm
-                handleNewFolderFormSubmit={handleNewFolderFormSubmitInModal}
-                handleNewFolderFormCancel={() => setShowNewFolderForm(false)}
-              />
-            ) : (
+            {/* Btn to show New Folder Form */}
+            {!showNewFolderForm && (
               <AddAuxItemBtn
                 onClick={() => setShowNewFolderForm(true)}
                 text="new folder"
