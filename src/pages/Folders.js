@@ -49,7 +49,8 @@ export default function Folders({
       const { savedToFolderID } = passedData.state;
       setShowNotesInFolder(savedToFolderID);
     }
-  }, [addToMessages, passedData.state]);
+    // eslint-disable-next-line
+  }, []);
 
   async function updateFolderTitle(title, id) {
     if (!title || title.trim() === "") {

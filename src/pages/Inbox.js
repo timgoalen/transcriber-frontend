@@ -24,14 +24,15 @@ export default function Inbox({
   const inboxNotes = notes.filter((note) => note.folder_id === null);
   const { addToMessages } = useContext(UserMessagesContext);
   const passedData = useLocation();
+  const passedMessage = passedData.state?.message;
 
   // Show confimation messages if recieved from Transcriber
   useEffect(() => {
-    if (passedData?.state?.message) {
-      const confirmationMessage = passedData.state.message;
-      addToMessages(confirmationMessage);
+    if (passedMessage) {
+      addToMessages(passedMessage);
     }
-  }, [addToMessages, passedData.state]);
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <>
