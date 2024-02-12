@@ -67,12 +67,8 @@ export default function Transcriber({
       setTextAreaInput(noteStoreForLoggedOutUsers);
       setNoteStoreForLoggedOutUsers("");
     }
-  }, [
-    addToMessages,
-    noteStoreForLoggedOutUsers,
-    passedData.state,
-    setNoteStoreForLoggedOutUsers,
-  ]);
+    // eslint-disable-next-line
+  }, []);
 
   // -- CRUD FUNCTIONS --
 
@@ -92,8 +88,9 @@ export default function Transcriber({
           Authorization: `Token ${userToken}`,
         },
       });
-      console.log(`Note saved: ${response.data}`);
+      console.log("Note created: ", response.data);
       await getNotesDataFromApi();
+      
       if (targetFolderID === null) {
         // Redirect to inbox
         navigate("/inbox", { state: { message: "saved to 'inbox'" } });
@@ -126,8 +123,9 @@ export default function Transcriber({
           },
         }
       );
-      console.log(`Note updated: ${response.data}`);
+      console.log("Note updated: ", response.data);
       await getNotesDataFromApi();
+
       if (targetFolderID === null) {
         // Redirect to inbox
         navigate("/inbox", { state: { message: "note updated" } });
@@ -138,6 +136,7 @@ export default function Transcriber({
         });
       }
     } catch (error) {
+      console.error("Error updating note:", error);
       alert(`Error updating note: ${error.message}`);
     }
   }
