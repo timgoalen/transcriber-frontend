@@ -34,12 +34,12 @@ export default function NoteDetailModal({
 
   async function deleteNote() {
     try {
-      const response = await axios.delete(`${notesApiUrl}${selectedNoteID}/`, {
+      await axios.delete(`${notesApiUrl}${selectedNoteID}/`, {
         headers: {
           Authorization: `Token ${userToken}`,
         },
       });
-      console.log(`Note deleted: ${response.data}`);
+      console.log("Note deleted");
       addToMessages("note deleted");
       setShowNoteDetailModal(false);
       await getNotesDataFromApi();

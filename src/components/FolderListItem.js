@@ -32,12 +32,12 @@ export default function FolderListItem({
 
   async function deleteFolder() {
     try {
-      const response = await axios.delete(`${foldersApiUrl}${id}/`, {
+      await axios.delete(`${foldersApiUrl}${id}/`, {
         headers: {
           Authorization: `Token ${userToken}`,
         },
       });
-      console.log(`Folder deleted: ${response.data}`);
+      console.log("Folder deleted");
       addToMessages("folder deleted");
       await getFoldersDataFromApi();
       await getNotesDataFromApi();

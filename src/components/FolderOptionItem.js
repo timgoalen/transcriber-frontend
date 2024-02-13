@@ -61,7 +61,7 @@ export default function FolderOptionItem({
           },
         }
       );
-      console.log(`Note updated: ${response.data}`);
+      console.log("Note updated: ", response.data);
       addToMessages(`moved to '${destinationFolderTitle}'`);
       setShowNoteDetailModal(false);
       await getNotesDataFromApi();
