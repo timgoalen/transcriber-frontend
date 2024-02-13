@@ -38,6 +38,7 @@ export default function Folders({
   const { addToMessages } = useContext(UserMessagesContext);
   const passedData = useLocation();
 
+  // Display UserMessages
   useEffect(() => {
     // Show confimation messages if received from Transcriber
     if (passedData?.state?.message) {
@@ -51,6 +52,8 @@ export default function Folders({
     }
     // eslint-disable-next-line
   }, []);
+
+  // -- CRUD FUNCTIONS --
 
   async function updateFolderTitle(title, id) {
     if (!title || title.trim() === "") {

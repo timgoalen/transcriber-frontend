@@ -75,6 +75,7 @@ export default function Transcriber({
   async function createNote(text, targetFolderID) {
     const folderURL = `${foldersApiUrl}${targetFolderID}/`;
 
+    // Assemble the note object
     let newNote = {};
     targetFolderID === null
       ? // Save to inbox
@@ -82,6 +83,7 @@ export default function Transcriber({
       : // Save to target folder
         (newNote = { text: text, folder_id: folderURL });
 
+    // Make a POST request to the API
     try {
       const response = await axios.post(notesApiUrl, newNote, {
         headers: {
@@ -90,7 +92,8 @@ export default function Transcriber({
       });
       console.log("Note created: ", response.data);
       await getNotesDataFromApi();
-      
+
+      // Handle navigation on successful creating the note
       if (targetFolderID === null) {
         // Redirect to inbox
         navigate("/inbox", { state: { message: "saved to 'inbox'" } });
@@ -113,6 +116,8 @@ export default function Transcriber({
   async function updateNoteTextField() {
     // Assemble the updated note
     const updatedNote = { text: textAreaInput };
+
+    // Make a PATCH request to the API
     try {
       const response = await axios.patch(
         `${notesApiUrl}${targetNoteID}/`,
@@ -126,6 +131,7 @@ export default function Transcriber({
       console.log("Note updated: ", response.data);
       await getNotesDataFromApi();
 
+      // Handle navigation on successfully updating the note
       if (targetFolderID === null) {
         // Redirect to inbox
         navigate("/inbox", { state: { message: "note updated" } });

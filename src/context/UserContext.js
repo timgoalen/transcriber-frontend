@@ -11,17 +11,20 @@ export const UserProvider = ({ children }) => {
   const [userToken, setUserToken] = useState("");
   const [userName, setUserName] = useState("");
 
+  // If a token exists in localStorage, use it as the auth token and show user as logged in
   useEffect(() => {
     const tokenFromLocalStorage = localStorage.getItem("userToken");
     setUserToken(tokenFromLocalStorage);
     tokenFromLocalStorage ? setIsLoggedIn(true) : setIsLoggedIn(false);
   }, [isLoggedIn, userToken, userName]);
 
+  // Save any recived tokens from the API to localStorage
   function updateUserToken(newToken) {
     setUserToken(newToken);
     localStorage.setItem("userToken", newToken);
   }
 
+  // When logged in, request the userName from the API and save it to context
   useEffect(() => {
     async function getUserName() {
       try {

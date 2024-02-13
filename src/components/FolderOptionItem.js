@@ -24,15 +24,19 @@ export default function FolderOptionItem({
   const isSelectedNoteInInbox = selectedNote.folder_id === null;
   const isTargetFolderInbox = id === null;
 
+  // Set the `isParentFolder` state so a tick can be displayed on the parent folder of the note
   useEffect(() => {
+    // When the note is in the Inbox (which has `null` as an id)
     if (isSelectedNoteInInbox && id === null) {
       setIsParentFolder(true);
     } else if (
+      // When a note is in another folder
       !isSelectedNoteInInbox &&
       parseFolderIdOfNote(selectedNote.folder_id) === id
     ) {
       setIsParentFolder(true);
     } else {
+      // Return when the FolderOptionItem isn't the parent folder
       return;
     }
   }, [selectedNote, id, isSelectedNoteInInbox]);
