@@ -38,13 +38,10 @@ export function findFolderTitleByID(folders, folderID) {
   return folderTitle;
 }
 
+// Code inspired by https://css-tricks.com/re-pleasing-color-palettes/
 export function generateRandomColour() {
-  const letters = "0123456789ABCDEF";
-  let colour = "#";
+  const characters = Math.floor(Math.random() * 16777215).toString(16);
+  const randomColour = `#${characters}`;
 
-  for (let i = 0; i < 6; i++) {
-    colour += letters[Math.floor(Math.random() * 16)];
-  }
-
-  return colour;
+  return randomColour;
 }

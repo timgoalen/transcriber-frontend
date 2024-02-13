@@ -19,7 +19,10 @@ import LogInSignUpPrompt from "./LogInSignUpPrompt.js";
 import { UserContext } from "../context/UserContext";
 import { UserMessagesContext } from "../context/UserMessagesContext";
 import { notesApiUrl, foldersApiUrl } from "../constants/apiConstants";
-import { parseFolderIdOfNote, findFolderTitleByID } from "../utils/utils.js";
+import {
+  parseFolderIdOfNote,
+  findFolderTitleByID,
+} from "../utils/utils.js";
 
 export default function Transcriber({
   folders,
@@ -37,6 +40,8 @@ export default function Transcriber({
   const { addToMessages } = useContext(UserMessagesContext);
   const navigate = useNavigate();
   const passedData = useLocation();
+
+  // -- NAVIGATION HANDLERS --
 
   // Handle data passed form other routes
   useEffect(() => {
@@ -70,6 +75,21 @@ export default function Transcriber({
     // eslint-disable-next-line
   }, []);
 
+  function handleNavigationOnCrudSuccess(targetFolderID, message) {
+    if (targetFolderID === null) {
+      // Redirect to inbox
+      navigate("/inbox", { state: { message: message } });
+    } else {
+      // Include folder ID in redirect so folder can be opened
+      navigate("/folders", {
+        state: {
+          savedToFolderID: targetFolderID,
+          message: message,
+        },
+      });
+    }
+  }
+
   // -- CRUD FUNCTIONS --
 
   async function createNote(text, targetFolderID) {
@@ -92,21 +112,12 @@ export default function Transcriber({
       });
       console.log("Note created: ", response.data);
       await getNotesDataFromApi();
-
-      // Handle navigation on successful creating the note
-      if (targetFolderID === null) {
-        // Redirect to inbox
-        navigate("/inbox", { state: { message: "saved to 'inbox'" } });
-      } else {
-        // Include folder ID in redirect so folder can be opened
-        const folderTitle = findFolderTitleByID(folders, targetFolderID);
-        navigate("/folders", {
-          state: {
-            savedToFolderID: targetFolderID,
-            message: `saved to '${folderTitle}'`,
-          },
-        });
-      }
+      // Redirect user and provide confirmation message
+      const message =
+        targetFolderID === null
+          ? "saved to 'inbox'"
+          : `saved to '${findFolderTitleByID(folders, targetFolderID)}'`;
+      handleNavigationOnCrudSuccess(targetFolderID, message);
     } catch (error) {
       addToMessages("error saving note");
       alert(`Error saving note: ${error.message}`);
@@ -130,17 +141,9 @@ export default function Transcriber({
       );
       console.log("Note updated: ", response.data);
       await getNotesDataFromApi();
-
-      // Handle navigation on successfully updating the note
-      if (targetFolderID === null) {
-        // Redirect to inbox
-        navigate("/inbox", { state: { message: "note updated" } });
-      } else {
-        // Include folder ID in redirect so folder can be opened
-        navigate("/folders", {
-          state: { savedToFolderID: targetFolderID, message: "note updated" },
-        });
-      }
+      // Redirect user and provide confirmation message
+      const message = "note updated";
+      handleNavigationOnCrudSuccess(targetFolderID, message);
     } catch (error) {
       console.error("Error updating note:", error);
       alert(`Error updating note: ${error.message}`);
