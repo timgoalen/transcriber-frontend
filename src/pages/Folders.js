@@ -1,4 +1,4 @@
-import { useState, Fragment, useEffect, useContext } from "react";
+import { useState, Fragment, useContext, useEffect } from "react";
 
 import axios from "axios";
 import { useLocation } from "react-router-dom";
@@ -15,8 +15,10 @@ import NewFolderForm from "../components/NewFolderForm.js";
 import MainTool from "../components/MainTool.js";
 import LoadingSpinner from "../components/LoadingSpinner.js";
 import LogInSignUpPrompt from "../components/LogInSignUpPrompt.js";
+import UserMessages from "../components/UserMessages.js";
 import { UserContext } from "../context/UserContext";
 import { UserMessagesContext } from "../context/UserMessagesContext";
+import usePrevLocationNotification from "../hooks/usePrevLocationNotification.js";
 import { getNotesInFolder } from "../utils/utils.js";
 import { foldersApiUrl } from "../constants/apiConstants";
 
@@ -34,24 +36,20 @@ export default function Folders({
   const [openToolList, setOpenToolList] = useState(0);
   const [editFolderTitle, setEditFolderTitle] = useState(0);
   const [showLogInSignUpPrompt, setShowLogInSignUpPrompt] = useState(false);
+  const [messageFromPrevLocation, setMessageFromPrevLocation] = useState("");
   const { isLoggedIn, userToken } = useContext(UserContext);
   const { addToMessages } = useContext(UserMessagesContext);
   const passedData = useLocation();
+  const passedMessage = passedData.state?.message;
+  usePrevLocationNotification(passedMessage, setMessageFromPrevLocation);
 
-  // Display UserMessages
+  // If redirected after a create-note-in-folder action, open the containing folder
   useEffect(() => {
-    // Show confimation messages if received from Transcriber
-    if (passedData?.state?.message) {
-      const { message } = passedData.state;
-      addToMessages(message);
-    }
-    // Open folder if note is saved to folder
     if (passedData?.state?.savedToFolderID) {
       const { savedToFolderID } = passedData.state;
       setShowNotesInFolder(savedToFolderID);
     }
-    // eslint-disable-next-line
-  }, []);
+  }, [passedData?.state]);
 
   // -- CRUD FUNCTIONS --
 
@@ -215,6 +213,10 @@ export default function Folders({
             />
           )}
         </section>
+
+        {messageFromPrevLocation && (
+          <UserMessages messages={messageFromPrevLocation} />
+        )}
       </main>
 
       <footer className="toolbar"></footer>

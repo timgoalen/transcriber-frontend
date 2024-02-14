@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useState } from "react";
 
 import { useNavigate, useLocation } from "react-router-dom";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -11,7 +11,8 @@ import NoteListItem from "../components/NoteListItem";
 import EmptyPlaceholderGraphics from "../components/EmptyPlaceholderGraphics.js";
 import MainTool from "../components/MainTool.js";
 import LoadingSpinner from "../components/LoadingSpinner.js";
-import { UserMessagesContext } from "../context/UserMessagesContext";
+import UserMessages from "../components/UserMessages.js";
+import usePrevLocationNotification from "../hooks/usePrevLocationNotification.js";
 import { findFolderColour } from "../utils/utils.js";
 
 export default function Inbox({
@@ -20,20 +21,13 @@ export default function Inbox({
   handleNoteItemClick,
   isLoadingNotes,
 }) {
+  const [messageFromPrevLocation, setMessageFromPrevLocation] = useState("");
   const navigate = useNavigate();
   // TODO: memo this??
   const inboxNotes = notes.filter((note) => note.folder_id === null);
-  const { addToMessages } = useContext(UserMessagesContext);
   const passedData = useLocation();
   const passedMessage = passedData.state?.message;
-
-  // Show confimation messages if recieved from Transcriber
-  useEffect(() => {
-    if (passedMessage) {
-      addToMessages(passedMessage);
-    }
-    // eslint-disable-next-line
-  }, []);
+  usePrevLocationNotification(passedMessage, setMessageFromPrevLocation);
 
   return (
     <>
@@ -75,6 +69,8 @@ export default function Inbox({
             icon={faPlus}
           />
         </section>
+
+        {messageFromPrevLocation && <UserMessages messages={messageFromPrevLocation} />}
       </main>
 
       <footer className="toolbar"></footer>
