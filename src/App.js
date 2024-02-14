@@ -105,6 +105,8 @@ export default function App() {
 
   // -- CRUD FUNCTIONS --
 
+  // This function is in the App, rather than <Folders/>, so it can be shared with <NoteDetailModal/>
+  // for creating folders within the 'move to folder' dialogue
   async function createFolder(title) {
     const colour = generateRandomColour();
     const newFolder = { title: title, colour: colour };

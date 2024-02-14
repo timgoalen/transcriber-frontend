@@ -21,6 +21,7 @@ export default function Inbox({
   isLoadingNotes,
 }) {
   const navigate = useNavigate();
+  // TODO: memo this??
   const inboxNotes = notes.filter((note) => note.folder_id === null);
   const { addToMessages } = useContext(UserMessagesContext);
   const passedData = useLocation();

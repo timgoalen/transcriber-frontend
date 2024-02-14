@@ -138,7 +138,8 @@ export default function Folders({
 
       <main>
         <section className="list-page-main">
-        {showNewFolderForm ? (
+          {/* Alternate between showing the main "+" button and the form to create a folder */}
+          {showNewFolderForm ? (
             <NewFolderForm
               handleNewFolderFormCancel={handleNewFolderFormCancel}
               handleNewFolderFormSubmit={handleNewFolderFormSubmit}
@@ -160,6 +161,7 @@ export default function Folders({
             <>
               {folders.map((folder) => (
                 <Fragment key={folder.id}>
+                  {/* Show a form to edit the folder title if selected */}
                   {editFolderTitle === folder.id ? (
                     <NewFolderForm
                       handleNewFolderFormCancel={handleUpdateFolderCancel}
@@ -183,6 +185,7 @@ export default function Folders({
                     />
                   )}
 
+                  {/* Show the notes contained within the folder when the user clicks */}
                   {showNotesInFolder === folder.id && (
                     <NotesInFolderDropdown
                       folders={folders}
@@ -194,6 +197,7 @@ export default function Folders({
                 </Fragment>
               ))}
 
+              {/* Show a placeholder when no saved folders exist */}
               {folders.length === 0 && (
                 <EmptyPlaceholderGraphics
                   primaryColour="#268cf2"
@@ -203,6 +207,7 @@ export default function Folders({
             </>
           )}
 
+          {/* Only allow logged in users to save a folder */}
           {showLogInSignUpPrompt && (
             <LogInSignUpPrompt
               userAttempedAction="create a folder"
