@@ -1,9 +1,11 @@
+import styles from "../styles/EmptyPlaceHolderGraphics.module.css";
+
 export default function EmptyPlaceholderGraphics({
   primaryColour,
   secondaryColour,
 }) {
   return (
-    <div className="placeholder-svg">
+    <div className={styles.PlaceholderSvg}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         id="a"

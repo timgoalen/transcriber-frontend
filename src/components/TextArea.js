@@ -1,3 +1,4 @@
+import styles from "../styles/TextArea.module.css";
 import AudioVisualizer from "./AudioVisualizer";
 
 export default function TextArea({
@@ -5,7 +6,9 @@ export default function TextArea({
   setTextAreaInput,
   isRecording,
 }) {
-  const styles = { borderColor: isRecording ? "var(--red)" : "var(--grey)" };
+  const dynamicStyles = {
+    borderColor: isRecording ? "var(--red)" : "var(--grey)",
+  };
 
   function handleTextareaChange(event) {
     setTextAreaInput(event.target.value);
@@ -13,12 +16,12 @@ export default function TextArea({
 
   return (
     <>
-      <section id="text-container">
+      <section className={styles.TextContainer}>
         <textarea
-          id="text-area"
+          className={styles.TextArea}
           value={textAreaInput}
           onChange={handleTextareaChange}
-          style={styles}
+          style={dynamicStyles}
           aria-label="Main Text Input"
         ></textarea>
 

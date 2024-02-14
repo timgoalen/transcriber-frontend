@@ -1,3 +1,4 @@
+import styles from "../styles/Toolbar.module.css";
 import Button from "./Button.js";
 
 export default function Toolbar({
@@ -10,7 +11,7 @@ export default function Toolbar({
 }) {
   return (
     <>
-      <div className="footer-left">
+      <div className={styles.FooterLeft}>
         <Button
           name={tool1Label}
           icon={tool1Icon}
@@ -19,7 +20,7 @@ export default function Toolbar({
         />
       </div>
 
-      <div className="footer-right">
+      <div className={styles.FooterRight}>
         <Button
           name={tool2Label}
           icon={tool2Icon}

@@ -6,6 +6,7 @@ import {
   faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
 
+import styles from "../styles/OpenAiApi.module.css";
 import Button from "./Button.js";
 import { UserMessagesContext } from "../context/UserMessagesContext";
 
@@ -77,19 +78,19 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
 
   return showUndo ? (
     // Undo button
-    <div id="ai-btn">
-      <div className="undo-ai-response" onClick={undoAiResponse}>
+    <div className={styles.AiBtn}>
+      <div className={styles.UndoAiResponse} onClick={undoAiResponse}>
         Undo
       </div>
     </div>
   ) : isLoading ? (
     // Loading spinner
-    <div id="ai-btn">
+    <div className={styles.AiBtn}>
       <Button name={""} icon={faSpinner} ariaLabel="Loading AI Response" />
     </div>
   ) : (
     // AI button
-    <div id="ai-btn" onClick={sendToOpenAiApi}>
+    <div className={styles.AiBtn} onClick={sendToOpenAiApi}>
       <Button name={""} icon={faWandMagicSparkles} ariaLabel="AI Formatting" />
     </div>
   );

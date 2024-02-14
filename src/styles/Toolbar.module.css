@@ -1,0 +1,25 @@
+.FooterLeft,
+.FooterRight {
+  display: grid;
+  place-items: center;
+}
+
+@media screen and (min-width: 800px) {
+  .FooterLeft {
+    margin-left: 16%;
+  }
+
+  .FooterRight {
+    margin-right: 16%;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .FooterLeft {
+    margin-left: 30%;
+  }
+
+  .FooterRight {
+    margin-right: 30%;
+  }
+}

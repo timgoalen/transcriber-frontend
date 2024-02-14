@@ -1,0 +1,39 @@
+.AiBtn {
+  position: absolute;
+  bottom: calc(10vh + 2%);
+  bottom: calc(10dvh + 2%);
+  left: 5%;
+}
+
+.AiBtn button {
+  color: var(--grey);
+  background-color: #ffffffa8;
+  border-radius: 8px;
+  padding: 4px;
+  backdrop-filter: blur(15px);
+}
+
+.AiBtn button:hover {
+  color: var(--blue);
+}
+
+.UndoAiResponse {
+  color: var(--orange);
+}
+
+.UndoAiResponse:hover {
+  color: var(--orange-hover);
+  cursor: pointer;
+}
+
+@media screen and (min-width: 800px) {
+  .AiBtn {
+    left: 12%;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .AiBtn {
+    left: 18%;
+  }
+}

@@ -1,0 +1,22 @@
+.SearchInput {
+  width: 94%;
+  border: 1px dotted var(--blue);
+  font-size: 1.2rem;
+  padding: 0.2rem 0.5rem;
+  line-height: 1.5;
+  height: 2.2rem;
+  font-family: "Delius", sans-serif;
+  display: block;
+  box-shadow: var(--subtle-box-shadow-1);
+}
+
+.SearchInput:focus {
+  border: 1px dotted var(--orange);
+  outline: none;
+}
+
+@media screen and (min-width: 1024px) {
+  .SearchInput {
+    width: 100%;
+  }
+}

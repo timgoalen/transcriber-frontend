@@ -5,6 +5,7 @@ import {
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 
+import styles from "../styles/LogInMenu.module.css";
 import LogOut from "./LogOut";
 import LogInMenuItem from "./LogInMenuItem";
 import { UserContext } from "../context/UserContext";
@@ -21,7 +22,7 @@ export default function LogInMenu({ setShowLogInMenu }) {
   useClickOutside(ref, handleClickOutside);
 
   return (
-    <div className="login-menu" ref={ref}>
+    <div className={styles.LoginMenu} ref={ref}>
       {isLoggedIn ? (
         <>
           <div className="login-menu-item">Hi, {userName}!</div>

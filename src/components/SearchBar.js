@@ -1,3 +1,5 @@
+import styles from "../styles/SearchBar.module.css";
+
 export default function SearchBar({ searchTerms, handleSearchInputChange }) {
   return (
     <input
@@ -6,8 +8,7 @@ export default function SearchBar({ searchTerms, handleSearchInputChange }) {
       value={searchTerms}
       onChange={handleSearchInputChange}
       placeholder="Notes & folders.."
-      className="list-page-item"
-      id="search"
+      className={`list-page-item ${styles.SearchInput}`}
       autoComplete="off"
     ></input>
   );

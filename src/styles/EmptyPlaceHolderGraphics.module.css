@@ -1,0 +1,13 @@
+.PlaceholderSvg {
+  display: grid;
+  place-items: center;
+  height: 75vh;
+  height: 75dvh;
+}
+
+.PlaceholderSvg svg {
+  height: 100%;
+  width: 100%;
+  max-width: 600px;
+  opacity: 0.6;
+}
