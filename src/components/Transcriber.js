@@ -20,26 +20,28 @@ import { UserContext } from "../context/UserContext";
 import { UserMessagesContext } from "../context/UserMessagesContext";
 import { notesApiUrl, foldersApiUrl } from "../constants/apiConstants";
 import {
-  parseFolderIdOfNote,
   findFolderTitleByID,
 } from "../utils/utils.js";
 
 export default function Transcriber({
+  initialTextAreaValue,
+  initialTargetNoteID,
+  initialTargetFolderID,
   folders,
   toolbarType,
   getNotesDataFromApi,
   noteStoreForLoggedOutUsers,
   setNoteStoreForLoggedOutUsers,
 }) {
-  const [textAreaInput, setTextAreaInput] = useState("");
+  const [textAreaInput, setTextAreaInput] = useState(initialTextAreaValue);
+  const [targetFolderID, setTargetFolderID] = useState(initialTargetFolderID);
   const [isRecording, setIsRecording] = useState(false);
-  const [targetNoteID, setTargetNoteID] = useState(null);
-  const [targetFolderID, setTargetFolderID] = useState(null);
   const [showLogInSignUpPrompt, setShowLogInSignUpPrompt] = useState(false);
   const { isLoggedIn, userToken } = useContext(UserContext);
   const { addToMessages } = useContext(UserMessagesContext);
   const navigate = useNavigate();
   const passedData = useLocation();
+  const targetNoteID = initialTargetNoteID;
 
   // -- NAVIGATION HANDLERS --
 
@@ -50,17 +52,7 @@ export default function Transcriber({
       const { passedFolderID } = passedData.state;
       setTargetFolderID(passedFolderID);
     }
-    // Populate textarea and save a distination folder
-    if (passedData?.state?.selectedNote) {
-      const { selectedNote } = passedData.state;
-      setTextAreaInput(selectedNote.text);
-      setTargetNoteID(selectedNote.id);
-      if (selectedNote.folder_id === null) {
-        setTargetFolderID(null);
-      } else {
-        setTargetFolderID(parseFolderIdOfNote(selectedNote.folder_id));
-      }
-    }
+
     // Set user message on log in
     if (passedData?.state?.message) {
       const { message } = passedData.state;

@@ -17,6 +17,9 @@ export default function Home({
       </Header>
 
       <Transcriber
+        initialTextAreaValue=""
+        initialTargetNoteID={null}
+        initialTargetFolderID={null}
         folders={folders}
         toolbarType="homePage"
         getNotesDataFromApi={getNotesDataFromApi}
