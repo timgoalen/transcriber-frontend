@@ -144,6 +144,22 @@ h2 {
   color: black;
 }
 
+nav .active {
+  /* color: var(--orange); */
+  outline-bottom: 1px dashed var(--orange);
+  /* border: 1px solid var(--grey); */
+  /* border-radius: 8px; */
+}
+
+nav :not(.active) {
+  color: var(--grey);
+}
+
+a .active svg {
+  color: var(--orange);
+  /* border-bottom: 1px dashed var(--orange); */
+}
+
 /* -- HOME PAGE -- */
 
 main {
@@ -659,6 +675,12 @@ canvas {
 }
 
 /* -- MEDIA QUERIES -- */
+
+@media screen and (max-width: 600px) {
+  h1 {
+    display: none;
+  }
+}
 
 @media screen and (min-width: 800px) {
   #main-container,

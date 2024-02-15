@@ -12,8 +12,8 @@ export default function Home({
   return (
     <>
       <Header pageTitle="transcriber">
-        <AccountNav />
-        <InboxNav />
+        {/* <AccountNav /> */}
+        {/* <InboxNav /> */}
       </Header>
 
       <Transcriber

@@ -1,12 +1,17 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faListUl } from "@fortawesome/free-solid-svg-icons";
 
-export default function Inbox() {
+export default function InboxNav() {
   return (
-    <Link to="/inbox" className="header-btn-container">
+    <NavLink
+      to="/inbox"
+      className="header-btn-container"
+      activeClassName="active"
+    >
       <FontAwesomeIcon icon={faListUl} />
       <div className="header-btn-text">inbox</div>
-    </Link>
+    </NavLink>
   );
 }

@@ -1,12 +1,17 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFolder } from "@fortawesome/free-regular-svg-icons";
 
-export default function Folders() {
+export default function FoldersNav() {
   return (
-    <Link to="/folders" className="header-btn-container">
+    <NavLink
+      to="/folders"
+      className="header-btn-container"
+      activeClassName="active"
+    >
       <FontAwesomeIcon icon={faFolder} />
       <div className="header-btn-text">folders</div>
-    </Link>
+    </NavLink>
   );
 }
