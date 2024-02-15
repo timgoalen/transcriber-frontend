@@ -29,65 +29,65 @@ export default function App() {
 
   // -- DATA FETCHING FUNCTIONS --
 
-  async function getNotesDataFromApi() {
-    try {
-      const response = await axios.get(notesApiUrl, {
-        headers: {
-          Authorization: `Token ${userToken}`,
-        },
-      });
-      setNotes(response.data);
-    } catch (error) {
-      console.error("Error fetching notes data from the API:", error.message);
-    } finally {
-      // note: isLoadingNotes is set to 'true' only when user first logs in
-      setIsLoadingNotes(false);
-    }
-  }
+  // async function getNotesDataFromApi() {
+  //   try {
+  //     const response = await axios.get(notesApiUrl, {
+  //       headers: {
+  //         Authorization: `Token ${userToken}`,
+  //       },
+  //     });
+  //     setNotes(response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching notes data from the API:", error.message);
+  //   } finally {
+  //     // note: isLoadingNotes is set to 'true' only when user first logs in
+  //     setIsLoadingNotes(false);
+  //   }
+  // }
 
-  async function getFoldersDataFromApi() {
-    try {
-      const response = await axios.get(foldersApiUrl, {
-        headers: {
-          Authorization: `Token ${userToken}`,
-        },
-      });
-      setFolders(response.data);
-    } catch (error) {
-      console.error("Error fetching folders data from the API:", error.message);
-    } finally {
-      // note: isLoadingFolders is set to 'true' only when user first logs in
-      setIsLoadingFolders(false);
-    }
-  }
+  // async function getFoldersDataFromApi() {
+  //   try {
+  //     const response = await axios.get(foldersApiUrl, {
+  //       headers: {
+  //         Authorization: `Token ${userToken}`,
+  //       },
+  //     });
+  //     setFolders(response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching folders data from the API:", error.message);
+  //   } finally {
+  //     // note: isLoadingFolders is set to 'true' only when user first logs in
+  //     setIsLoadingFolders(false);
+  //   }
+  // }
 
-  // Memoize the data fetching functions to be used in the useEffect below
-  const memoizedGetNotesDataFromApi = useCallback(getNotesDataFromApi, [
-    userToken,
-  ]);
-  const memoizedGetFoldersDataFromApi = useCallback(getFoldersDataFromApi, [
-    userToken,
-  ]);
+  // // Memoize the data fetching functions to be used in the useEffect below
+  // const memoizedGetNotesDataFromApi = useCallback(getNotesDataFromApi, [
+  //   userToken,
+  // ]);
+  // const memoizedGetFoldersDataFromApi = useCallback(getFoldersDataFromApi, [
+  //   userToken,
+  // ]);
 
-  // Get data form the API when user logs in
-  useEffect(() => {
-    if (isLoggedIn && userToken) {
-      // Only show the loader spinners on log in
-      setIsLoadingNotes(true);
-      setIsLoadingFolders(true);
-      memoizedGetNotesDataFromApi();
-      memoizedGetFoldersDataFromApi();
-    } else {
-      // Clear the notes and folders state when user logs out
-      setNotes([]);
-      setFolders([]);
-    }
-  }, [
-    isLoggedIn,
-    userToken,
-    memoizedGetNotesDataFromApi,
-    memoizedGetFoldersDataFromApi,
-  ]);
+  // // Get data form the API when user logs in
+  // useEffect(() => {
+  //   if (isLoggedIn && userToken) {
+  //     // Only show the loader spinners on log in
+  //     setIsLoadingNotes(true);
+  //     setIsLoadingFolders(true);
+  //     memoizedGetNotesDataFromApi();
+  //     memoizedGetFoldersDataFromApi();
+  //   } else {
+  //     // Clear the notes and folders state when user logs out
+  //     setNotes([]);
+  //     setFolders([]);
+  //   }
+  // }, [
+  //   isLoggedIn,
+  //   userToken,
+  //   memoizedGetNotesDataFromApi,
+  //   memoizedGetFoldersDataFromApi,
+  // ]);
 
   // -- CRUD FUNCTIONS --
 
@@ -105,7 +105,7 @@ export default function App() {
       });
       console.log("Folder saved:", response.data);
       addToMessages("folder saved");
-      await getFoldersDataFromApi();
+      // await getFoldersDataFromApi();
     } catch (error) {
       alert(`Error saving folder: ${error.message}`);
     }
@@ -121,7 +121,7 @@ export default function App() {
           element={
             <Home
               folders={folders}
-              getNotesDataFromApi={getNotesDataFromApi}
+              // getNotesDataFromApi={getNotesDataFromApi}
               noteStoreForLoggedOutUsers={noteStoreForLoggedOutUsers}
               setNoteStoreForLoggedOutUsers={setNoteStoreForLoggedOutUsers}
             />
@@ -135,7 +135,7 @@ export default function App() {
               folders={folders}
               createFolder={createFolder}
               isLoadingNotes={isLoadingNotes}
-              getNotesDataFromApi={getNotesDataFromApi}
+              // getNotesDataFromApi={getNotesDataFromApi}
             />
           }
         />
@@ -146,8 +146,8 @@ export default function App() {
               notes={notes}
               folders={folders}
               createFolder={createFolder}
-              getNotesDataFromApi={getNotesDataFromApi}
-              getFoldersDataFromApi={getFoldersDataFromApi}
+              // getNotesDataFromApi={getNotesDataFromApi}
+              // getFoldersDataFromApi={getFoldersDataFromApi}
               isLoadingFolders={isLoadingFolders}
             />
           }
@@ -161,14 +161,16 @@ export default function App() {
               createFolder={createFolder}
               isLoadingNotes={isLoadingNotes}
               isLoadingFolders={isLoadingFolders}
-              getNotesDataFromApi={getNotesDataFromApi}
+              // getNotesDataFromApi={getNotesDataFromApi}
             />
           }
         />
         <Route
           path="/edit"
           element={
-            <Edit folders={folders} getNotesDataFromApi={getNotesDataFromApi} />
+            <Edit folders={folders} 
+            // getNotesDataFromApi={getNotesDataFromApi} 
+            />
           }
         />
         <Route path="/signup" element={<SignUp />} />
