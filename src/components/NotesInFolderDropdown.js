@@ -21,10 +21,9 @@ export default function NotesInFolderDropdown({
       {notesInFolder.map((note) => (
         <NoteListItem
           key={note.id}
-          id={note.id}
+          onClick={() => handleNoteItemClick(note)}
           text={note.text}
           folderColour={findFolderColour(folders, note.folder_id)}
-          handleNoteItemClick={handleNoteItemClick}
         />
       ))}
 

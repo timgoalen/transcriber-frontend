@@ -15,7 +15,7 @@ export default function FolderOptionItem({
   colour,
   selectedNote,
   getNotesDataFromApi,
-  setShowNoteDetailModal,
+  closeModal,
   folders,
 }) {
   const [isParentFolder, setIsParentFolder] = useState(false);
@@ -63,7 +63,7 @@ export default function FolderOptionItem({
       );
       console.log("Note updated: ", response.data);
       addToMessages(`moved to '${destinationFolderTitle}'`);
-      setShowNoteDetailModal(false);
+      closeModal();
       await getNotesDataFromApi();
     } catch (error) {
       addToMessages("error moving note");

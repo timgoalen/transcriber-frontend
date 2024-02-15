@@ -13,7 +13,6 @@ import Edit from "./pages/Edit";
 import SignUp from "./pages/SignUp";
 import LogIn from "./pages/LogIn";
 import NoPage from "./pages/NoPage";
-import NoteDetailModal from "./components/NoteDetailModal";
 import UserMessages from "./components/UserMessages.js";
 import { generateRandomColour } from "./utils/utils";
 import { notesApiUrl, foldersApiUrl } from "./constants/apiConstants";
@@ -21,8 +20,6 @@ import { notesApiUrl, foldersApiUrl } from "./constants/apiConstants";
 export default function App() {
   const [notes, setNotes] = useState([]);
   const [folders, setFolders] = useState([]);
-  const [showNoteDetailModal, setShowNoteDetailModal] = useState(false);
-  const [selectedNoteID, setSelectedNoteID] = useState(0);
   const [isLoadingNotes, setIsLoadingNotes] = useState(false);
   const [isLoadingFolders, setIsLoadingFolders] = useState(false);
   const [noteStoreForLoggedOutUsers, setNoteStoreForLoggedOutUsers] =
@@ -92,21 +89,11 @@ export default function App() {
     memoizedGetFoldersDataFromApi,
   ]);
 
-  // -- EVENT HANDLERS --
-
-  function handleNoteItemClick(id) {
-    setShowNoteDetailModal(true);
-    setSelectedNoteID(id);
-  }
-
-  function modalBackBtnClick() {
-    setShowNoteDetailModal(false);
-  }
-
   // -- CRUD FUNCTIONS --
 
-  // This function is in the App, rather than <Folders/>, so it can be shared with <NoteDetailModal/>
-  // for creating folders within the 'move to folder' dialogue
+  // TODO: rephrase "Share with folder (imperative tense etc?)"
+  // This function is in the App so it can be shared with <NoteDetailModal/> via the pages: Inbox, Folders and Search.
+  // It's used for creating folders within the 'move to folder' dialogue
   async function createFolder(title) {
     const colour = generateRandomColour();
     const newFolder = { title: title, colour: colour };
@@ -146,8 +133,9 @@ export default function App() {
             <Inbox
               notes={notes}
               folders={folders}
-              handleNoteItemClick={handleNoteItemClick}
+              createFolder={createFolder}
               isLoadingNotes={isLoadingNotes}
+              getNotesDataFromApi={getNotesDataFromApi}
             />
           }
         />
@@ -157,7 +145,6 @@ export default function App() {
             <Folders
               notes={notes}
               folders={folders}
-              handleNoteItemClick={handleNoteItemClick}
               createFolder={createFolder}
               getNotesDataFromApi={getNotesDataFromApi}
               getFoldersDataFromApi={getFoldersDataFromApi}
@@ -171,9 +158,10 @@ export default function App() {
             <Search
               notes={notes}
               folders={folders}
-              handleNoteItemClick={handleNoteItemClick}
+              createFolder={createFolder}
               isLoadingNotes={isLoadingNotes}
               isLoadingFolders={isLoadingFolders}
+              getNotesDataFromApi={getNotesDataFromApi}
             />
           }
         />
@@ -187,18 +175,6 @@ export default function App() {
         <Route path="/login" element={<LogIn />} />
         <Route path="/*" element={<NoPage />} />
       </Routes>
-
-      {showNoteDetailModal && (
-        <NoteDetailModal
-          notes={notes}
-          folders={folders}
-          selectedNoteID={selectedNoteID}
-          modalBackBtnClick={modalBackBtnClick}
-          setShowNoteDetailModal={setShowNoteDetailModal}
-          createFolder={createFolder}
-          getNotesDataFromApi={getNotesDataFromApi}
-        />
-      )}
 
       {messages && <UserMessages messages={messages} />}
     </>

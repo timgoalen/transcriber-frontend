@@ -11,23 +11,33 @@ import NoteListItem from "../components/NoteListItem";
 import EmptyPlaceholderGraphics from "../components/EmptyPlaceholderGraphics.js";
 import MainTool from "../components/MainTool.js";
 import LoadingSpinner from "../components/LoadingSpinner.js";
+import NoteDetailModal from "../components/NoteDetailModal.js";
 import UserMessages from "../components/UserMessages.js";
 import usePrevLocationNotification from "../hooks/usePrevLocationNotification.js";
+import useNoteDetailModal from "../hooks/useNoteDetailModal.js";
 import { findFolderColour } from "../utils/utils.js";
 
 export default function Inbox({
   notes,
   folders,
-  handleNoteItemClick,
   isLoadingNotes,
+  createFolder,
+  getNotesDataFromApi,
 }) {
   const [messageFromPrevLocation, setMessageFromPrevLocation] = useState("");
+  const [selectedNote, setSelectedNote] = useState({});
+  const { isModalOpen, openModal, closeModal } = useNoteDetailModal();
   const navigate = useNavigate();
   // TODO: memo this??
   const inboxNotes = notes.filter((note) => note.folder_id === null);
   const passedData = useLocation();
   const passedMessage = passedData.state?.message;
   usePrevLocationNotification(passedMessage, setMessageFromPrevLocation);
+
+  function handleNoteItemClick(note) {
+    openModal();
+    setSelectedNote(note);
+  }
 
   return (
     <>
@@ -46,10 +56,11 @@ export default function Inbox({
               {inboxNotes.map((note) => (
                 <NoteListItem
                   key={note.id}
-                  id={note.id}
+                  onClick={() => {
+                    handleNoteItemClick(note);
+                  }}
                   text={note.text}
                   folderColour={findFolderColour(folders, note.folder_id)}
-                  handleNoteItemClick={handleNoteItemClick}
                 />
               ))}
 
@@ -70,7 +81,19 @@ export default function Inbox({
           />
         </section>
 
-        {messageFromPrevLocation && <UserMessages messages={messageFromPrevLocation} />}
+        {isModalOpen && (
+          <NoteDetailModal
+            selectedNote={selectedNote}
+            folders={folders}
+            closeModal={closeModal}
+            createFolder={createFolder}
+            getNotesDataFromApi={getNotesDataFromApi}
+          />
+        )}
+
+        {messageFromPrevLocation && (
+          <UserMessages messages={messageFromPrevLocation} />
+        )}
       </main>
 
       <footer className="toolbar"></footer>

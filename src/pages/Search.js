@@ -9,17 +9,22 @@ import NoteListItem from "../components/NoteListItem";
 import FolderListItem from "../components/FolderListItem.js";
 import NotesInFolderDropdown from "../components/NotesInFolderDropdown.js";
 import LoadingSpinner from "../components/LoadingSpinner.js";
+import NoteDetailModal from "../components/NoteDetailModal.js";
+import useNoteDetailModal from "../hooks/useNoteDetailModal.js";
 import { findFolderColour, getNotesInFolder } from "../utils/utils.js";
 
 export default function Search({
   notes,
   folders,
-  handleNoteItemClick,
+  createFolder,
   isLoadingNotes,
   isLoadingFolders,
+  getNotesDataFromApi,
 }) {
   const [searchTerms, setSearchTerms] = useState("");
   const [showNotesInFolder, setShowNotesInFolder] = useState(0);
+  const [selectedNote, setSelectedNote] = useState({});
+  const { isModalOpen, openModal, closeModal } = useNoteDetailModal();
 
   const filteredNotes = notes.filter((note) =>
     note.text.toLowerCase().includes(searchTerms.toLowerCase())
@@ -37,6 +42,11 @@ export default function Search({
     showNotesInFolder === id
       ? setShowNotesInFolder(0)
       : setShowNotesInFolder(id);
+  }
+
+  function handleNoteItemClick(note) {
+    openModal();
+    setSelectedNote(note);
   }
 
   return (
@@ -70,7 +80,7 @@ export default function Search({
                 id={note.id}
                 text={note.text}
                 folderColour={findFolderColour(folders, note.folder_id)}
-                handleNoteItemClick={handleNoteItemClick}
+                onClick={() => handleNoteItemClick(note)}
               />
             ))}
 
@@ -108,6 +118,16 @@ export default function Search({
               <h2 id="no-results-message">no results</h2>
             )}
         </section>
+
+        {isModalOpen && (
+          <NoteDetailModal
+            selectedNote={selectedNote}
+            folders={folders}
+            closeModal={closeModal}
+            createFolder={createFolder}
+            getNotesDataFromApi={getNotesDataFromApi}
+          />
+        )}
       </main>
 
       <footer className="toolbar"></footer>

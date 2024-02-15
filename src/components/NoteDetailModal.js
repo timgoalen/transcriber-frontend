@@ -12,15 +12,12 @@ import AddAuxItemBtn from "./AddAuxItemBtn.js";
 import useClickOutside from "../hooks/useClickOutside";
 import { UserContext } from "../context/UserContext";
 import { UserMessagesContext } from "../context/UserMessagesContext";
-import { findNoteByID } from "../utils/utils.js";
 import { notesApiUrl } from "../constants/apiConstants";
 
 export default function NoteDetailModal({
-  notes,
+  selectedNote,
   folders,
-  selectedNoteID,
-  modalBackBtnClick,
-  setShowNoteDetailModal,
+  closeModal,
   createFolder,
   getNotesDataFromApi,
 }) {
@@ -28,20 +25,19 @@ export default function NoteDetailModal({
   const [showNewFolderForm, setShowNewFolderForm] = useState(false);
   const { userToken } = useContext(UserContext);
   const { addToMessages } = useContext(UserMessagesContext);
-  const selectedNote = findNoteByID(notes, selectedNoteID);
   const navigate = useNavigate();
   const ref = useRef(null);
 
   async function deleteNote() {
     try {
-      await axios.delete(`${notesApiUrl}${selectedNoteID}/`, {
+      await axios.delete(`${notesApiUrl}${selectedNote.id}/`, {
         headers: {
           Authorization: `Token ${userToken}`,
         },
       });
       console.log("Note deleted");
       addToMessages("note deleted");
-      setShowNoteDetailModal(false);
+      closeModal();
       await getNotesDataFromApi();
     } catch (error) {
       console.log(`Error deleting note: ${error.message}`);
@@ -50,7 +46,7 @@ export default function NoteDetailModal({
   }
 
   function handleClickOutside() {
-    modalBackBtnClick();
+    closeModal();
   }
 
   useClickOutside(ref, handleClickOutside);
@@ -65,7 +61,6 @@ export default function NoteDetailModal({
   }
 
   function handleEditBtnClick() {
-    setShowNoteDetailModal(false);
     navigate("/edit", { state: { selectedNote: selectedNote } });
   }
 
@@ -77,11 +72,7 @@ export default function NoteDetailModal({
           <div id="note-detail-modal-text">{selectedNote.text}</div>
 
           <div id="note-detail-modal-tools-container">
-            <Button
-              name="Back"
-              icon={faArrowLeft}
-              onClick={modalBackBtnClick}
-            />
+            <Button name="Back" icon={faArrowLeft} onClick={closeModal} />
             <Button name="Edit" icon={faPen} onClick={handleEditBtnClick} />
             <Button
               name="Folder"
@@ -105,13 +96,14 @@ export default function NoteDetailModal({
               colour="var(--orange)"
               selectedNote={selectedNote}
               getNotesDataFromApi={getNotesDataFromApi}
-              setShowNoteDetailModal={setShowNoteDetailModal}
+              closeModal={closeModal}
               folders={folders}
             />
 
             {/* New folder form */}
             {showNewFolderForm && (
               <NewFolderForm
+                initialFolderName=""
                 handleNewFolderFormSubmit={handleNewFolderFormSubmitInModal}
                 handleNewFolderFormCancel={() => setShowNewFolderForm(false)}
               />
@@ -126,7 +118,7 @@ export default function NoteDetailModal({
                 colour={folder.colour}
                 selectedNote={selectedNote}
                 getNotesDataFromApi={getNotesDataFromApi}
-                setShowNoteDetailModal={setShowNoteDetailModal}
+                closeModal={closeModal}
                 folders={folders}
               />
             ))}
@@ -147,11 +139,7 @@ export default function NoteDetailModal({
               icon={faArrowLeft}
               onClick={() => setShowFolderOptions(false)}
             />
-            <Button
-              name="Close"
-              icon={faXmark}
-              onClick={() => setShowNoteDetailModal(false)}
-            />
+            <Button name="Close" icon={faXmark} onClick={closeModal} />
           </div>
         </div>
       )}

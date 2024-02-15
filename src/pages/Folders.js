@@ -16,8 +16,10 @@ import MainTool from "../components/MainTool.js";
 import LoadingSpinner from "../components/LoadingSpinner.js";
 import LogInSignUpPrompt from "../components/LogInSignUpPrompt.js";
 import UserMessages from "../components/UserMessages.js";
+import NoteDetailModal from "../components/NoteDetailModal.js";
 import { UserContext } from "../context/UserContext";
 import { UserMessagesContext } from "../context/UserMessagesContext";
+import useNoteDetailModal from "../hooks/useNoteDetailModal.js";
 import usePrevLocationNotification from "../hooks/usePrevLocationNotification.js";
 import { getNotesInFolder } from "../utils/utils.js";
 import { foldersApiUrl } from "../constants/apiConstants";
@@ -25,7 +27,6 @@ import { foldersApiUrl } from "../constants/apiConstants";
 export default function Folders({
   notes,
   folders,
-  handleNoteItemClick,
   createFolder,
   getNotesDataFromApi,
   getFoldersDataFromApi,
@@ -37,8 +38,10 @@ export default function Folders({
   const [editFolderTitle, setEditFolderTitle] = useState(0);
   const [showLogInSignUpPrompt, setShowLogInSignUpPrompt] = useState(false);
   const [messageFromPrevLocation, setMessageFromPrevLocation] = useState("");
+  const [selectedNote, setSelectedNote] = useState({});
   const { isLoggedIn, userToken } = useContext(UserContext);
   const { addToMessages } = useContext(UserMessagesContext);
+  const { isModalOpen, openModal, closeModal } = useNoteDetailModal();
   const passedData = useLocation();
   const passedMessage = passedData.state?.message;
   usePrevLocationNotification(passedMessage, setMessageFromPrevLocation);
@@ -88,6 +91,11 @@ export default function Folders({
     showNotesInFolder === id
       ? setShowNotesInFolder(0)
       : setShowNotesInFolder(id);
+  }
+
+  function handleNoteItemClick(note) {
+    openModal();
+    setSelectedNote(note);
   }
 
   function handleNewFolderFormCancel() {
@@ -213,6 +221,16 @@ export default function Folders({
             />
           )}
         </section>
+
+        {isModalOpen && (
+          <NoteDetailModal
+            selectedNote={selectedNote}
+            folders={folders}
+            closeModal={closeModal}
+            createFolder={createFolder}
+            getNotesDataFromApi={getNotesDataFromApi}
+          />
+        )}
 
         {messageFromPrevLocation && (
           <UserMessages messages={messageFromPrevLocation} />

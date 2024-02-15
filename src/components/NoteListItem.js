@@ -1,14 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExpand } from "@fortawesome/free-solid-svg-icons";
 
-export default function NoteListItem({
-  id,
-  text,
-  folderColour,
-  handleNoteItemClick,
-}) {
+export default function NoteListItem({ onClick, text, folderColour }) {
   return (
-    <div className="list-page-item" onClick={() => handleNoteItemClick(id)}>
+    <div className="list-page-item" onClick={onClick}>
       <div className="item-text">
         <p>{text}</p>
       </div>
