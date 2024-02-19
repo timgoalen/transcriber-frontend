@@ -4,7 +4,7 @@ import SignUpForm from "../components/SignUpForm";
 export default function SignUp() {
   return (
     <>
-      <Header pageTitle="transcriber"></Header>
+      <Header pageTitle="transcriber" />
 
       <main id="main-container">
         <SignUpForm />

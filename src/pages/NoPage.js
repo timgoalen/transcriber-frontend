@@ -1,12 +1,9 @@
 import Header from "../components/header/Header.js";
-import CreateNav from "../components/header/CreateNav.js";
 
 export default function NoPage() {
   return (
     <>
-      <Header pageTitle="transcriber">
-        <CreateNav />
-      </Header>
+      <Header pageTitle="transcriber" />
 
       <main>
         <section className="list-page-main auth-form-container">
