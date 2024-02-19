@@ -25,25 +25,25 @@ export const UserProvider = ({ children }) => {
   }
 
   // When logged in, request the userName from the API and save it to context
-  useEffect(() => {
-    async function getUserName() {
-      try {
-        const usernameResponse = await axios.get(`${baseApiUrl}users/`, {
-          headers: {
-            Authorization: `Token ${userToken}`,
-          },
-        });
-        const userName = await usernameResponse.data[0].username;
-        setUserName(userName);
-      } catch (error) {
-        console.error("Error retrieving username:", error.message);
-      }
-    }
+  // useEffect(() => {
+  //   async function getUserName() {
+  //     try {
+  //       const usernameResponse = await axios.get(`${baseApiUrl}users/`, {
+  //         headers: {
+  //           Authorization: `Token ${userToken}`,
+  //         },
+  //       });
+  //       const userName = await usernameResponse.data[0].username;
+  //       setUserName(userName);
+  //     } catch (error) {
+  //       console.error("Error retrieving username:", error.message);
+  //     }
+  //   }
 
-    if (isLoggedIn && userToken) {
-      getUserName();
-    }
-  }, [isLoggedIn, userToken]);
+  //   if (isLoggedIn && userToken) {
+  //     getUserName();
+  //   }
+  // }, [isLoggedIn, userToken]);
 
   return (
     <UserContext.Provider

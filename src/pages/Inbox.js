@@ -1,6 +1,8 @@
 import { useState, useContext, useEffect } from "react";
 
 import { useQuery } from "@tanstack/react-query";
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -28,10 +30,13 @@ export default function Inbox({
   createFolder,
   getNotesDataFromApi,
 }) {
+  const { isLoggedIn, userToken } = useContext(UserContext);
+  console.log("at start")
+  console.log(userToken);
+
   const [messageFromPrevLocation, setMessageFromPrevLocation] = useState("");
   const [selectedNote, setSelectedNote] = useState({});
-  const { isLoggedIn, userToken } = useContext(UserContext);
-  console.log(userToken);
+  
 
   // const { data: notes, error, isLoading } = useQuery("notesData", fetchNotes);
   const { isPending, error, data, isFetching } = useQuery({
@@ -41,14 +46,14 @@ export default function Inbox({
 
   // TODO: move this to separet file, with token linked to it
   async function getNotes() {
-    console.log("user token:", userToken);
-    const response = await axios.get(notesApiUrl, {
-      headers: {
-        // Authorization: `Token ${userToken}`,
-        Authorization: `Token 4bce18479b2bf2a39a2319d55feaf6f37e7f459a`,
-      },
-    });
-    return response.data;
+      console.log("in get notes:", userToken);
+      const response = await axios.get(notesApiUrl, {
+        headers: {
+          Authorization: `Token ${userToken}`,
+          // Authorization: `Token 4bce18479b2bf2a39a2319d55feaf6f37e7f459a`,
+        },
+      });
+      return response.data;
   }
 
   const { isModalOpen, openModal, closeModal } = useNoteDetailModal();
@@ -79,10 +84,12 @@ export default function Inbox({
       <main>
         <section className="list-page-main">
           <ul>
-            {data?.map((note) => (
+            {data.map((note) => (
               <li key={note.id}>{note.text}</li>
             ))}
           </ul>
+
+          <ReactQueryDevtools initialIsOpen />
           {/* {isLoadingNotes ? (
             <LoadingSpinner />
           ) : (
