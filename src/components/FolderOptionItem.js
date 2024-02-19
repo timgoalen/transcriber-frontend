@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
@@ -21,6 +22,7 @@ export default function FolderOptionItem({
   const [isParentFolder, setIsParentFolder] = useState(false);
   const { userToken } = useContext(UserContext);
   const { addToMessages } = useContext(UserMessagesContext);
+  const navigate = useNavigate();
   const isSelectedNoteInInbox = selectedNote.folder_id === null;
   const isTargetFolderInbox = id === null;
 
@@ -41,13 +43,28 @@ export default function FolderOptionItem({
     }
   }, [selectedNote, id, isSelectedNoteInInbox]);
 
+  function handleNavigationOnUpdateNote(id, message) {
+    if (id === null) {
+      // Redirect to inbox
+      navigate("/inbox", { state: { message: message } });
+    } else {
+      // Include folder ID in redirect so folder can be opened
+      navigate("/folders", {
+        state: {
+          savedToFolderID: id,
+          message: message,
+        },
+      });
+    }
+  }
+
   // Move note to a new folder
   async function updateNoteFolderField(noteID) {
-    let updatedNote = isTargetFolderInbox
+    const updatedNote = isTargetFolderInbox
       ? { folder_id: null }
       : { folder_id: `${foldersApiUrl}${id}/` };
 
-    let destinationFolderTitle = isTargetFolderInbox
+    const destinationFolderTitle = isTargetFolderInbox
       ? "inbox"
       : findFolderTitleByID(folders, id);
 
@@ -62,7 +79,8 @@ export default function FolderOptionItem({
         }
       );
       console.log("Note updated: ", response.data);
-      addToMessages(`moved to '${destinationFolderTitle}'`);
+      const message = `moved to '${destinationFolderTitle}'`;
+      handleNavigationOnUpdateNote(id, message);
       closeModal();
       await getNotesDataFromApi();
     } catch (error) {
