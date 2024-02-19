@@ -1,7 +1,10 @@
 import { useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faXmark, faEllipsis, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEllipsis,
+  faEllipsisVertical,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function MenuNav({ showMenu, setShowMenu }) {
   const [menuOpen, setMenuOpen] = useState(false);

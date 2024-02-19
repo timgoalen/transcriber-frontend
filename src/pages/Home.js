@@ -1,7 +1,5 @@
 import Transcriber from "../components/Transcriber";
 import Header from "../components/header/Header";
-import AccountNav from "../components/header/AccountNav";
-import InboxNav from "../components/header/InboxNav";
 
 export default function Home({
   folders,
@@ -11,10 +9,7 @@ export default function Home({
 }) {
   return (
     <>
-      <Header pageTitle="transcriber">
-        {/* <AccountNav /> */}
-        {/* <InboxNav /> */}
-      </Header>
+      <Header pageTitle="transcriber" />
 
       <Transcriber
         initialTextAreaValue=""

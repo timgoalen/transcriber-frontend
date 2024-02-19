@@ -6,7 +6,7 @@ import { faUser } from "@fortawesome/free-regular-svg-icons";
 import LogInMenu from "../LogInMenu";
 import { UserContext } from "../../context/UserContext";
 
-export default function Account() {
+export default function AccountNav() {
   const [showLogInMenu, setShowLogInMenu] = useState(false);
   const { isLoggedIn } = useContext(UserContext);
 

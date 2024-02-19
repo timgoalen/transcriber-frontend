@@ -21,7 +21,7 @@ export default function Edit({ folders, getNotesDataFromApi }) {
 
   return (
     <>
-      <Header pageTitle="edit"></Header>
+      <Header pageTitle="edit" />
 
       <Transcriber
         initialTextAreaValue={passedData?.state?.selectedNote?.text}

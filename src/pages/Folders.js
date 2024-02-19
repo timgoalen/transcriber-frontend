@@ -5,9 +5,6 @@ import { useLocation } from "react-router-dom";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import Header from "../components/header/Header.js";
-import CreateNav from "../components/header/CreateNav.js";
-import InboxNav from "../components/header/InboxNav.js";
-import SearchNav from "../components/header/SearchNav.js";
 import FolderListItem from "../components/FolderListItem";
 import NotesInFolderDropdown from "../components/NotesInFolderDropdown";
 import EmptyPlaceholderGraphics from "../components/EmptyPlaceholderGraphics.js";
@@ -136,11 +133,7 @@ export default function Folders({
 
   return (
     <>
-      <Header pageTitle="folders">
-        <CreateNav />
-        <SearchNav />
-        <InboxNav />
-      </Header>
+      <Header pageTitle="folders" />
 
       <main>
         <section className="list-page-main">
