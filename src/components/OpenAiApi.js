@@ -49,7 +49,8 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
       const response = await axios.post(
         "https://api.openai.com/v1/completions",
         {
-          prompt: `Correct the spelling and punctuation (use UK spelling): ${textAreaInput}`,
+          prompt: `Correct the spelling and punctuation of this text (use UK spelling). 
+          Only return the formatted text, with no added comments or annotations: ${textAreaInput}`,
           max_tokens: 500,
           temperature: 0.5,
           n: 1,
@@ -70,7 +71,7 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
       addToMessages("note formatted");
     } catch (error) {
       console.error("OpenAI API Error:", error);
-      alert("Error retrieving AI response");
+      alert("Error retrieving AI response, check if outages at: https://status.openai.com");
     } finally {
       setIsLoading(false);
     }
