@@ -99,7 +99,9 @@ export default function FolderOptionItem({
       <div
         className="item-text"
         onClick={() => {
-          updateNoteFolderField(selectedNote.id);
+          isParentFolder
+            ? addToMessages("the note is already in this folder")
+            : updateNoteFolderField(selectedNote.id);
         }}
       >
         <p>{title}</p>
