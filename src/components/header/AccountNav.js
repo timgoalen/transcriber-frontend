@@ -6,30 +6,37 @@ import { faUser } from "@fortawesome/free-regular-svg-icons";
 import LogInMenu from "../LogInMenu";
 import { UserContext } from "../../context/UserContext";
 
+function AccountNavBtn({ onClick }) {
+  const { isLoggedIn } = useContext(UserContext);
+  const label = isLoggedIn ? "user" : "log in";
+
+  return (
+    <button
+      className="header-btn-container"
+      aria-label="Account"
+      onClick={onClick}
+    >
+      <FontAwesomeIcon icon={faUser} />
+      <div className="header-btn-text">{label}</div>
+    </button>
+  );
+}
+
 export default function AccountNav() {
   const [showLogInMenu, setShowLogInMenu] = useState(false);
-  const { isLoggedIn } = useContext(UserContext);
-
-  function toggleLogInMenu() {
-    setShowLogInMenu((prevState) => !prevState);
-  }
 
   return (
     <>
-      <button
-        className="header-btn-container"
-        aria-label="Account"
-        onClick={toggleLogInMenu}
-      >
-        <FontAwesomeIcon icon={faUser} />
-        {isLoggedIn ? (
-          <div className="header-btn-text">user</div>
-        ) : (
-          <div className="header-btn-text">log in</div>
-        )}
-      </button>
+      {!showLogInMenu ? (
+        <AccountNavBtn onClick={() => setShowLogInMenu(true)} />
+      ) : (
+        <>
+          {/* No onClick function, to get around useClickOutside conflict */}
+          <AccountNavBtn />
 
-      {showLogInMenu && <LogInMenu setShowLogInMenu={setShowLogInMenu} />}
+          <LogInMenu setShowLogInMenu={setShowLogInMenu} />
+        </>
+      )}
     </>
   );
 }
