@@ -1,6 +1,9 @@
 import styles from "../styles/Toolbar.module.css";
 import Button from "./Button.js";
 
+/**
+ * Renders the toolbar footer.
+ */
 export default function Toolbar({
   tool1Label,
   tool1Icon,

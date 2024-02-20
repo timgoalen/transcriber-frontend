@@ -1,5 +1,8 @@
 import { useState } from "react";
 
+/**
+ * Provides basic modal functionality.
+ */
 export default function useNoteDetailModal() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 

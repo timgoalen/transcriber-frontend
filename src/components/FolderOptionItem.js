@@ -10,6 +10,9 @@ import { UserMessagesContext } from "../context/UserMessagesContext";
 import { notesApiUrl, foldersApiUrl } from "../constants/apiConstants";
 import { parseFolderIdOfNote, findFolderTitleByID } from "../utils/utils.js";
 
+/**
+ * Renders a single folder option for moving a note within the 'move to folder' modal.
+ */
 export default function FolderOptionItem({
   id,
   title,
@@ -58,7 +61,9 @@ export default function FolderOptionItem({
     }
   }
 
-  // Move note to a new folder
+  /**
+   * Moves a note to a new folder
+   */
   async function updateNoteFolderField(noteID) {
     const updatedNote = isTargetFolderInbox
       ? { folder_id: null }

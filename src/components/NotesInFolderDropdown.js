@@ -4,6 +4,9 @@ import NoteListItem from "./NoteListItem";
 import AddAuxItemBtn from "./AddAuxItemBtn.js";
 import { findFolderColour } from "../utils/utils.js";
 
+/**
+ * Render a list of notes contained within a selected folder.
+ */
 export default function NotesInFolderDropdown({
   folders,
   notesInFolder,

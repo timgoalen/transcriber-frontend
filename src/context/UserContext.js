@@ -6,6 +6,9 @@ import { baseApiUrl } from "../constants/apiConstants";
 
 export const UserContext = createContext();
 
+/**
+ * Manages user authentication state and provides it to child components.
+ */
 export const UserProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userToken, setUserToken] = useState("");

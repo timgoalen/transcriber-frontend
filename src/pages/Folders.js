@@ -21,6 +21,9 @@ import usePrevLocationNotification from "../hooks/usePrevLocationNotification.js
 import { getNotesInFolder } from "../utils/utils.js";
 import { foldersApiUrl } from "../constants/apiConstants";
 
+/**
+ * Component for displaying the list of folders.
+ */
 export default function Folders({
   notes,
   folders,
@@ -53,7 +56,11 @@ export default function Folders({
 
   // -- CRUD FUNCTIONS --
 
+  /**
+   * Updates the title of a folder.
+   */
   async function updateFolderTitle(title, id) {
+    // Validate empty titles
     if (!title || title.trim() === "") {
       addToMessages("please enter a folder title");
       return;
@@ -104,6 +111,9 @@ export default function Folders({
     setOpenToolList(0);
   }
 
+  /**
+   * Submits the new folder form and calls the `createFolder` function.
+   */
   async function handleNewFolderFormSubmit(title) {
     if (title.trim() === "") {
       addToMessages("please enter a folder title");

@@ -22,6 +22,9 @@ function AccountNavBtn({ onClick }) {
   );
 }
 
+/**
+ * Renders a button that toggles the visibility of a login menu.
+ */
 export default function AccountNav() {
   const [showLogInMenu, setShowLogInMenu] = useState(false);
 

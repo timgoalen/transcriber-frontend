@@ -3,6 +3,9 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 
+/**
+ * Renders a form for creating a folder.
+ */
 export default function NewFolderForm({
   handleNewFolderFormCancel,
   handleNewFolderFormSubmit,

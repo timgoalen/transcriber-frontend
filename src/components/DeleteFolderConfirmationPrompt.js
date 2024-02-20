@@ -1,3 +1,6 @@
+/**
+ * Renders a confirmation prompt to the user when they try to delete a folder.
+ */
 export default function DeleteFolderConfirmationPrompt({
   folderTitle,
   setShowDeleteConfirmation,

@@ -7,6 +7,9 @@ import { UserContext } from "../context/UserContext";
 import CloseAuthFormsBtn from "./CloseAuthFormsBtn";
 import { baseApiUrl } from "../constants/apiConstants";
 
+/**
+ * Renders the Sign Up form.
+ */
 export default function SignUpForm() {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -30,6 +33,9 @@ export default function SignUpForm() {
     });
   }
 
+  /**
+   * Handles the submission of the sign up form and performs user registration and login.
+   */
   async function submitSignUpForm(event) {
     event.preventDefault();
     setIsLoading(true);

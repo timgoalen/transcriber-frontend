@@ -5,6 +5,9 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Transcriber from "../components/Transcriber";
 import Header from "../components/header/Header";
 
+/**
+ * Component for editing a note.
+ */
 export default function Edit({ folders, getNotesDataFromApi }) {
   const passedData = useLocation();
   const navigate = useNavigate();

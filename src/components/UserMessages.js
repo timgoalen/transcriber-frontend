@@ -1,5 +1,8 @@
 import { motion } from "framer-motion";
 
+/**
+ * Renders user notifications.
+ */
 export default function UserMessages({ messages }) {
   return (
     <motion.div

@@ -14,6 +14,9 @@ import { UserContext } from "../context/UserContext";
 import { UserMessagesContext } from "../context/UserMessagesContext";
 import { notesApiUrl } from "../constants/apiConstants";
 
+/**
+ * Displays details of a selected note and provides options for editing, moving to folders, or deletion.
+ */
 export default function NoteDetailModal({
   selectedNote,
   folders,
@@ -28,6 +31,9 @@ export default function NoteDetailModal({
   const navigate = useNavigate();
   const ref = useRef(null);
 
+  /**
+   * Deletes the selected note and updates the UI.
+   */
   async function deleteNote() {
     try {
       await axios.delete(`${notesApiUrl}${selectedNote.id}/`, {
@@ -51,6 +57,9 @@ export default function NoteDetailModal({
 
   useClickOutside(ref, handleClickOutside);
 
+  /**
+   * Creates a new folder, while user is in the move-to-folder dialogue.
+   */
   function handleNewFolderFormSubmitInModal(title) {
     if (!title || title.trim() === "") {
       addToMessages("please enter a folder title");

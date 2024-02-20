@@ -7,6 +7,9 @@ import CloseAuthFormsBtn from "./CloseAuthFormsBtn.js";
 import { UserContext } from "../context/UserContext.js";
 import { baseApiUrl } from "../constants/apiConstants";
 
+/**
+ * Handles user login and displays error messages if present.
+ */
 export default function LogInForm() {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -29,6 +32,9 @@ export default function LogInForm() {
     });
   }
 
+  /**
+   * Handles login form submission, sending details to the API, and updates the UI.
+   */
   async function submitLogInForm(event) {
     event.preventDefault();
     setIsLoading(true);

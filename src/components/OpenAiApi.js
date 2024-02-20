@@ -10,6 +10,9 @@ import styles from "../styles/OpenAiApi.module.css";
 import Button from "./Button.js";
 import { UserMessagesContext } from "../context/UserMessagesContext";
 
+/**
+ * Provides AI functionality for the text area.
+ */
 export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
   const [unformattedNote, setUnformattedNote] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -37,6 +40,9 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
     addToMessages("undone");
   }
 
+  /**
+   * Sends a text prompt to the OpenAI API.
+   */
   async function sendToOpenAiApi() {
     // Handle when text area is empty
     if (textAreaInput === "") {
@@ -71,7 +77,9 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
       addToMessages("note formatted");
     } catch (error) {
       console.error("OpenAI API Error:", error);
-      alert("Error retrieving AI response, check if outages at: https://status.openai.com");
+      alert(
+        "Error retrieving AI response, check if outages at: https://status.openai.com"
+      );
     } finally {
       setIsLoading(false);
     }

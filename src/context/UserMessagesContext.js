@@ -2,6 +2,9 @@ import { createContext, useState, useEffect } from "react";
 
 export const UserMessagesContext = createContext();
 
+/**
+ * Manages user notifications state and provides it to child components.
+ */
 export const UserMessagesProvider = ({ children }) => {
   const [messages, setMessages] = useState("");
 

@@ -11,6 +11,9 @@ import LogInMenuItem from "./LogInMenuItem";
 import { UserContext } from "../context/UserContext";
 import useClickOutside from "../hooks/useClickOutside";
 
+/**
+ * Renders a menu with Login or Signup options based on user authentication state.
+ */
 export default function LogInMenu({ setShowLogInMenu }) {
   const { isLoggedIn, userName } = useContext(UserContext);
   const ref = useRef(null);

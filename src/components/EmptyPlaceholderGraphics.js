@@ -1,5 +1,8 @@
 import styles from "../styles/EmptyPlaceHolderGraphics.module.css";
 
+/**
+ * Renders a placeholder SVG.
+ */
 export default function EmptyPlaceholderGraphics({
   primaryColour,
   secondaryColour,

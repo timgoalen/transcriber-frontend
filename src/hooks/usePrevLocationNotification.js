@@ -1,5 +1,8 @@
 import { useEffect } from "react";
 
+/**
+ * Handles data sent from the previous page.
+ */
 export default function usePrevLocationNotification(
   passedMessage,
   setMessageFromPrevLocation

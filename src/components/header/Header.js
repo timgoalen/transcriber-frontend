@@ -1,6 +1,9 @@
 import AccountNav from "./AccountNav";
 import MenuNav from "./MenuNav";
 
+/**
+ * Displays the page header.
+ */
 export default function Header({ pageTitle }) {
   return (
     <header>

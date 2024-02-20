@@ -1,6 +1,9 @@
 import Transcriber from "../components/Transcriber";
 import Header from "../components/header/Header";
 
+/**
+ * Component for rendering the Home Page.
+ */
 export default function Home({
   folders,
   getNotesDataFromApi,

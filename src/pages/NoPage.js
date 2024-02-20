@@ -1,5 +1,8 @@
 import Header from "../components/header/Header.js";
 
+/**
+ * Renders the 404 Page.
+ */
 export default function NoPage() {
   return (
     <>

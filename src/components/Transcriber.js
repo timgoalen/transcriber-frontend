@@ -19,10 +19,12 @@ import LogInSignUpPrompt from "./LogInSignUpPrompt.js";
 import { UserContext } from "../context/UserContext";
 import { UserMessagesContext } from "../context/UserMessagesContext";
 import { notesApiUrl, foldersApiUrl } from "../constants/apiConstants";
-import {
-  findFolderTitleByID,
-} from "../utils/utils.js";
+import { findFolderTitleByID } from "../utils/utils.js";
 
+/**
+ * Renders the TextArea component, handles note CRUD actions
+ * and SpeeachRecognition functionality.
+ */
 export default function Transcriber({
   initialTextAreaValue,
   initialTargetNoteID,
@@ -84,6 +86,9 @@ export default function Transcriber({
 
   // -- CRUD FUNCTIONS --
 
+  /**
+   * Creates a new note.
+   */
   async function createNote(text, targetFolderID) {
     const folderURL = `${foldersApiUrl}${targetFolderID}/`;
 
@@ -116,6 +121,9 @@ export default function Transcriber({
     }
   }
 
+  /**
+   * Updates a note's title.
+   */
   async function updateNoteTextField() {
     // Assemble the updated note
     const updatedNote = { text: textAreaInput };

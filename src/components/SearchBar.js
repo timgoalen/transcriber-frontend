@@ -1,5 +1,8 @@
 import styles from "../styles/SearchBar.module.css";
 
+/**
+ * Renders a Search input.
+ */
 export default function SearchBar({ searchTerms, handleSearchInputChange }) {
   return (
     <input

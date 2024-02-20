@@ -10,6 +10,9 @@ import { UserContext } from "../context/UserContext";
 import { UserMessagesContext } from "../context/UserMessagesContext";
 import { foldersApiUrl } from "../constants/apiConstants";
 
+/**
+ * Renders a folder item.
+ */
 export default function FolderListItem({
   id,
   title,
@@ -30,6 +33,9 @@ export default function FolderListItem({
     setShowDeleteConfirmation(true);
   }
 
+  /**
+   * Deletes a folder and notifies the user.
+   */
   async function deleteFolder() {
     try {
       await axios.delete(`${foldersApiUrl}${id}/`, {

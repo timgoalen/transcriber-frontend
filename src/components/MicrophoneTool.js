@@ -1,5 +1,8 @@
 import MicrophoneIcon from "../assets/custom_icons/MicrophoneIcon";
 
+/**
+ * Renders a tool for starting and stopping the voice-recognition functionality.
+ */
 export default function MicrophoneTool({ handleMicrophoneClick, isRecording }) {
   return (
     <button

@@ -11,6 +11,9 @@ import styles from "../../styles/PageMenu.module.css";
 import useClickOutside from "../../hooks/useClickOutside";
 import NavItem from "./NavItem";
 
+/**
+ * Renders a dropdown list of navigation items.
+ */
 export default function PageMenu({ setShowNavMenu }) {
   const ref = useRef(null);
 

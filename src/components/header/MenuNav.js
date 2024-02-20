@@ -21,6 +21,9 @@ function MenuNavBtn({ onClick, icon }) {
   );
 }
 
+/**
+ * Renders a toggle button and a dropdown menu for navigation actions.
+ */
 export default function MenuNav() {
   const [showNavMenu, setShowNavMenu] = useState(false);
 

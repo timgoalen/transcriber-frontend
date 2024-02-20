@@ -29,6 +29,9 @@ export default function App() {
 
   // -- DATA FETCHING FUNCTIONS --
 
+  /**
+   * Fetches notes data from the API and stores it in state.
+   */
   async function getNotesDataFromApi() {
     try {
       const response = await axios.get(notesApiUrl, {
@@ -45,6 +48,9 @@ export default function App() {
     }
   }
 
+  /**
+   * Fetches folders data from the API and stores it in state.
+   */
   async function getFoldersDataFromApi() {
     try {
       const response = await axios.get(foldersApiUrl, {
@@ -69,7 +75,10 @@ export default function App() {
     userToken,
   ]);
 
-  // Get data form the API when user logs in
+  /**
+   * Fetches notes and folders data from the API when the user logs in,
+   * and clears the data when the user logs out.
+   */
   useEffect(() => {
     if (isLoggedIn && userToken) {
       // Only show the loader spinners on log in
@@ -91,9 +100,13 @@ export default function App() {
 
   // -- CRUD FUNCTIONS --
 
-  // TODO: rephrase "Share with folder (imperative tense etc?)"
-  // This function is in the App so it can be shared with <NoteDetailModal/> via the pages: Inbox, Folders and Search.
-  // It's used for creating folders within the 'move to folder' dialogue
+  /**
+   * Creates a new folder with a user-supplied title and a automatically generated random color.
+   *
+   * Note:
+   * The function is in the App() so it can be shared with the <NoteDetailModal/> via the pages:
+   * Inbox, Folders and Search.
+   */
   async function createFolder(title) {
     const colour = generateRandomColour();
     const newFolder = { title: title, colour: colour };

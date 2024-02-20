@@ -1,5 +1,8 @@
 import { useEffect } from "react";
 
+/**
+ * Displays a real-time visualization of the user's microphone input.
+ */
 export default function AudioVisualizer() {
   // Start audio visualizer when the component mounts (parent component state 'isRecording')
   useEffect(() => {

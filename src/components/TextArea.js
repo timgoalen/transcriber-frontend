@@ -1,6 +1,9 @@
 import styles from "../styles/TextArea.module.css";
 import AudioVisualizer from "./AudioVisualizer";
 
+/**
+ * Renders the Text Area for notes.
+ */
 export default function TextArea({
   textAreaInput,
   setTextAreaInput,

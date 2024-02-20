@@ -1,11 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export default function MicrophoneTool({
-  className,
-  ariaLabel,
-  onClick,
-  icon,
-}) {
+/**
+ * Renders the main tool, for initiating CREATE actions.
+ */
+export default function MainTool({ className, ariaLabel, onClick, icon }) {
   return (
     <button
       id="main-tool-container"

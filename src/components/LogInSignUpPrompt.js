@@ -2,6 +2,9 @@ import { Link } from "react-router-dom";
 
 import CloseAuthFormsBtn from "./CloseAuthFormsBtn";
 
+/**
+ * Renders a link to Sign Up and Log In when a logged-out user attempts to access a protected route.
+ */
 export default function LogInSignUpPrompt({
   userAttempedAction,
   setShowLogInSignUpPrompt,

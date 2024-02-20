@@ -10,6 +10,9 @@ import NoteDetailModal from "../components/NoteDetailModal.js";
 import useNoteDetailModal from "../hooks/useNoteDetailModal.js";
 import { findFolderColour, getNotesInFolder } from "../utils/utils.js";
 
+/**
+ * Renders the Search Page.
+ */
 export default function Search({
   notes,
   folders,

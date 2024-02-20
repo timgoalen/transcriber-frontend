@@ -6,6 +6,9 @@ import {
   capitaliseAfterThese,
 } from "../utils/speechRecognitionUtils.js";
 
+/**
+ * Provides voice-to-text functionality for the text area.
+ */
 export default function SpeechRecognition({ textAreaInput, setTextAreaInput }) {
   // Initialize speech recognition when component is mounted ('isRecording')
   useEffect(() => {

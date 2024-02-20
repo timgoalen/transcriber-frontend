@@ -9,21 +9,25 @@ import { UserContext } from "../context/UserContext";
 import { UserMessagesContext } from "../context/UserMessagesContext";
 import { baseApiUrl } from "../constants/apiConstants";
 
+/**
+ * Renders a button that triggers user logout and redirects to the home page.
+ */
 export default function LogOut({ setShowLogInMenu }) {
   const { updateUserToken, userToken } = useContext(UserContext);
   const { addToMessages } = useContext(UserMessagesContext);
   const navigateToHomePage = useNavigate();
 
+  /**
+   * Sends a logout request to the API, removes the user token from context and local storage,
+   * and updates the UI.
+   */
   async function submitLogOutRequest() {
     try {
-      const logOutResponse = await axios.post(
-        `${baseApiUrl}api/auth/logout/`,
-        {
-          headers: {
-            Authorization: `Token ${userToken}`,
-          },
-        }
-      );
+      const logOutResponse = await axios.post(`${baseApiUrl}api/auth/logout/`, {
+        headers: {
+          Authorization: `Token ${userToken}`,
+        },
+      });
       console.info(logOutResponse.data);
       // Remove the token from state (context) and local storage
       updateUserToken("");

@@ -2,6 +2,9 @@ import { motion } from "framer-motion";
 
 import MicrophoneIcon from "../assets/custom_icons/MicrophoneIcon";
 
+/**
+ * Renders a rotating loading spinner.
+ */
 export default function LoadingSpinner() {
   return (
     <div className="loader-spinner-container">

@@ -14,6 +14,9 @@ import usePrevLocationNotification from "../hooks/usePrevLocationNotification.js
 import useNoteDetailModal from "../hooks/useNoteDetailModal.js";
 import { findFolderColour } from "../utils/utils.js";
 
+/**
+ * Component for displaying the list of notes in the 'Inbox'.
+ */
 export default function Inbox({
   notes,
   folders,
@@ -25,7 +28,6 @@ export default function Inbox({
   const [selectedNote, setSelectedNote] = useState({});
   const { isModalOpen, openModal, closeModal } = useNoteDetailModal();
   const navigate = useNavigate();
-  // TODO: memo this??
   const inboxNotes = notes.filter((note) => note.folder_id === null);
   const passedData = useLocation();
   const passedMessage = passedData.state?.message;
