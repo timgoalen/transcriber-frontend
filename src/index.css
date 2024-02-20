@@ -68,18 +68,12 @@ header {
   flex-direction: row;
   align-items: center;
   padding: 2% 3%;
-  /* justify-content: space-between; */
+  justify-content: space-between;
 }
 
 .header-icons-container {
   display: flex;
   flex-direction: row;
-}
-
-.header-icons-container-sm-devices {
-  display: flex;
-  /* grid-template-columns: repeat(6, 1fr); */
-  /* width: 100%; */
 }
 
 .header-btn-container {
@@ -131,36 +125,25 @@ h2 {
   box-shadow: none;
 }
 
-.login-menu-item {
+.menu-item {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 
-.login-menu-item:hover svg {
+.menu-item:hover svg {
   cursor: pointer;
   color: var(--orange);
 }
 
-.login-menu-item button:hover {
+.menu-item button:hover {
   cursor: pointer;
   color: black;
 }
 
 nav .active {
   color: var(--orange);
-  /* border-bottom: 1px dashed var(--orange); */
-  /* border: 1px solid var(--grey); */
-  /* border-radius: 8px; */
 }
-
-/* nav :not(.active) {
-  color: var(--grey);
-} */
-
-/* a .active svg {
-  fill: var(--orange);
-} */
 
 /* -- HOME PAGE -- */
 
@@ -677,16 +660,6 @@ canvas {
 }
 
 /* -- MEDIA QUERIES -- */
-
-@media screen and (max-width: 408px) {
-  .header-btn-container {
-    min-width: 3.14rem;
-  }
-
-  .header-btn-text {
-    font-size: 0.8rem;
-  }
-}
 
 @media screen and (min-width: 800px) {
   #main-container,

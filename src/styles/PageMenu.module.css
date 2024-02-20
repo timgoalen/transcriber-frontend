@@ -1,9 +1,9 @@
-.LoginMenu {
+.PageMenu {
   position: absolute;
   z-index: 999;
   top: 8.5vh;
   top: 8.5dvh;
-  right: 2vw;
+  right: 7vw;
   display: flex;
   flex-direction: column;
   border: 1px solid var(--grey);
@@ -13,23 +13,23 @@
   box-shadow: var(--subtle-box-shadow-1);
 }
 
-.LoginMenu hr {
+.PageMenu hr {
   margin: 12px 0;
 }
 
-.LoginMenu svg {
+.PageMenu svg {
   color: var(--grey);
   margin-right: 12px;
 }
 
 @media screen and (min-width: 800px) {
-  .LoginMenu {
-    right: 9.5vw;
+  .PageMenu {
+    right: 14.5vw;
   }
 }
 
 @media screen and (min-width: 1024px) {
-  .LoginMenu {
-    right: 16.5vw;
+  .PageMenu {
+    right: 20.5vw;
   }
 }

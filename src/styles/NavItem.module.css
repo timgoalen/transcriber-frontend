@@ -1,0 +1,11 @@
+.BtnContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: var(--black);
+    /* font-size: 1.2rem; */
+}
+
+.BtnLabel {
+    font-size: 0.9rem;
+}

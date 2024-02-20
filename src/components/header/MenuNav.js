@@ -6,28 +6,32 @@ import {
   faEllipsisVertical,
 } from "@fortawesome/free-solid-svg-icons";
 
-export default function MenuNav({ showMenu, setShowMenu }) {
-  const [menuOpen, setMenuOpen] = useState(false);
+import PageMenu from "./PageMenu";
 
-  function toggleMenuOpen() {
-    setShowMenu(!showMenu);
-    setMenuOpen(!menuOpen);
-  }
-
+function MenuNavBtn({ onClick, icon }) {
   return (
     <button
+      onClick={onClick}
       className="header-btn-container"
       aria-label="Menu"
-      onClick={toggleMenuOpen}
     >
-      {menuOpen ? (
-        <FontAwesomeIcon icon={faEllipsisVertical} />
-      ) : (
-        <>
-          <FontAwesomeIcon icon={faEllipsis} />
-          <div className="header-btn-text">menu</div>
-        </>
-      )}
+      <FontAwesomeIcon icon={icon} />
+      <div className="header-btn-text">menu</div>
     </button>
+  );
+}
+
+export default function MenuNav() {
+  const [showNavMenu, setShowNavMenu] = useState(false);
+
+  return showNavMenu ? (
+    <>
+      <MenuNavBtn icon={faEllipsisVertical} />
+
+      {/* Nav dropdown menu */}
+      <PageMenu setShowNavMenu={setShowNavMenu} />
+    </>
+  ) : (
+    <MenuNavBtn icon={faEllipsis} onClick={() => setShowNavMenu(true)} />
   );
 }
