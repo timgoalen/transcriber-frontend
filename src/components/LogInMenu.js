@@ -28,7 +28,7 @@ export default function LogInMenu({ setShowLogInMenu }) {
     <div className={styles.LoginMenu} ref={ref}>
       {isLoggedIn ? (
         <>
-          <div className="login-menu-item">Hi, {userName}!</div>
+          <div className="menu-item">Hi, {userName}!</div>
           <hr></hr>
           <LogOut setShowLogInMenu={setShowLogInMenu} />
         </>
@@ -38,9 +38,16 @@ export default function LogInMenu({ setShowLogInMenu }) {
             linkTo="/login"
             name="Log In"
             icon={faArrowUpFromBracket}
+            // This extra onClick closes the menu if active item is clicked again
+            onClick={() => setShowLogInMenu(false)}
           />
           <hr></hr>
-          <LogInMenuItem linkTo="/signup" name="Sign Up" icon={faPlus} />
+          <LogInMenuItem
+            linkTo="/signup"
+            name="Sign Up"
+            icon={faPlus}
+            onClick={() => setShowLogInMenu(false)}
+          />
         </>
       )}
     </div>

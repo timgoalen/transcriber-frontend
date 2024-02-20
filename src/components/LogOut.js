@@ -42,7 +42,7 @@ export default function LogOut({ setShowLogInMenu }) {
   return (
     <>
       <div
-        className="login-menu-item"
+        className="menu-item"
         onClick={() => {
           submitLogOutRequest();
           navigateToHomePage("/");

@@ -25,13 +25,34 @@ export default function PageMenu({ setShowNavMenu }) {
 
   return (
     <nav ref={ref} className={styles.PageMenu}>
-      <NavItem link="/" icon={faMicrophone} label="home" />
+      <NavItem
+        link="/"
+        icon={faMicrophone}
+        label="home"
+        // This extra onClick closes the menu if active item is clicked again
+        onClick={() => setShowNavMenu(false)}
+      />
       <hr></hr>
-      <NavItem link="/inbox" icon={faListUl} label="inbox" />
+      <NavItem
+        link="/inbox"
+        icon={faListUl}
+        label="inbox"
+        onClick={() => setShowNavMenu(false)}
+      />
       <hr></hr>
-      <NavItem link="/folders" icon={faFolder} label="folders" />
+      <NavItem
+        link="/folders"
+        icon={faFolder}
+        label="folders"
+        onClick={() => setShowNavMenu(false)}
+      />
       <hr></hr>
-      <NavItem link="/search" icon={faMagnifyingGlass} label="search" />
+      <NavItem
+        link="/search"
+        icon={faMagnifyingGlass}
+        label="search"
+        onClick={() => setShowNavMenu(false)}
+      />
     </nav>
   );
 }

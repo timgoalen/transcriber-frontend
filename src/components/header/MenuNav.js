@@ -27,14 +27,18 @@ function MenuNavBtn({ onClick, icon }) {
 export default function MenuNav() {
   const [showNavMenu, setShowNavMenu] = useState(false);
 
-  return showNavMenu ? (
+  return (
     <>
-      <MenuNavBtn icon={faEllipsisVertical} />
+      {!showNavMenu ? (
+        <MenuNavBtn icon={faEllipsis} onClick={() => setShowNavMenu(true)} />
+      ) : (
+        <>
+          <MenuNavBtn icon={faEllipsisVertical} />
 
-      {/* Nav dropdown menu */}
-      <PageMenu setShowNavMenu={setShowNavMenu} />
+          {/* Nav dropdown menu */}
+          <PageMenu setShowNavMenu={setShowNavMenu} />
+        </>
+      )}
     </>
-  ) : (
-    <MenuNavBtn icon={faEllipsis} onClick={() => setShowNavMenu(true)} />
   );
 }
