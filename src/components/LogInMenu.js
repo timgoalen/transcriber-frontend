@@ -1,5 +1,6 @@
 import { useContext, useRef } from "react";
 
+import { motion } from "framer-motion";
 import {
   faArrowUpFromBracket,
   faPlus,
@@ -25,7 +26,13 @@ export default function LogInMenu({ setShowLogInMenu }) {
   useClickOutside(ref, handleClickOutside);
 
   return (
-    <div className={styles.LoginMenu} ref={ref}>
+    <motion.div
+      className={styles.LoginMenu}
+      ref={ref}
+      transition={{ duration: 0.1 }}
+      initial={{ y: -10, opacity: 0.5 }}
+      animate={{ y: 0, opacity: 1 }}
+    >
       {isLoggedIn ? (
         <>
           <div className="menu-item">Hi, {userName}!</div>
@@ -50,6 +57,6 @@ export default function LogInMenu({ setShowLogInMenu }) {
           />
         </>
       )}
-    </div>
+    </motion.div>
   );
 }

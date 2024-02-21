@@ -1,5 +1,6 @@
 import { useRef } from "react";
 
+import { motion } from "framer-motion";
 import {
   faMagnifyingGlass,
   faListUl,
@@ -24,7 +25,13 @@ export default function PageMenu({ setShowNavMenu }) {
   useClickOutside(ref, handleClickOutside);
 
   return (
-    <nav ref={ref} className={styles.PageMenu}>
+    <motion.nav
+      ref={ref}
+      className={styles.PageMenu}
+      transition={{ duration: 0.1 }}
+      initial={{ y: -10, opacity: 0.5 }}
+      animate={{ y: 0, opacity: 1 }}
+    >
       <NavItem
         link="/"
         icon={faMicrophone}
@@ -53,6 +60,6 @@ export default function PageMenu({ setShowNavMenu }) {
         label="search"
         onClick={() => setShowNavMenu(false)}
       />
-    </nav>
+    </motion.nav>
   );
 }
