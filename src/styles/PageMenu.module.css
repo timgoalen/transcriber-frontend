@@ -10,7 +10,7 @@
   border-radius: 8px;
   background-color: #fff;
   padding: 1rem;
-  box-shadow: var(--subtle-box-shadow-1);
+  box-shadow: var(--subtle-box-shadow-2);
 }
 
 .PageMenu hr {
@@ -20,6 +20,7 @@
 .PageMenu svg {
   color: var(--grey);
   margin-right: 12px;
+  width: 16px;
 }
 
 @media screen and (min-width: 800px) {
