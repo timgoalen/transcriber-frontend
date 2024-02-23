@@ -1,6 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 
 import axios from "axios";
+import { useLongPress } from "use-long-press";
 import {
   faWandMagicSparkles,
   faSpinner,
@@ -8,6 +9,7 @@ import {
 
 import styles from "../styles/OpenAiApi.module.css";
 import Button from "./Button.js";
+import CustomPrompts from "./CustomPrompts.js";
 import { UserMessagesContext } from "../context/UserMessagesContext";
 
 /**
@@ -18,6 +20,7 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
   const [isLoading, setIsLoading] = useState(false);
   const [showUndo, setShowUndo] = useState(false);
   const [isUndoListenerOn, setIsUndoLIstenerOn] = useState(false);
+  const [showCustomPrompts, setShowCustomPrompts] = useState(false);
   const { addToMessages } = useContext(UserMessagesContext);
 
   // After formatting, hide undo button when user enters more text
@@ -40,16 +43,28 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
     addToMessages("undone");
   }
 
-  /**
-   * Sends a text prompt to the OpenAI API.
-   */
-  async function sendToOpenAiApi() {
+  function handleAiBtnClick() {
     // Handle when text area is empty
     if (textAreaInput === "") {
       addToMessages("can't format an empty note");
       return;
     }
+    console.log("ai btn clicked");
+    // sendToOpenAiApi();
+  }
 
+  /**
+   * Sets up the Long Press Hook.
+   */
+  const bind = useLongPress(() => {
+    setShowCustomPrompts(true);
+    console.log("long press");
+  });
+
+  /**
+   * Sends a text prompt to the OpenAI API.
+   */
+  async function sendToOpenAiApi() {
     try {
       setIsLoading(true);
       const response = await axios.post(
@@ -85,22 +100,25 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
     }
   }
 
-  return showUndo ? (
-    // Undo button
-    <div className={styles.AiBtn}>
-      <div className={styles.UndoAiResponse} onClick={undoAiResponse}>
-        Undo
-      </div>
-    </div>
-  ) : isLoading ? (
-    // Loading spinner
-    <div className={styles.AiBtn}>
-      <Button name={""} icon={faSpinner} ariaLabel="Loading AI Response" />
-    </div>
-  ) : (
-    // AI button
-    <div className={styles.AiBtn} onClick={sendToOpenAiApi}>
-      <Button name={""} icon={faWandMagicSparkles} ariaLabel="AI Formatting" />
-    </div>
+  return (
+    <>
+      {showUndo ? (
+        <div className={styles.AiBtn}>
+          <div className={styles.UndoAiResponse} onClick={undoAiResponse}>
+            Undo
+          </div>
+        </div>
+      ) : isLoading ? (
+        <div className={styles.AiBtn}>
+          <Button icon={faSpinner} ariaLabel="Loading AI Response" />
+        </div>
+      ) : (
+        <div className={styles.AiBtn} {...bind()} onClick={handleAiBtnClick}>
+          <Button icon={faWandMagicSparkles} ariaLabel="AI Formatting" />
+        </div>
+      )}
+
+      {showCustomPrompts && <CustomPrompts />}
+    </>
   );
 }
