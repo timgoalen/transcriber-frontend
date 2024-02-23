@@ -8,7 +8,7 @@ import PromptListItem from "./PromptListItem";
 import { UserContext } from "../context/UserContext";
 import { promptsApiUrl } from "../constants/apiConstants";
 
-export default function CustomPrompts() {
+export default function CustomPrompts({ handlePromptClick }) {
   const [showNewPromptForm, setShowNewPromptForm] = useState(false);
   const [prompts, setPrompts] = useState([]);
   const [isLoadingPrompts, setIsLoadingPrompts] = useState(false);
@@ -80,6 +80,7 @@ export default function CustomPrompts() {
               openItemTools={openItemTools}
               handlePromptOptionsClick={handlePromptOptionsClick}
               getPromptsDataFromApi={getPromptsDataFromApi}
+              handlePromptClick={handlePromptClick}
             />
           ))}
         </div>

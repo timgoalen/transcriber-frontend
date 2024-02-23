@@ -49,8 +49,12 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
       addToMessages("can't format an empty note");
       return;
     }
-    console.log("ai btn clicked");
-    // sendToOpenAiApi();
+    sendToOpenAiApi();
+  }
+
+  function handlePromptClick(text) {
+    sendToOpenAiApi(text);
+    setShowCustomPrompts(false);
   }
 
   /**
@@ -61,16 +65,33 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
   });
 
   /**
+   * Returns a default prompt, or a custom user prompt if one has been chosen.
+   */
+  function assemblePrompt(userPrompt) {
+    const defaultPrompt = `Correct the spelling and punctuation of this text (use UK spelling). 
+    Only return the formatted text, with no added comments or annotations: ${textAreaInput}`;
+
+    // If the user hasn't chosen a custom prompt, use the default prompt
+    if (userPrompt === null) {
+      return defaultPrompt;
+    } else {
+      // Assemble the custom prompt with the text in the text area
+      return `${userPrompt}: ${textAreaInput}`;
+    }
+  }
+
+  /**
    * Sends a text prompt to the OpenAI API.
    */
-  async function sendToOpenAiApi() {
+  async function sendToOpenAiApi(userPrompt = null) {
+    const prompt = assemblePrompt(userPrompt);
+
     try {
       setIsLoading(true);
       const response = await axios.post(
         "https://api.openai.com/v1/completions",
         {
-          prompt: `Correct the spelling and punctuation of this text (use UK spelling). 
-          Only return the formatted text, with no added comments or annotations: ${textAreaInput}`,
+          prompt: prompt,
           max_tokens: 500,
           temperature: 0.5,
           n: 1,
@@ -92,7 +113,7 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
     } catch (error) {
       console.error("OpenAI API Error:", error);
       alert(
-        "Error retrieving AI response, check if outages at: https://status.openai.com"
+        "Error retrieving AI response, check for outages at: https://status.openai.com"
       );
     } finally {
       setIsLoading(false);
@@ -117,7 +138,9 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
         </div>
       )}
 
-      {showCustomPrompts && <CustomPrompts />}
+      {showCustomPrompts && (
+        <CustomPrompts handlePromptClick={handlePromptClick} />
+      )}
     </>
   );
 }

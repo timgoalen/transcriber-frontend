@@ -23,6 +23,7 @@ export default function PromptListItem({
   openItemTools,
   handlePromptOptionsClick,
   getPromptsDataFromApi,
+  handlePromptClick,
 }) {
   const { userToken } = useContext(UserContext);
   const { addToMessages } = useContext(UserMessagesContext);
@@ -49,12 +50,13 @@ export default function PromptListItem({
   return (
     <>
       <div className="list-page-item">
-        {/* Icon */}
-        <FontAwesomeIcon icon={faWandMagicSparkles} />
-
-        {/* Text */}
-        <div className="item-text" onClick={() => alert("todo")}>
-          <p>{text}</p>
+        <div onClick={() => handlePromptClick(text)}>
+          {/* Icon */}
+          <FontAwesomeIcon icon={faWandMagicSparkles} />
+          {/* Text */}
+          <div className="item-text">
+            <p>{text}</p>
+          </div>
         </div>
 
         {/* Toolbar */}
