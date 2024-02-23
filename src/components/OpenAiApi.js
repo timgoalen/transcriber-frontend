@@ -11,6 +11,8 @@ import styles from "../styles/OpenAiApi.module.css";
 import Button from "./Button.js";
 import CustomPrompts from "./CustomPrompts.js";
 import { UserMessagesContext } from "../context/UserMessagesContext";
+import { UserContext } from "../context/UserContext";
+import { promptsApiUrl } from "../constants/apiConstants";
 
 /**
  * Provides AI functionality for the text area.
@@ -20,7 +22,10 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
   const [isLoading, setIsLoading] = useState(false);
   const [showUndo, setShowUndo] = useState(false);
   const [isUndoListenerOn, setIsUndoLIstenerOn] = useState(false);
+  const [prompts, setPrompts] = useState([]);
   const [showCustomPrompts, setShowCustomPrompts] = useState(false);
+  const [isLoadingPrompts, setIsLoadingPrompts] = useState(false);
+  const { userToken } = useContext(UserContext);
   const { addToMessages } = useContext(UserMessagesContext);
 
   // After formatting, hide undo button when user enters more text
@@ -52,6 +57,25 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
     sendToOpenAiApi();
   }
 
+  /**
+   * Fetches prompts data from the API and stores it in state.
+   */
+  async function getPromptsDataFromApi() {
+    setIsLoadingPrompts(true);
+    try {
+      const response = await axios.get(promptsApiUrl, {
+        headers: {
+          Authorization: `Token ${userToken}`,
+        },
+      });
+      setPrompts(response.data);
+    } catch (error) {
+      console.error("Error fetching prompts data from the API:", error.message);
+    } finally {
+      setIsLoadingPrompts(false);
+    }
+  }
+
   function handlePromptClick(text) {
     sendToOpenAiApi(text);
     setShowCustomPrompts(false);
@@ -62,6 +86,7 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
    */
   const bind = useLongPress(() => {
     setShowCustomPrompts(true);
+    getPromptsDataFromApi();
   });
 
   /**
@@ -139,7 +164,13 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
       )}
 
       {showCustomPrompts && (
-        <CustomPrompts handlePromptClick={handlePromptClick} />
+        <CustomPrompts
+          prompts={prompts}
+          handlePromptClick={handlePromptClick}
+          setShowCustomPrompts={setShowCustomPrompts}
+          getPromptsDataFromApi={getPromptsDataFromApi}
+          isLoadingPrompts={isLoadingPrompts}
+        />
       )}
     </>
   );
