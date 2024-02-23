@@ -54,11 +54,10 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
   }
 
   /**
-   * Sets up the Long Press Hook.
+   * Sets up the Long Press Hook, to open CustomPrompts.
    */
   const bind = useLongPress(() => {
     setShowCustomPrompts(true);
-    console.log("long press");
   });
 
   /**
