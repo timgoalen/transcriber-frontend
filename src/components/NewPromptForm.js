@@ -33,8 +33,8 @@ export default function NewPromptForm({ setShowNewPromptForm }) {
       });
       console.log("Prompt saved:", response.data);
       addToMessages("prompt saved");
-      alert("sucessfull");
       // await getFoldersDataFromApi();
+      setShowNewPromptForm(false);
     } catch (error) {
       alert(`Error saving prompt: ${error.message}`);
     }
