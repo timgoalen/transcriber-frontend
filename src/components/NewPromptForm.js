@@ -11,7 +11,10 @@ import { promptsApiUrl } from "../constants/apiConstants";
 /**
  * Renders a form for creating a prompt.
  */
-export default function NewPromptForm({ setShowNewPromptForm }) {
+export default function NewPromptForm({
+  setShowNewPromptForm,
+  getPromptsDataFromApi,
+}) {
   const [prompt, setPrompt] = useState("");
   const { isLoggedIn, userToken } = useContext(UserContext);
   const { addToMessages } = useContext(UserMessagesContext);
@@ -33,7 +36,7 @@ export default function NewPromptForm({ setShowNewPromptForm }) {
       });
       console.log("Prompt saved:", response.data);
       addToMessages("prompt saved");
-      // await getFoldersDataFromApi();
+      await getPromptsDataFromApi();
       setShowNewPromptForm(false);
     } catch (error) {
       alert(`Error saving prompt: ${error.message}`);
