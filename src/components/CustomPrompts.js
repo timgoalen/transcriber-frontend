@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useRef } from "react";
 
 import { useNavigate } from "react-router-dom";
 
@@ -8,6 +8,7 @@ import NewPromptForm from "./NewPromptForm";
 import PromptListItem from "./PromptListItem";
 import CloseAuthFormsBtn from "./CloseAuthFormsBtn";
 import LoadingSpinner from "./LoadingSpinner";
+import useClickOutside from "../hooks/useClickOutside.js";
 import { UserContext } from "../context/UserContext";
 
 export default function CustomPrompts({
@@ -19,6 +20,7 @@ export default function CustomPrompts({
 }) {
   const [showNewPromptForm, setShowNewPromptForm] = useState(false);
   const [openItemTools, setOpenItemTools] = useState(null);
+  const ref = useRef(null);
   const { isLoggedIn } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -35,9 +37,15 @@ export default function CustomPrompts({
     }
   }
 
+  function handleClickOutside() {
+    setShowCustomPrompts(false);
+  }
+
+  useClickOutside(ref, handleClickOutside);
+
   return (
     <section className={styles.ModalContainer}>
-      <div className={styles.ModalContent}>
+      <div className={styles.ModalContent} ref={ref}>
         <div className={styles.ModalText}>
           <h2>custom prompts</h2>
 
