@@ -1,0 +1,45 @@
+.Btn {
+  position: absolute;
+  top: calc(9vh + 2%);
+  top: calc(9dvh + 2%);
+  right: 5%;
+  color: var(--grey);
+  background-color: #ffffffa8;
+  border-radius: 8px;
+  padding: 4px;
+  backdrop-filter: blur(15px);
+  font-size: 0.9rem;
+}
+
+.Btn:hover {
+  color: var(--blue);
+  cursor: pointer;
+}
+
+.Box {
+  position: absolute;
+  top: calc(9vh + 2%);
+  top: calc(9dvh + 2%);
+  right: 5%;
+  z-index: 999;
+  border: 1px solid var(--grey);
+  border-radius: 8px;
+  background-color: #fff;
+  padding: 1rem;
+  box-shadow: var(--subtle-box-shadow-2);
+  max-width: 90%;
+}
+
+@media screen and (min-width: 800px) {
+  .Btn,
+  .Box {
+    right: 12%;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .Btn,
+  .Box {
+    right: 18%;
+  }
+}

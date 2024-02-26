@@ -12,6 +12,7 @@ export function punctuateByVoiceCommand(string) {
   string = string.replace(/(?:\s+|^)exclamation mark(?:\s+|$)/g, "!");
   string = string.replace(/(?:\s+|^)colon(?:\s+|$)/g, ":");
   string = string.replace(/(?:\s+|^)semicolon(?:\s+|$)/g, ";");
+  string = string.replace("new line", "\n");
   string = string.replace("new paragraph", "\n\n");
   string = string.replace("hyphen", "-");
 

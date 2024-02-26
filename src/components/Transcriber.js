@@ -16,6 +16,7 @@ import OpenAiApi from "./OpenAiApi.js";
 import TextArea from "./TextArea";
 import Toolbar from "./Toolbar";
 import LogInSignUpPrompt from "./LogInSignUpPrompt.js";
+import InfoBoxBtn from "./InfoBoxBtn.js";
 import { UserContext } from "../context/UserContext";
 import { UserMessagesContext } from "../context/UserMessagesContext";
 import { notesApiUrl, foldersApiUrl } from "../constants/apiConstants";
@@ -193,6 +194,8 @@ export default function Transcriber({
           setTextAreaInput={setTextAreaInput}
           isRecording={isRecording}
         />
+
+        {!textAreaInput && <InfoBoxBtn />}
 
         {isRecording ? (
           <SpeechRecognition

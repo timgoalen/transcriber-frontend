@@ -104,7 +104,7 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
     getPromptsDataFromApi();
   });
 
-  // -- POST TO THE API --
+  // -- OPEN AI API --
 
   /**
    * Returns a default prompt, or a custom user prompt if one has been chosen.
