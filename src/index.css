@@ -555,6 +555,7 @@ canvas {
   display: grid;
   grid-template-rows: 1fr 3rem;
   max-height: 97%;
+  position: relative;
 }
 
 #note-detail-modal-text {

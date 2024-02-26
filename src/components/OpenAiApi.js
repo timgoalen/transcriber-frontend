@@ -1,6 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 
 import axios from "axios";
+import { useLongPress } from "use-long-press";
 import {
   faWandMagicSparkles,
   faSpinner,
@@ -8,7 +9,10 @@ import {
 
 import styles from "../styles/OpenAiApi.module.css";
 import Button from "./Button.js";
+import CustomPrompts from "./CustomPrompts.js";
 import { UserMessagesContext } from "../context/UserMessagesContext";
+import { UserContext } from "../context/UserContext";
+import { promptsApiUrl } from "../constants/apiConstants";
 
 /**
  * Provides AI functionality for the text area.
@@ -18,6 +22,10 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
   const [isLoading, setIsLoading] = useState(false);
   const [showUndo, setShowUndo] = useState(false);
   const [isUndoListenerOn, setIsUndoLIstenerOn] = useState(false);
+  const [prompts, setPrompts] = useState([]);
+  const [showCustomPrompts, setShowCustomPrompts] = useState(false);
+  const [isLoadingPrompts, setIsLoadingPrompts] = useState(false);
+  const { userToken } = useContext(UserContext);
   const { addToMessages } = useContext(UserMessagesContext);
 
   // After formatting, hide undo button when user enters more text
@@ -40,23 +48,75 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
     addToMessages("undone");
   }
 
-  /**
-   * Sends a text prompt to the OpenAI API.
-   */
-  async function sendToOpenAiApi() {
+  function handleAiBtnClick() {
     // Handle when text area is empty
     if (textAreaInput === "") {
       addToMessages("can't format an empty note");
       return;
     }
+    sendToOpenAiApi();
+  }
+
+  /**
+   * Fetches prompts data from the API and stores it in state.
+   */
+  async function getPromptsDataFromApi() {
+    setIsLoadingPrompts(true);
+    try {
+      const response = await axios.get(promptsApiUrl, {
+        headers: {
+          Authorization: `Token ${userToken}`,
+        },
+      });
+      setPrompts(response.data);
+    } catch (error) {
+      console.error("Error fetching prompts data from the API:", error.message);
+    } finally {
+      setIsLoadingPrompts(false);
+    }
+  }
+
+  function handlePromptClick(text) {
+    sendToOpenAiApi(text);
+    setShowCustomPrompts(false);
+  }
+
+  /**
+   * Sets up the Long Press Hook, to open CustomPrompts.
+   */
+  const bind = useLongPress(() => {
+    setShowCustomPrompts(true);
+    getPromptsDataFromApi();
+  });
+
+  /**
+   * Returns a default prompt, or a custom user prompt if one has been chosen.
+   */
+  function assemblePrompt(userPrompt) {
+    const defaultPrompt = `Correct the spelling and punctuation of this text (use UK spelling). 
+    Only return the formatted text, with no added comments or annotations: ${textAreaInput}`;
+
+    // If the user hasn't chosen a custom prompt, use the default prompt
+    if (userPrompt === null) {
+      return defaultPrompt;
+    } else {
+      // Assemble the custom prompt with the text in the text area
+      return `${userPrompt}: ${textAreaInput}`;
+    }
+  }
+
+  /**
+   * Sends a text prompt to the OpenAI API.
+   */
+  async function sendToOpenAiApi(userPrompt = null) {
+    const prompt = assemblePrompt(userPrompt);
 
     try {
       setIsLoading(true);
       const response = await axios.post(
         "https://api.openai.com/v1/completions",
         {
-          prompt: `Correct the spelling and punctuation of this text (use UK spelling). 
-          Only return the formatted text, with no added comments or annotations: ${textAreaInput}`,
+          prompt: prompt,
           max_tokens: 500,
           temperature: 0.5,
           n: 1,
@@ -78,29 +138,40 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
     } catch (error) {
       console.error("OpenAI API Error:", error);
       alert(
-        "Error retrieving AI response, check if outages at: https://status.openai.com"
+        "Error retrieving AI response, check for outages at: https://status.openai.com"
       );
     } finally {
       setIsLoading(false);
     }
   }
 
-  return showUndo ? (
-    // Undo button
-    <div className={styles.AiBtn}>
-      <div className={styles.UndoAiResponse} onClick={undoAiResponse}>
-        Undo
-      </div>
-    </div>
-  ) : isLoading ? (
-    // Loading spinner
-    <div className={styles.AiBtn}>
-      <Button name={""} icon={faSpinner} ariaLabel="Loading AI Response" />
-    </div>
-  ) : (
-    // AI button
-    <div className={styles.AiBtn} onClick={sendToOpenAiApi}>
-      <Button name={""} icon={faWandMagicSparkles} ariaLabel="AI Formatting" />
-    </div>
+  return (
+    <>
+      {showUndo ? (
+        <div className={styles.AiBtn}>
+          <div className={styles.UndoAiResponse} onClick={undoAiResponse}>
+            Undo
+          </div>
+        </div>
+      ) : isLoading ? (
+        <div className={styles.AiBtn}>
+          <Button icon={faSpinner} ariaLabel="Loading AI Response" />
+        </div>
+      ) : (
+        <div className={styles.AiBtn} {...bind()} onClick={handleAiBtnClick}>
+          <Button icon={faWandMagicSparkles} ariaLabel="AI Formatting" />
+        </div>
+      )}
+
+      {showCustomPrompts && (
+        <CustomPrompts
+          prompts={prompts}
+          handlePromptClick={handlePromptClick}
+          setShowCustomPrompts={setShowCustomPrompts}
+          getPromptsDataFromApi={getPromptsDataFromApi}
+          isLoadingPrompts={isLoadingPrompts}
+        />
+      )}
+    </>
   );
 }

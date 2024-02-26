@@ -1,0 +1,42 @@
+.PromptItem {
+  margin: 3% 3% 0 3%;
+  border: 1px solid var(--grey);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.PromptItemContent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.PromptItemIcon {
+  font-size: 0.9rem;
+  padding: 0.45rem;
+  color: var(--grey);
+}
+
+.PromptItem p {
+  font-size: 1.2rem;
+  padding: 0.2rem 0.5rem;
+  line-height: 1.5;
+  min-height: 2.2rem;
+}
+
+.PromptItem:hover {
+  cursor: pointer;
+  border-color: var(--black);
+}
+
+.PromptItem:hover .PromptItemIcon {
+  color: var(--blue);
+}
+
+@media screen and (min-width: 1024px) {
+  .PromptItem {
+    margin: 1.5rem auto 0 auto;
+  }
+}

@@ -101,7 +101,7 @@ export default function App() {
   // -- CRUD FUNCTIONS --
 
   /**
-   * Creates a new folder with a user-supplied title and a automatically generated random color.
+   * Creates a new folder with a user-supplied title and an automatically generated random color.
    *
    * Note:
    * The function is in the App() so it can be shared with the <NoteDetailModal/> via the pages:
