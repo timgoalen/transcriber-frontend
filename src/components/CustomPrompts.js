@@ -28,7 +28,7 @@ export default function CustomPrompts({
     openItemTools === id ? setOpenItemTools(null) : setOpenItemTools(id);
   }
 
-  // Show new prompt for if user is logged in
+  // Show new prompt form if user is logged in
   function handleNewPromptClick() {
     if (isLoggedIn) {
       setShowNewPromptForm(true);
@@ -55,11 +55,7 @@ export default function CustomPrompts({
               getPromptsDataFromApi={getPromptsDataFromApi}
             />
           ) : (
-            <AddAuxItemBtn
-              // onClick={() => setShowNewPromptForm(true)}
-              onClick={handleNewPromptClick}
-              text="new prompt"
-            />
+            <AddAuxItemBtn onClick={handleNewPromptClick} text="new prompt" />
           )}
 
           {isLoadingPrompts ? (

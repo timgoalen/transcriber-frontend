@@ -49,20 +49,7 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
     }
   }, [isLoggedIn, userToken]);
 
-  function undoAiResponse() {
-    setTextAreaInput(unformattedNote);
-    setShowUndo(false);
-    addToMessages("undone");
-  }
-
-  function handleAiBtnClick() {
-    // Handle when text area is empty
-    if (textAreaInput.trim() === "") {
-      addToMessages("can't format an empty note");
-      return;
-    }
-    sendToOpenAiApi();
-  }
+  // -- DATA FETCHING --
 
   /**
    * Fetches prompts data from the API and stores it in state.
@@ -83,6 +70,17 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
     }
   }
 
+  // -- CLICK HANDLERS --
+
+  function handleAiBtnClick() {
+    // Handle when text area is empty
+    if (textAreaInput.trim() === "") {
+      addToMessages("can't format an empty note");
+      return;
+    }
+    sendToOpenAiApi();
+  }
+
   function handlePromptClick(text) {
     if (textAreaInput.trim() === "") {
       addToMessages("can't format an empty note");
@@ -92,6 +90,12 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
     setShowCustomPrompts(false);
   }
 
+  function undoAiResponse() {
+    setTextAreaInput(unformattedNote);
+    setShowUndo(false);
+    addToMessages("undone");
+  }
+
   /**
    * Sets up the Long Press Hook, to open CustomPrompts.
    */
@@ -99,6 +103,8 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
     setShowCustomPrompts(true);
     getPromptsDataFromApi();
   });
+
+  // -- POST TO THE API --
 
   /**
    * Returns a default prompt, or a custom user prompt if one has been chosen.
