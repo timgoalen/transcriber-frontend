@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import styles from "../styles/CustomPrompts.module.css";
 import AddAuxItemBtn from "./AddAuxItemBtn";
 import NewPromptForm from "./NewPromptForm";
 import PromptListItem from "./PromptListItem";
@@ -21,9 +22,9 @@ export default function CustomPrompts({
   }
 
   return (
-    <section id="note-detail-modal-container">
-      <div id="note-detail-modal-content">
-        <div id="note-detail-modal-text">
+    <section className={styles.ModalContainer}>
+      <div className={styles.ModalContent}>
+        <div className={styles.ModalText}>
           <h2>custom prompts</h2>
 
           {isLoadingPrompts ? (
@@ -43,8 +44,8 @@ export default function CustomPrompts({
           )}
 
           {prompts.length === 0 && (
-            <p>
-              examples for your first prompt: "Re-phrase this for clarity".
+            <p className={styles.PlaceholderText}>
+              Examples for your first prompt: "Re-phrase this for clarity",
               "Summarise this".
             </p>
           )}
