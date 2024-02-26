@@ -23,6 +23,14 @@ export default function NewPromptForm({
     setPrompt(event.target.value);
   }
 
+  function handleCreatePromptClick(prompt) {
+    if (prompt.trim() > "") {
+      createPrompt(prompt);
+    } else {
+      addToMessages("whoops, can't save an empty prompt");
+    }
+  }
+
   /**
    * Creates a new prompt.
    */
@@ -57,16 +65,14 @@ export default function NewPromptForm({
       <button
         className="crud-new-folder-btns"
         onClick={() => setShowNewPromptForm(false)}
-        // TODO: change this...
         id="new-folder-cancel-btn"
       >
         <FontAwesomeIcon icon={faXmark} />
       </button>
 
       <button
-        // TODO: change this...
         className="crud-new-folder-btns"
-        onClick={() => createPrompt(prompt)}
+        onClick={() => handleCreatePromptClick(prompt)}
       >
         <FontAwesomeIcon icon={faCheck} />
       </button>

@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+
+import { useNavigate } from "react-router-dom";
 
 import styles from "../styles/CustomPrompts.module.css";
 import AddAuxItemBtn from "./AddAuxItemBtn";
@@ -6,6 +8,7 @@ import NewPromptForm from "./NewPromptForm";
 import PromptListItem from "./PromptListItem";
 import CloseAuthFormsBtn from "./CloseAuthFormsBtn";
 import LoadingSpinner from "./LoadingSpinner";
+import { UserContext } from "../context/UserContext";
 
 export default function CustomPrompts({
   prompts,
@@ -16,9 +19,20 @@ export default function CustomPrompts({
 }) {
   const [showNewPromptForm, setShowNewPromptForm] = useState(false);
   const [openItemTools, setOpenItemTools] = useState(null);
+  const { isLoggedIn } = useContext(UserContext);
+  const navigate = useNavigate();
 
   function handlePromptOptionsClick(id) {
     openItemTools === id ? setOpenItemTools(null) : setOpenItemTools(id);
+  }
+
+  // Show new prompt for if user is logged in
+  function handleNewPromptClick() {
+    if (isLoggedIn) {
+      setShowNewPromptForm(true);
+    } else {
+      navigate("/login");
+    }
   }
 
   return (
@@ -26,6 +40,19 @@ export default function CustomPrompts({
       <div className={styles.ModalContent}>
         <div className={styles.ModalText}>
           <h2>custom prompts</h2>
+
+          {showNewPromptForm ? (
+            <NewPromptForm
+              setShowNewPromptForm={setShowNewPromptForm}
+              getPromptsDataFromApi={getPromptsDataFromApi}
+            />
+          ) : (
+            <AddAuxItemBtn
+              // onClick={() => setShowNewPromptForm(true)}
+              onClick={handleNewPromptClick}
+              text="new prompt"
+            />
+          )}
 
           {isLoadingPrompts ? (
             <LoadingSpinner />
@@ -48,18 +75,6 @@ export default function CustomPrompts({
               Examples for your first prompt: "Re-phrase this for clarity",
               "Summarise this".
             </p>
-          )}
-
-          {showNewPromptForm ? (
-            <NewPromptForm
-              setShowNewPromptForm={setShowNewPromptForm}
-              getPromptsDataFromApi={getPromptsDataFromApi}
-            />
-          ) : (
-            <AddAuxItemBtn
-              onClick={() => setShowNewPromptForm(true)}
-              text="new prompt"
-            />
           )}
         </div>
 

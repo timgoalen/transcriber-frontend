@@ -25,7 +25,7 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
   const [prompts, setPrompts] = useState([]);
   const [showCustomPrompts, setShowCustomPrompts] = useState(false);
   const [isLoadingPrompts, setIsLoadingPrompts] = useState(false);
-  const { userToken } = useContext(UserContext);
+  const { isLoggedIn, userToken } = useContext(UserContext);
   const { addToMessages } = useContext(UserMessagesContext);
 
   // After formatting, hide undo button when user enters more text
@@ -42,6 +42,13 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
     };
   }, [isUndoListenerOn]);
 
+  // Clear prompts state when user logs out
+  useEffect(() => {
+    if (!isLoggedIn && !userToken) {
+      setPrompts([]);
+    }
+  }, [isLoggedIn, userToken]);
+
   function undoAiResponse() {
     setTextAreaInput(unformattedNote);
     setShowUndo(false);
@@ -50,7 +57,7 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
 
   function handleAiBtnClick() {
     // Handle when text area is empty
-    if (textAreaInput === "") {
+    if (textAreaInput.trim() === "") {
       addToMessages("can't format an empty note");
       return;
     }
@@ -77,6 +84,10 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
   }
 
   function handlePromptClick(text) {
+    if (textAreaInput.trim() === "") {
+      addToMessages("can't format an empty note");
+      return;
+    }
     sendToOpenAiApi(text);
     setShowCustomPrompts(false);
   }
@@ -93,8 +104,8 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
    * Returns a default prompt, or a custom user prompt if one has been chosen.
    */
   function assemblePrompt(userPrompt) {
-    const defaultPrompt = `Correct the spelling and punctuation of this text (use UK spelling). 
-    Only return the formatted text, with no added comments or annotations: ${textAreaInput}`;
+    const defaultPrompt = `Correct the spelling and punctuation of this text (use UK spelling),
+    only returning the formatted text, with no added comments or annotations: ${textAreaInput}`;
 
     // If the user hasn't chosen a custom prompt, use the default prompt
     if (userPrompt === null) {
