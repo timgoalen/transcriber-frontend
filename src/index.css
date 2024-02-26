@@ -564,6 +564,7 @@ canvas {
   max-height: 88vh;
   max-height: 88dvh;
   overflow: auto;
+  white-space: pre-line;
 }
 
 #note-detail-modal-tools-container {

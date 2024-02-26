@@ -16,7 +16,7 @@ export default function NewPromptForm({
   getPromptsDataFromApi,
 }) {
   const [prompt, setPrompt] = useState("");
-  const { isLoggedIn, userToken } = useContext(UserContext);
+  const { userToken } = useContext(UserContext);
   const { addToMessages } = useContext(UserMessagesContext);
 
   function updatePrompt(event) {
