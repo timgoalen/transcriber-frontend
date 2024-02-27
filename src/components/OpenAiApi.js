@@ -110,8 +110,7 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
    * Returns a default prompt, or a custom user prompt if one has been chosen.
    */
   function assemblePrompt(userPrompt) {
-    const defaultPrompt = `Correct the spelling and punctuation of this text (use UK spelling),
-    only returning the formatted text, with no added comments or annotations: ${textAreaInput}`;
+    const defaultPrompt = `Correct the spelling and punctuation of this text (use UK spelling, and return the text unmodified if no changes are needed): ${textAreaInput}`;
 
     // If the user hasn't chosen a custom prompt, use the default prompt
     if (userPrompt === null) {
