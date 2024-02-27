@@ -1,7 +1,7 @@
 .Btn {
   position: absolute;
-  top: calc(9vh + 2%);
-  top: calc(9dvh + 2%);
+  top: 10vh;
+  top: 10dvh;
   right: 5%;
   color: var(--grey);
   background-color: #ffffffa8;
@@ -18,8 +18,8 @@
 
 .Box {
   position: absolute;
-  top: calc(9vh + 2%);
-  top: calc(9dvh + 2%);
+  top: 10vh;
+  top: 10dvh;
   right: 5%;
   z-index: 999;
   border: 1px solid var(--grey);
