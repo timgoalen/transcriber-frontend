@@ -4,7 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
-import CloseAuthFormsBtn from "./CloseAuthFormsBtn";
+import CloseBtn from "./CloseBtn";
 import { baseApiUrl } from "../constants/apiConstants";
 
 /**
@@ -132,7 +132,7 @@ export default function SignUpForm() {
         </div>
 
         {/* Close button */}
-        <CloseAuthFormsBtn
+        <CloseBtn
           onClick={(event) => {
             event.preventDefault();
             navigateToHomePage("/");

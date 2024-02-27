@@ -6,7 +6,7 @@ import styles from "../styles/CustomPrompts.module.css";
 import AddAuxItemBtn from "./AddAuxItemBtn";
 import NewPromptForm from "./NewPromptForm";
 import PromptListItem from "./PromptListItem";
-import CloseAuthFormsBtn from "./CloseAuthFormsBtn";
+import CloseBtn from "./CloseBtn";
 import LoadingSpinner from "./LoadingSpinner";
 import useClickOutside from "../hooks/useClickOutside.js";
 import { UserContext } from "../context/UserContext";
@@ -82,7 +82,7 @@ export default function CustomPrompts({
           )}
         </div>
 
-        <CloseAuthFormsBtn onClick={() => setShowCustomPrompts(false)} />
+        <CloseBtn onClick={() => setShowCustomPrompts(false)} />
       </div>
     </section>
   );

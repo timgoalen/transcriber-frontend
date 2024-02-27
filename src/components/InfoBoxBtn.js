@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfo } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "../styles/InfoBoxBtn.module.css";
-import CloseAuthFormsBtn from "./CloseAuthFormsBtn";
+import CloseBtn from "./CloseBtn";
 import useClickOutside from "../hooks/useClickOutside";
 
 export default function InfoBoxBtn() {
@@ -35,7 +35,7 @@ export default function InfoBoxBtn() {
       </p>
       <p>~ Try using "new paragraph" and "new line" while dictating a note.</p>
 
-      <CloseAuthFormsBtn onClick={() => setOpenInfoBox(false)} />
+      <CloseBtn onClick={() => setOpenInfoBox(false)} />
     </motion.div>
   ) : (
     <button

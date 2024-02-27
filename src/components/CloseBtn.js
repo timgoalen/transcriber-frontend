@@ -2,9 +2,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 /**
- * Renders an `X` button for closing authorization forms.
+ * Renders an `X` button for closing elements.
  */
-export default function CloseAuthFormsBtn({ onClick }) {
+export default function CloseBtn({ onClick }) {
   return (
     <button
       id="cancel-btn"

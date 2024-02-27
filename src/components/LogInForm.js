@@ -3,7 +3,7 @@ import { useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-import CloseAuthFormsBtn from "./CloseAuthFormsBtn.js";
+import CloseBtn from "./CloseBtn.js";
 import { UserContext } from "../context/UserContext.js";
 import { baseApiUrl } from "../constants/apiConstants";
 
@@ -108,7 +108,7 @@ export default function LogInForm() {
         </div>
 
         {/* Close button */}
-        <CloseAuthFormsBtn
+        <CloseBtn
           onClick={(event) => {
             event.preventDefault();
             navigateToHomePage("/");
