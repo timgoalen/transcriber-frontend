@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faWandMagicSparkles,
   faEllipsisVertical,
+  faPen,
 } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
@@ -23,6 +24,7 @@ export default function PromptListItem({
   handlePromptOptionsClick,
   getPromptsDataFromApi,
   handlePromptClick,
+  handlePromptEditClick,
 }) {
   const { userToken } = useContext(UserContext);
   const { addToMessages } = useContext(UserMessagesContext);
@@ -68,6 +70,12 @@ export default function PromptListItem({
         <div className="folder-toolbar">
           {openItemTools === id && (
             <>
+              <div
+                className="folder-options"
+                onClick={() => handlePromptEditClick(id)}
+              >
+                <FontAwesomeIcon icon={faPen} />
+              </div>
               <div className="folder-options" onClick={deletePrompt}>
                 <FontAwesomeIcon icon={faTrashCan} />
               </div>

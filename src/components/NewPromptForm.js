@@ -1,22 +1,20 @@
 import { useState, useContext } from "react";
 
-import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 
-import { UserContext } from "../context/UserContext";
 import { UserMessagesContext } from "../context/UserMessagesContext";
-import { promptsApiUrl } from "../constants/apiConstants";
 
 /**
  * Renders a form for creating a prompt.
  */
 export default function NewPromptForm({
-  setShowNewPromptForm,
-  getPromptsDataFromApi,
+  initialPromptName,
+  initialPromptID,
+  handleNewPromptFormSubmit,
+  handleNewPromptFormCancel
 }) {
-  const [prompt, setPrompt] = useState("");
-  const { userToken } = useContext(UserContext);
+  const [prompt, setPrompt] = useState(initialPromptName);
   const { addToMessages } = useContext(UserMessagesContext);
 
   function updatePrompt(event) {
@@ -25,29 +23,9 @@ export default function NewPromptForm({
 
   function handleCreatePromptClick(prompt) {
     if (prompt.trim() > "") {
-      createPrompt(prompt);
+      handleNewPromptFormSubmit(prompt, initialPromptID);
     } else {
       addToMessages("whoops, can't save an empty prompt");
-    }
-  }
-
-  /**
-   * Creates a new prompt.
-   */
-  async function createPrompt(prompt) {
-    const newPrompt = { text: prompt };
-    try {
-      const response = await axios.post(promptsApiUrl, newPrompt, {
-        headers: {
-          Authorization: `Token ${userToken}`,
-        },
-      });
-      console.log("Prompt saved:", response.data);
-      addToMessages("prompt saved");
-      await getPromptsDataFromApi();
-      setShowNewPromptForm(false);
-    } catch (error) {
-      alert(`Error saving prompt: ${error.message}`);
     }
   }
 
@@ -63,15 +41,15 @@ export default function NewPromptForm({
       />
 
       <button
-        className="crud-new-folder-btns"
-        onClick={() => setShowNewPromptForm(false)}
-        id="new-folder-cancel-btn"
+        className="crud-new-prompt-btns"
+        onClick={handleNewPromptFormCancel}
+        id="new-prompt-cancel-btn"
       >
         <FontAwesomeIcon icon={faXmark} />
       </button>
 
       <button
-        className="crud-new-folder-btns"
+        className="crud-new-prompt-btns"
         onClick={() => handleCreatePromptClick(prompt)}
       >
         <FontAwesomeIcon icon={faCheck} />
