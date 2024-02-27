@@ -2,7 +2,7 @@
   position: absolute;
   top: 10vh;
   top: 10dvh;
-  right: 5%;
+  right: 4.5%;
   color: var(--grey);
   background-color: #ffffffa8;
   border-radius: 8px;
@@ -20,7 +20,7 @@
   position: absolute;
   top: 10vh;
   top: 10dvh;
-  right: 5%;
+  right: 4.5%;
   z-index: 999;
   border: 1px solid var(--grey);
   border-radius: 8px;
@@ -33,13 +33,13 @@
 @media screen and (min-width: 800px) {
   .Btn,
   .Box {
-    right: 12%;
+    right: 11.5%;
   }
 }
 
 @media screen and (min-width: 1024px) {
   .Btn,
   .Box {
-    right: 18%;
+    right: 17.5%;
   }
 }

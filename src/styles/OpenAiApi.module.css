@@ -1,8 +1,8 @@
 .AiBtn {
   position: absolute;
-  bottom: calc(10vh + 2%);
-  bottom: calc(10dvh + 2%);
-  left: 5%;
+  bottom: calc(9vh + 2%);
+  bottom: calc(9dvh + 2%);
+  left: 4.5%;
 }
 
 .AiBtn button {
@@ -28,12 +28,12 @@
 
 @media screen and (min-width: 800px) {
   .AiBtn {
-    left: 12%;
+    left: 11.5%;
   }
 }
 
 @media screen and (min-width: 1024px) {
   .AiBtn {
-    left: 18%;
+    left: 17.5%;
   }
 }
