@@ -726,7 +726,9 @@ As a **user** I can **delete my notes** so that **I can keep my inbox and f
 
 ---
 
-## EPIC: FOLDERS CRUD
+EPIC: FOLDERS CRUD
+
+---
 
 As a **user** I can **create folders** so that **my notes can be organised**.
 
@@ -758,7 +760,9 @@ As a **user** I can **delete folders** so that **I can remove unneeded fold
 
 ---
 
-## EPIC: PROMPTS CRUD
+EPIC: PROMPTS CRUD
+
+---
 
 As a **user** I can **create an custom prompt for the AI model** so that **I can have assistance with my note editing**.
 
@@ -816,7 +820,9 @@ As a **use** I can **add punctuation to a note by using my voice** so that 
 
 ---
 
-## EPIC: AI FORMATTING
+EPIC: AI FORMATTING
+
+---
 
 As a **user** I can **quickly format my notes or correct the punctuation and spelling** so that **I can work quickly**.
 
@@ -826,7 +832,9 @@ As a **user** I can **quickly format my notes or correct the punctuation and 
 
 ---
 
-## EPIC: SEARCH
+EPIC: SEARCH
+
+---
 
 As a **user** I can **search for my notes and folders** so that **I can quickly and easily find them**.
 
