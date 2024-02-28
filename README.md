@@ -10,7 +10,7 @@ View the backend REST API: [GitHub repo](https://github.com/timgoalen/transcribe
 
 ## About
 
-**Transcriber** is a note taking app that is focussed on speech recognition, with AI-powered auto-formatting, a folders page and comprehensive search page.
+**Transcriber** is a note-taking app designed with a focus on speech recognition. It features AI-powered auto-formatting, a folders page and a comprehensive search page.
 
 **Fast Idea Capture**: Especially on mobile devices, where typing with thumbs can be slow, the voice recognition feature allows you to quickly capture your ideas as you speak, speeding up the process compared to manual typing.
 
