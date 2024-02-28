@@ -875,6 +875,8 @@ The following devices and browsers were used for manual & responsive UI testing.
 | Bug |
 | --- |
 | There are sometimes unpredictable results from the OpenAI API response, especially with long text. |
+| Voice recognition can give inconsistent results, especially with “new line” and “new paragraph” voice commands, that sometimes insert a leading whitespace on the following word. |
+| The click-and-hold functionality for opening the custom prompts box doesn’t work reliably in Chrome DevTools. |
 | The audio visualiser is only half-width on mobile (but fine in the DevTools mobile view). |
 | The browser still displays a media stream red light in the tab when the audio analyser unmounts, in the local dev server (it’s fine in the deployed version) |
 | Speech recognition doesn’t capitalise the next character after voice added punctuation (”full stop”, “comma” etc.) when continuously recording, only when the recording has been started and stopped again. |
