@@ -136,7 +136,7 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
           max_tokens: 500,
           temperature: 0.5,
           n: 1,
-          model: "gpt-3.5-turbo-instruct",
+          model: "gpt-4o-mini",
         },
 
         {
