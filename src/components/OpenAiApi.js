@@ -130,15 +130,14 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
     try {
       setIsLoading(true);
       const response = await axios.post(
-        "https://api.openai.com/v1/completions",
+        "https://api.openai.com/v1/chat/completions",
         {
-          prompt: prompt,
+          model: "gpt-4o-mini",
+          messages: [{ role: "user", content: prompt }],
           max_tokens: 500,
           temperature: 0.5,
           n: 1,
-          model: "gpt-4o-mini",
         },
-
         {
           headers: {
             "Content-Type": "application/json",
@@ -146,7 +145,7 @@ export default function OpenAiApi({ textAreaInput, setTextAreaInput }) {
           },
         }
       );
-      const reply = response.data.choices[0].text.trim();
+      const reply = response.data.choices[0].message.content.trim();
       setUnformattedNote(textAreaInput);
       setTextAreaInput(reply);
       setShowUndo(true);
