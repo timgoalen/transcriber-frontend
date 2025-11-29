@@ -2,9 +2,7 @@
 
 ![mobile-transcriber-home-page.png](./src/assets/readme_images/mobile-transcriber-home-page.png)
 
-View the live site [here](https://transcriber-frontend-9c6d6be53f14.herokuapp.com/).
-
-View the backend REST API: [GitHub repo](https://github.com/timgoalen/transcriber-backend) - [deployed API](https://transcriber-backend-api-22aee3c5fb11.herokuapp.com/).
+View the backend REST API: [GitHub repo](https://github.com/timgoalen/transcriber-backend)
 
 ![am-i-responsive-blue.png](./src/assets/readme_images/am-i-responsive-blue.png)
 
